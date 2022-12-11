@@ -16,5 +16,13 @@ Example:
 
 ## Planned Features
 - Manual specification of ingredient and recipe TOML files
-- Abilitiy to load more than one ingredient or recipe file
-- Ability to load files with data for people
+- Load more than one ingredient or recipe file
+- Load files with data for people
+  - Dietary restrictions by type
+  - Dietary restrictions by specific ingredients
+  - Ability to specify non-default rate of consumption
+- Ability to specify duration of time when provided with rate of consumption
+   - User specifies days and meals per day, person data provides amount consumed compared to one standard recipe/portion
+- Ability to provide defaults in TOML files
+  - Program will assume defaults if values are left unspecified
+
