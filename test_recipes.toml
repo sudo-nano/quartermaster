@@ -1,0 +1,18 @@
+type = "recipes"
+
+[default_breakfast]
+
+ingredients.rice = 195.0
+ingredients.egg = 1.0
+ingredients.bacon = 2.0
+ingredients.soy_sauce = 10.0
+
+fractional = false
+
+[vegetarian_breakfast]
+
+ingredients.rice = 195.0
+ingredients.egg = 1.0
+ingredients.soy_sauce = 10.0
+
+fractional = false
