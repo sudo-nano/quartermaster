@@ -1,13 +1,19 @@
+# To ensure that the correct TOML file is being loaded, recipe files must always
+# have 'type = "recipes"'.
 type = "recipes"
 
+# Recipe for default_breakfast (units specified in ingredients file)
 [default_breakfast]
 
-ingredients.rice = 195.0
-ingredients.egg = 1.0
-ingredients.bacon = 2.0
-ingredients.soy_sauce = 10.0
+ingredients.rice = 195.0  		# 195g rice
+ingredients.egg = 1.0         	# 1 egg
+ingredients.bacon = 2.0      	# 2 pcs bacon
+ingredients.soy_sauce = 10.0 	# 10 mL soy sauce
 
+# fractional should be false if you can't accurately subdivide portions of one
+# or more ingredients, such as eggs or bacon in this case. 
 fractional = false
+
 
 [vegetarian_breakfast]
 

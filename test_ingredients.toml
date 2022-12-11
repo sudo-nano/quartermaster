@@ -1,10 +1,23 @@
+# To ensure that the correct TOML file is being loaded, ingredient files must  always
+# have 'type = "ingredients"'
 type = "ingredients"
+
+# Units should always be specified in metric. Price per unit is currently used for
+# cost estimates, use of purchase increments will be implemented soon.
 
 [example_ingredient]
 unit = "gram"
 price_per_unit = 0.01
 purchase_increments = [ [500.0, 5.00], [1000.0, 10.00] ]
-diet_incompat = ["beef", "vegetarian", "vegan"]
+
+# Diet incompatibilities will be implemented using a blacklist format. The tags 
+# specified in diet_incompat for an ingredient will be checked against the list 
+# of tags that a person may not consume.
+
+diet_incompat = ["beef", "meat", "animal_products"]
+
+# For example, the above is tagged with "animal_products" rather than "vegan",
+# because a person will be trying to avoid animal products. 
 
 [rice]
 unit = "gram" # Density 195g / cup
@@ -22,10 +35,10 @@ diet_incompat = ["soy"]
 unit = "discrete"
 price_per_unit = 0.41667
 purchase_increments = [ [12.0, 5.00], [24.0, 10.00] ]
-diet_incompat = ["egg", "vegan"]
+diet_incompat = ["egg", "animal_products"]
 
 [bacon]
 unit = "discrete"
 price_per_unit = 0.5
 purchase_increments = [ [10.0, 5.00], [20.0, 10.00] ]
-diet_incompat = ["pork", "vegetarian", "vegan"]
+diet_incompat = ["pork", "meat", "animal_products"]
