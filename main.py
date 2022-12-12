@@ -21,13 +21,16 @@ def prompt():
             exit()
 
         case "load_ingredients":
+            pass
 
         case "li":
+            pass
 
         case "load_recipes":
+            pass
 
         case "lr":
-
+            pass
 running = True
 while running:
         prompt()
