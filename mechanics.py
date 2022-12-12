@@ -1,9 +1,30 @@
 import toml
 
 class DataSet:
-    self.ingredient_sets = {}
-    self.recipe_sets = {}
-    self.person_sets = {}
+    def __init__(self):
+        self.ingredient_sets = []
+        self.recipe_sets = []
+        self.person_sets = []
+
+    def list_ingredients(self):
+        for group in self.ingredient_sets:
+            pass
+
+    def list_recipes(self):
+        pass 
+
+    def list_people(self):
+        pass
+
+    def import_ingredients(self, file_name):
+        pass 
+
+    def import_recipes(self, file_name):
+        pass
+
+    def import_people(self, file_name):
+        pass
+
 
 # Load test ingredients
 ingredients_file_name = "test_ingredients.toml"
@@ -58,4 +79,5 @@ def calc_and_output(recipe_str, recipe_quantity):
     print()
 
 
-def load_recipes():
+def load_recipes(DataSet curr_set):
+    pass
