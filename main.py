@@ -1,61 +1,8 @@
 # Quartermaster
 # A supply planning program by sudo-nano
 
-import toml
 from math import *
-
-ingredients_file_name = "test_ingredients.toml"
-ingredients = toml.load(ingredients_file_name)
-
-# Check if ingredients file is of type "ingredients"
-if ingredients["type"] != "ingredients":
-    print("Warning: Ingredients file" + ingredients_file_name + "not of type 'ingredients', may not be correct file.")
-
-recipes = toml.load("test_recipes.toml")
-
-# I'm definitely going to have to put this stuff into different files later, but
-# that's a problem for later me
-
-def abbrev_unit(unit_string):
-    match unit_string:
-        case "discrete":
-            return ""
-
-        case "gram":
-            return "g"
-
-        case "milliliter":
-            return "mL"
-
-# Pass recipe str and quantity int
-def calc_and_output(recipe_str, recipe_quantity):
-    recipe = recipes[recipe_str]
-
-    # Debug stuff
-    print("Debug: ingredients " + str(recipe["ingredients"]))
-    # End debug stuff
-
-    print("** " + str(recipe_quantity) + " quantity of " + recipe_str + " **")
-    print()
-
-    if (recipe["fractional"] == False) and ((recipe_quantity % 1) != 0):
-        print("Warning: Recipe is not fractional, but specified quantity is not a whole number. Number will be rounded up.")
-        recipe_quantity = ceil(quantity)
-
-    for ingredient, amount in recipe["ingredients"].items():
-        # Fetch ingredient dict from ingredients file
-        ing_dict = ingredients[ingredient]
-
-        required_qty = amount * recipe_quantity
-        unit = abbrev_unit(ing_dict["unit"])
-        price_of_rq = required_qty * ing_dict["price_per_unit"]
-
-        print("Required quantity of " + ingredient + ": " + str(required_qty) + unit)
-        print("Estimated price of required quantity: " + str(price_of_rq))
-        print()
-
-    print()
-
+from mechanics import *
 
 def prompt():
     command = input("quartermaster > ")
@@ -72,6 +19,14 @@ def prompt():
 
         case "exit":
             exit()
+
+        case "load_ingredients":
+
+        case "li":
+
+        case "load_recipes":
+
+        case "lr":
 
 running = True
 while running:
