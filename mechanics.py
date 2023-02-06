@@ -115,5 +115,11 @@ def load_ingredients():
     pass 
 
 def list_ingredients():
-    pass
+    for ingredient in ingredients:
+
+        # Filter out type value
+        if recipe != "type":
+            print(ingredient)
+
+        print()
 

@@ -24,7 +24,9 @@ def prompt():
         case "load_ingredients":
             pass
 
-
+        case "list_ingredients":
+            list_ingredients()
+            
         case "load_recipes":
             pass
 
