@@ -13,6 +13,7 @@ def prompt():
     for word in command_words_upper:
         command_words.append(word.lower())
 
+    # Command parser
     match command_words[0]:
         case "calc":
             calc_and_output(command_words[1], float(command_words[2]))
@@ -23,14 +24,23 @@ def prompt():
         case "load_ingredients":
             pass
 
-        case "li":
-            pass
 
         case "load_recipes":
             pass
 
-        case "lr":
-            pass
+        case "list_recipes":
+            list_recipes()
+
+        case "active_dataset":
+            pass 
+
+        case "help":
+            print_help()
+
+        case other:
+            print("Invalid command. See 'help' for commands.")
+            print()
+
 running = True
 while running:
         prompt()

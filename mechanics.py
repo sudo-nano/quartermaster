@@ -49,6 +49,26 @@ def abbrev_unit(unit_string):
         case "milliliter":
             return "mL"
 
+def print_help():
+    # List of valid commands
+    print("help, calc, exit")
+    print()
+
+    # Command descriptions
+    print("help")
+    print("\t List commands and their usage.")
+    print()
+
+    print("calc <recipe> <quantity>")
+    print("\t Given a recipe and quantity, calculate the required quantity of\ ")
+    print("\t ingredients for each.")
+    print()
+
+    print("exit")
+    print("\t Exit quartermaster.")
+    print()
+
+
 # Pass recipe str and quantity int
 def calc_and_output(recipe_str, recipe_quantity):
     recipe = recipes[recipe_str]
@@ -79,5 +99,21 @@ def calc_and_output(recipe_str, recipe_quantity):
     print()
 
 
-def load_recipes(DataSet curr_set):
+def load_recipes(curr_set):
     pass
+
+def list_recipes():
+    for recipe in recipes:
+
+        # Filter out type value
+        if recipe != "type":
+            print(recipe)
+
+        print()
+
+def load_ingredients():
+    pass 
+
+def list_ingredients():
+    pass
+
