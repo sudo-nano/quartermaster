@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# LaTeX
+docs/*.aux
+docs/*.out
+docs/*.toc
+docs/*.synctex.gz
+
+# Mac moment
+.DS_Store
