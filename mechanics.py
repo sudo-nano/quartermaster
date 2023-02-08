@@ -25,18 +25,8 @@ class DataSet:
     def import_people(self, file_name):
         pass
 
-
-# Load test ingredients
-ingredients_file_name = "test_ingredients.toml"
-ingredients = toml.load(ingredients_file_name)
-
-## Check if ingredients file is of type "ingredients"
-if ingredients["type"] != "ingredients":
-    print("Warning: Ingredients file" + ingredients_file_name + "not of type 'ingredients', may not be correct file.")
-
-recipes = toml.load("test_recipes.toml")
-
-
+# Initialize default dataset
+default_dataset = DataSet()
 
 def abbrev_unit(unit_string):
     match unit_string:
@@ -111,7 +101,7 @@ def list_recipes():
 
         print()
 
-def load_ingredients():
+def load_ingredients(file_name):
     pass 
 
 def list_ingredients():
@@ -123,3 +113,12 @@ def list_ingredients():
 
         print()
 
+# Load test ingredients
+ingredients_file_name = "test_ingredients.toml"
+ingredients = toml.load(ingredients_file_name)
+
+## Check if ingredients file is of type "ingredients"
+if ingredients["type"] != "ingredients":
+    print("Warning: Ingredients file" + ingredients_file_name + "not of type 'ingredients', may not be correct file.")
+
+recipes = toml.load("test_recipes.toml")
