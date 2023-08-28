@@ -50,8 +50,16 @@ def print_help():
     print()
 
     print("calc <recipe> <quantity>")
-    print("\t Given a recipe and quantity, calculate the required quantity of\ ")
+    print("\t Given a recipe and quantity, calculate the required quantity of ")
     print("\t ingredients for each.")
+    print()
+
+    print("list_ingredients")
+    print("\t List all the ingredients that are currently loaded from data sets.")
+    print()
+
+    print("list_recipes")
+    print("\t List all the recipes that are currently loaded from data sets.")
     print()
 
     print("exit")
@@ -97,7 +105,7 @@ def list_recipes():
 
         # Filter out type value
         if recipe != "type":
-            print(recipe)
+            print("\t" + recipe)
 
         print()
 
@@ -108,8 +116,8 @@ def list_ingredients():
     for ingredient in ingredients:
 
         # Filter out type value
-        if recipe != "type":
-            print(ingredient)
+        if ingredient != "type":
+            print("\t" + ingredient)
 
         print()
 
