@@ -16,6 +16,8 @@ def prompt():
     # Command parser
     match command_words[0]:
         case "calc":
+            if command_words.length() < 3:
+                print("Please provide a recipe and quantity.")
             calc_and_output(command_words[1], float(command_words[2]))
 
         case "exit":
