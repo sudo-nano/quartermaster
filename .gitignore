@@ -136,3 +136,6 @@ docs/*.synctex.gz
 
 # Mac moment
 .DS_Store
+
+# quartermaster specific
+user_datasets/*
