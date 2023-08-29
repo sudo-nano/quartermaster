@@ -16,27 +16,60 @@ def prompt():
     # Command parser
     match command_words[0]:
         case "calc":
-            if command_words.length() < 3:
+            if len(command_words):
                 print("Please provide a recipe and quantity.")
+
+            if len(command_words) > 3:
+                print("Too many parameters provided. Please provide only a file name.")
+
             calc_and_output(command_words[1], float(command_words[2]))
 
         case "exit":
             exit()
 
+        case "quit":
+            exit()
+
         case "load_ingredients":
-            pass
+            if len(command_words) < 2:
+                print("Please provide a file name.")
+
+            if len(command_words) > 2:
+                print("Too many parameters provided. Please provide only a file name.")
+
+            load_ingredients(command_words_upper[1])
 
         case "list_ingredients":
             list_ingredients()
+
+        case "inspect_ingredient":
+            pass
             
         case "load_recipes":
-            pass
+            if len(command_words) < 2:
+                print("Please provide a file name.")
+
+            if len(command_words) > 2:
+                print("Too many parameters provided. Please provide only a file name.")
+
+            load_recipes(command_words_upper[1])
 
         case "list_recipes":
             list_recipes()
 
+        case "inspect_recipe":
+            pass
+
         case "active_dataset":
+            print("Not yet implemented.")
+            print()
             pass 
+
+        case "export_session":
+            pass
+
+        case "load_session":
+            pass
 
         case "help":
             print_help()
