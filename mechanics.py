@@ -41,7 +41,7 @@ def abbrev_unit(unit_string):
 
 def print_help():
     # List of valid commands
-    print("help, calc, exit")
+    print("help, calc, exit, list_ingredients, load_ingredients, list_recipes, load_recipes")
     print()
 
     # Command descriptions
@@ -58,8 +58,16 @@ def print_help():
     print("\t List all the ingredients that are currently loaded from data sets.")
     print()
 
+    print("load_ingredients <file>")
+    print("\t Load ingredients from a file into the session.")
+    print()
+
     print("list_recipes")
     print("\t List all the recipes that are currently loaded from data sets.")
+    print()
+
+    print("load_recipes <file>")
+    print("\t Load recipes from a file into the session")
     print()
 
     print("exit")
