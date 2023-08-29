@@ -16,19 +16,38 @@ The primary interface of the \verb|quartermaster| program is the \verb|prompt()|
 
 \section{Commands}
 
+\subsection{calc}
+The \verb|calc| command takes two parameters, a recipe and the quantity of that recipe. 
+
 \section{Data Formatting}
 
 \subsection{DataSet Class}
 The \verb|DataSet| class is an object type for holding all the imported data in a \verb|quartermaster| session. There is currently only one \verb|DataSet| object, called \verb|default_dataset|. 
-
+All data imported from files is loaded into the session DataSet object. 
 
 \section{Planned Features}
 \begin{itemize}
 	\item Meal Plan object
 	
 	\begin{itemize}
+		\item Allows easy planning for a limited subset of meal options 
 		\item Ability to check meal plan compatibility with a set of people
 		\item Suggest necessary modifications for incompatibilities?
+	\end{itemize}
+
+	\item Person object 
+
+	\begin{itemize}
+		\item Allows specification of dietary restrictions 
+		\item Contains a float describing how many standard servings they will consume per meal 
+	\end{itemize}
+
+	\item Group object 
+
+	\begin{itemize}
+		\item Allows grouping of Person objects 
+		\item Later, there will be a command to calculate the required supplies for a given group, meal plan, and length of time 
+			to supply the group. 
 	\end{itemize}
 
 \end{itemize}
