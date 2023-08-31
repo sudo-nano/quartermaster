@@ -2,31 +2,56 @@ import toml
 
 class DataSet:
     def __init__(self):
-        self.ingredient_sets = []
-        self.recipe_sets = []
-        self.person_sets = []
+        self.ingredients = []
+        self.recipes = []
+        self.people = []
 
     def list_ingredients(self):
-        for group in self.ingredient_sets:
-            pass
+        for ingredient in self.ingredients:
+            print("\t" + ingredient)
 
     def list_recipes(self):
-        pass 
+        for recipe in self.recipes:
+            print("\t" + recipe)
+            print()
 
     def list_people(self):
+        for person in self.people:
+            print("\t" + person)
+            print()
+
+    # Load ingredients from file into DataSet
+    def load_ingredients(self, file_name):
+        ingredients = toml.load(file_name)
+
+        # Check if ingredients file is of type "ingredients"
+        if ingredients["type"] != "ingredients":
+            print("Warning: Ingredients file" + file_name + " not of type 'ingredients', may not be correct file.")
+
+        for ingredient in ingredients:
+            if ingredient != "type":
+                self.ingredients.append(ingredient)
+
+    # Load recipes from file into DataSet
+    def load_recipes(self, file_name):
+        recipes = toml.load(file_name)
+
+        if recipes["type"] != "recipes":
+            print("Warning: Recipes file " + file_name + " not of type 'recipes', may not be correct file.")
+
+        for recipe in recipes:
+            if recipe != "type":
+                self.recipes.append(recipe)
+
+    def load_people(self, file_name):
         pass
 
-    def import_ingredients(self, file_name):
-        pass 
+    def inspect_ingredient(self, ingredient):
+        try:
+            pass
+        except:
+            pass
 
-    def import_recipes(self, file_name):
-        pass
-
-    def import_people(self, file_name):
-        pass
-
-# Initialize default dataset
-default_dataset = DataSet()
 
 def abbrev_unit(unit_string):
     match unit_string:
@@ -129,12 +154,9 @@ def list_ingredients():
 
         print()
 
-# Load test ingredients
-ingredients_file_name = "test_ingredients.toml"
-ingredients = toml.load(ingredients_file_name)
+# Initialize session
+session = DataSet()
 
-## Check if ingredients file is of type "ingredients"
-if ingredients["type"] != "ingredients":
-    print("Warning: Ingredients file" + ingredients_file_name + "not of type 'ingredients', may not be correct file.")
-
-recipes = toml.load("test_recipes.toml")
+# Load test ingredients and recipes
+session.load_ingredients("test_ingredients.toml")
+session.load_recipes("test_recipes.toml")

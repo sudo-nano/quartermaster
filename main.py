@@ -40,7 +40,7 @@ def prompt():
             load_ingredients(command_words_upper[1])
 
         case "list_ingredients":
-            list_ingredients()
+            session.list_ingredients()
 
         case "inspect_ingredient":
             pass
@@ -55,7 +55,7 @@ def prompt():
             load_recipes(command_words_upper[1])
 
         case "list_recipes":
-            list_recipes()
+            session.list_recipes()
 
         case "inspect_recipe":
             pass
