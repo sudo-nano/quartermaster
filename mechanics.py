@@ -2,9 +2,9 @@ import toml
 
 class DataSet:
     def __init__(self):
-        self.ingredients = []
-        self.recipes = []
-        self.people = []
+        self.ingredients = {}
+        self.recipes = {}
+        self.people = {}
 
     def list_ingredients(self):
         for ingredient in self.ingredients:
@@ -30,7 +30,7 @@ class DataSet:
 
         for ingredient in ingredients:
             if ingredient != "type":
-                self.ingredients.append(ingredient)
+                self.ingredients.update({ingredient:ingredients[ingredient]})
 
     # Load recipes from file into DataSet
     def load_recipes(self, file_name):
@@ -41,10 +41,17 @@ class DataSet:
 
         for recipe in recipes:
             if recipe != "type":
-                self.recipes.append(recipe)
+                self.recipes.update({recipe:recipes[recipe]})
 
     def load_people(self, file_name):
-        pass
+        people = toml.load(file_name)
+
+        if people["type"] != "people":
+            print("Warning: People file " + file_name + " not of type 'people', may not be correct file.")
+
+        for person in people:
+            if person != "type":
+                self.people.update({person:people[person]})
 
     def inspect_ingredient(self, ingredient):
         try:
@@ -60,9 +67,15 @@ def abbrev_unit(unit_string):
 
         case "gram":
             return "g"
+        
+        case "kilogram":
+            return "kg"
 
         case "milliliter":
             return "mL"
+        
+        case "liter":
+            return "L"
 
 def print_help():
     # List of valid commands
@@ -102,7 +115,7 @@ def print_help():
 
 # Pass recipe str and quantity int
 def calc_and_output(recipe_str, recipe_quantity):
-    recipe = recipes[recipe_str]
+    recipe = session.recipes[recipe_str]
 
     # Debug stuff
     print("Debug: ingredients " + str(recipe["ingredients"]))
@@ -113,11 +126,11 @@ def calc_and_output(recipe_str, recipe_quantity):
 
     if (recipe["fractional"] == False) and ((recipe_quantity % 1) != 0):
         print("Warning: Recipe is not fractional, but specified quantity is not a whole number. Number will be rounded up.")
-        recipe_quantity = ceil(quantity)
+        recipe_quantity = ceil(recipe_quantity)
 
     for ingredient, amount in recipe["ingredients"].items():
         # Fetch ingredient dict from ingredients file
-        ing_dict = ingredients[ingredient]
+        ing_dict = session.ingredients[ingredient]
 
         required_qty = amount * recipe_quantity
         unit = abbrev_unit(ing_dict["unit"])
@@ -129,30 +142,6 @@ def calc_and_output(recipe_str, recipe_quantity):
 
     print()
 
-
-def load_recipes(curr_set):
-    pass
-
-def list_recipes():
-    for recipe in recipes:
-
-        # Filter out type value
-        if recipe != "type":
-            print("\t" + recipe)
-
-        print()
-
-def load_ingredients(file_name):
-    pass 
-
-def list_ingredients():
-    for ingredient in ingredients:
-
-        # Filter out type value
-        if ingredient != "type":
-            print("\t" + ingredient)
-
-        print()
 
 # Initialize session
 session = DataSet()
