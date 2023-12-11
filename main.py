@@ -64,20 +64,25 @@ def prompt():
 
             load_recipes(command_words_upper[1])
 
+        # List recipes loaded into the current session
         case "list_recipes":
             session.list_recipes()
 
+        # Inspect the properties of a recipe (not yet implemented)
         case "inspect_recipe":
             pass
 
+        # List which dataset is active (not yet implemented)
         case "active_dataset":
             print("Not yet implemented.")
             print()
             pass 
 
+        # Export current session data set to file (not yet implemented)
         case "export_session":
             pass
 
+        # Load session data set from file (not yet implemented)
         case "load_session":
             pass
 
