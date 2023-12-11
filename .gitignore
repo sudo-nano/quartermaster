@@ -133,6 +133,8 @@ docs/*.aux
 docs/*.out
 docs/*.toc
 docs/*.synctex.gz
+docs/*.log
+docs/_minted*/
 
 # Mac moment
 .DS_Store
