@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\usepackage{hyperref}
+\usepackage{hyperref, minted}
 
 \title{Quartermaster Developer Documentation}
 \author{sudo-nano}
@@ -24,6 +24,35 @@ The \verb|calc| command takes two parameters, a recipe and the quantity of that 
 \subsection{DataSet Class}
 The \verb|DataSet| class is an object type for holding all the imported data in a \verb|quartermaster| session. There is currently only one \verb|DataSet| object, called \verb|default_dataset|. 
 All data imported from files is loaded into the session DataSet object. 
+
+\subsection{TOML file formatting}
+Ingredients and recipes are stored in separate TOML files. (People and groups will be stored in separate TOML files as well when they are implemented.)
+Any number of TOML files can be imported into the current session. Each TOML file begins with a basic string \verb|type| that specifies
+either \verb|ingredients| or \verb|recipes|. (Other types not yet implemented.)
+
+\subsection{Ingredient Files}
+Ingredient files must have \verb|type = "ingredients"|, otherwise they will not be imported. This is meant to prevent accidentally
+importing other types into the session ingredient dataset. \\
+
+Each ingredient is one table in its TOML file. Example below. See the included test\_ingredients.toml file for more examples. 
+
+\begin{minted}{TOML}
+[rice]                  # Ingredient name in header
+unit = "gram"           # Unit of measurement
+price_per_unit = 0.01   # Price per unit of measurement 
+
+# List of lists, each sub-list describing quantity of purchase 
+# and cost of purchasing that quantity. 
+purchase_increments = [ [1000.0, 5.00] ]
+
+# List of diet incompatibilities that conflict with this 
+# ingredient. Leave list empty if there are none. 
+diet_incompat = []
+\end{minted}
+
+\subsection{Recipe Files}
+
+
 
 \section{Planned Features}
 \begin{itemize}
