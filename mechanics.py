@@ -1,10 +1,21 @@
 import toml
 
+class Person:
+    def __init__(self, name):
+        self.name = name
+        self.dietary_restrictions = []
+
+    def list_dietary_restrictions(self):
+        for item in self.dietary_restrictions:
+            print("\t" + item)
+
+
 class DataSet:
     def __init__(self):
-        self.ingredients = {}
-        self.recipes = {}
-        self.people = {}
+        self.ingredients = {}   # List of valid ingredients
+        self.recipes = {}       # List of valid recipes
+        self.people = {}        # List of people 
+        self.valid_dietary_restrictions = []    # List of valid dietary restrictions
 
     def list_ingredients(self):
         for ingredient in self.ingredients:
@@ -44,22 +55,43 @@ class DataSet:
                 self.recipes.update({recipe:recipes[recipe]})
 
     def load_people(self, file_name):
-        people = toml.load(file_name)
+        file = toml.load(file_name)
 
-        if people["type"] != "people":
+        if file["type"] != "people":
             print("Warning: People file " + file_name + " not of type 'people', may not be correct file.")
 
         for person in people:
-            if person != "type":
-                self.people.update({person:people[person]})
+            # Prevent TOML file type specifier from being loaded into array of people
+            if person == "type":
+                continue
 
+            # Check that dietary restrictions are valid
+            restrictions_valid = True
+            for item in person.dietary_restrictions:
+                if item not in this.valid_dietary_restrictions:
+                    restrictions_valid = False
+
+            if not restrictions_valid:
+                continue
+
+            self.people.update({person:file[person]})
+
+    # List properties of ingredient (not implemented yet)
     def inspect_ingredient(self, ingredient):
-        try:
-            pass
-        except:
-            pass
+        print("Ingredient: " + ingredient)
 
+        # Print unit 
+        print("Unit: " + str(self.ingredients[ingredient]["unit"]))
 
+        # Print price per unit 
+        print("Price per unit: " + str(self.ingredients[ingredient]["price_per_unit"]))
+
+        # Print purchase increments
+        print("Purchase Increments:")
+        for item in self.ingredients[ingredient]["purchase_increments"]:
+            print("\t" + str(item[0]) + " " + str(self.ingredients[ingredient]["unit"]) + " for $" + str(item[1]))
+            
+# Converts a unit to its abbreviation
 def abbrev_unit(unit_string):
     match unit_string:
         case "discrete":

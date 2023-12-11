@@ -43,7 +43,17 @@ def prompt():
             session.list_ingredients()
 
         case "inspect_ingredient":
-            pass
+            if len(command_words) < 2:
+                print("Please provide an ingredient to inspect.")
+
+            if len(command_words) > 2:
+                print("Too many parameters provided. Please provide only an ingredient.")
+
+            if command_words[1] not in session.ingredients:
+                print("Invalid ingredient.")
+                return
+
+            session.inspect_ingredient(command_words[1])
             
         case "load_recipes":
             if len(command_words) < 2:
@@ -78,6 +88,7 @@ def prompt():
             print("Invalid command. See 'help' for commands.")
             print()
 
+# Main program loop
 running = True
 while running:
         prompt()
