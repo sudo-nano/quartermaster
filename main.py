@@ -70,8 +70,8 @@ def prompt():
                         type_matches += 1
 
                 if type_matches == 0:
-                    print("Multiple type matches for item. Please specify a type, like 'inspect <type> <item>'. ")
-
+                    print("No item of any type was found for that item. Check for typos.")
+    
                 elif type_matches == 1:
                     # Check which type matched and execute correct command 
                     if session.type_check("ingredient", command_words[1]):
@@ -81,7 +81,7 @@ def prompt():
                         session.inspect_recipe(command_words[1])
 
                 else:
-                    print("No item of any type was found for that item. Check for typos.")
+                    print("Multiple type matches for item. Please specify a type, like 'inspect <type> <item>'. ")
 
 
             if len(command_words) == 3:
