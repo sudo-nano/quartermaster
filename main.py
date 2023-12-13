@@ -15,7 +15,7 @@ def prompt():
 
     # Command parser
     match command_words[0]:
-        case "calc":
+        case "calc" | "c":
             if len(command_words):
                 print("Please provide a recipe and quantity.")
 
@@ -24,13 +24,10 @@ def prompt():
 
             calc_and_output(command_words[1], float(command_words[2]))
 
-        case "exit":
+        case "exit" | "quit" | "q":
             exit()
 
-        case "quit":
-            exit()
-
-        case "load_ingredients":
+        case "load_ingredients" | "loadi":
             if len(command_words) < 2:
                 print("Please provide a file name.")
 
@@ -39,23 +36,10 @@ def prompt():
 
             load_ingredients(command_words_upper[1])
 
-        case "list_ingredients":
+        case "list_ingredients" | "listi":
             session.list_ingredients()
-
-        case "inspect_ingredient":
-            if len(command_words) < 2:
-                print("Please provide an ingredient to inspect.")
-
-            if len(command_words) > 2:
-                print("Too many parameters provided. Please provide only an ingredient.")
-
-            if command_words[1] not in session.ingredients:
-                print("Invalid ingredient.")
-                return
-
-            session.inspect_ingredient(command_words[1])
             
-        case "load_recipes":
+        case "load_recipes" | "loadr":
             if len(command_words) < 2:
                 print("Please provide a file name.")
 
@@ -65,12 +49,59 @@ def prompt():
             load_recipes(command_words_upper[1])
 
         # List recipes loaded into the current session
-        case "list_recipes":
+        case "list_recipes" | "listr":
             session.list_recipes()
 
-        # Inspect the properties of a recipe (not yet implemented)
-        case "inspect_recipe":
-            pass
+        # Inspect an ingredient, recipe, or person 
+        case "inspect" | "i":
+            if len(command_words) < 2:
+                print("Please provide an ingredient, recipe, or person to inspect.")
+                return
+
+            if len(command_words) > 3:
+                print("Too many parameters provided. Please provide an item to inspect, optionally preceded by a type specifier.")
+                return
+
+            if len(command_words) == 2:
+                # Check types 
+                type_matches = 0
+                for possible_type in ["ingredient", "recipe"]:
+                    if (session.type_check(possible_type, command_words[1])):
+                        type_matches += 1
+
+                if type_matches == 0:
+                    print("Multiple type matches for item. Please specify a type, like 'inspect <type> <item>'. ")
+
+                elif type_matches == 1:
+                    # Check which type matched and execute correct command 
+                    if session.type_check("ingredient", command_words[1]):
+                        session.inspect_ingredient(command_words[1])
+
+                    elif session.type_check("recipe", command_words[1]):
+                        session.inspect_recipe(command_words[1])
+
+                else:
+                    print("No item of any type was found for that item. Check for typos.")
+
+
+            if len(command_words) == 3:
+                if session.type_check(command_words[1], command_words[2]):
+                    match command_words[1]:
+                        case "ingredient" | "i":
+                            session.inspect_ingredient(command_words[2])
+
+                        case "recipe" | "r":
+                            session.inspect_recipe(command_words[2])
+
+                        case other:
+                            print("command parser error: 'inspect' reached end of control flow")
+                            return
+
+                else:
+                    print("No item with name " + command_words[2] + " and type " + command_words[1] + "exists.")
+
+
+            session.inspect_ingredient(command_words[1])
 
         # List which dataset is active (not yet implemented)
         case "active_dataset":
@@ -78,16 +109,22 @@ def prompt():
             print()
             pass 
 
-        # Export current session data set to file (not yet implemented)
-        case "export_session":
-            pass
+        # Export all of specified type (ingredients, recipes, people, entire session) to file
+        # TODO: Merge all save commands into this one, make it take type as argument
+        case "save":
+            print("Not yet implemented.")
+            print()
 
-        # Load session data set from file (not yet implemented)
-        case "load_session":
-            pass
+        # Load all of specified type (ingredients, recipes, people, session) from file
+        # TODO: Merge all load commands into this one, make it take type as an argument
+        case "load":
+            print("Not yet implemented.")
+            print()
 
         case "help":
             print_help()
+            # TODO: Add "help <command>" as a means of showing more in-depth help for
+            # a single command 
 
         case other:
             print("Invalid command. See 'help' for commands.")
