@@ -79,7 +79,7 @@ class DataSet:
 
             self.people.update({person:file[person]})
 
-    # List properties of ingredient (not implemented yet)
+    # List properties of ingredient
     def inspect_ingredient(self, ingredient):
         print("Ingredient: " + ingredient)
 
@@ -93,6 +93,15 @@ class DataSet:
         print("Purchase Increments:")
         for item in self.ingredients[ingredient]["purchase_increments"]:
             print("\t" + str(item[0]) + " " + str(self.ingredients[ingredient]["unit"]) + " for $" + str(item[1]))
+
+    def inspect_recipe(self, recipe):
+        print("Recipe: " + recipe)
+        print("Fractional: " + str(self.recipes[recipe]["fractional"]))
+        print("Ingredients: ")
+
+        for item in self.recipes[recipe]["ingredients"]:
+            print("\t" + item + ": " + str(self.recipes[recipe]["ingredients"][item]))
+
 
     def list_dietary_restrictions(self):
         for item in self.dietary_restrictions:
