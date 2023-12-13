@@ -134,3 +134,4 @@ def prompt():
 running = True
 while running:
         prompt()
+        print()

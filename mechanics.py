@@ -83,6 +83,16 @@ class DataSet:
     def inspect_ingredient(self, ingredient):
         print("Ingredient: " + ingredient)
 
+        # Print diet incompatibilities 
+        the_ingredient = self.ingredients[ingredient]
+        print("Diet Incompatibilities: ", end="")
+        
+        if the_ingredient["diet_incompat"] == []:
+            print("None")
+
+        else:
+            print(the_ingredient["diet_incompat"])
+
         # Print unit 
         print("Unit: " + str(self.ingredients[ingredient]["unit"]))
 
@@ -108,6 +118,8 @@ class DataSet:
             print(item)
 
     # Check whether an item of the specified name and type exist in the current dataset
+    # TODO: Change this function's return type from boolean to int codes 
+    # -1 for multiple matches, 0 for no match, 1 for ingredient, etc 
     def type_check(self, item_type, item):
         match item_type:
             case "recipe":
