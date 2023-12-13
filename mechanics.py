@@ -60,6 +60,9 @@ class DataSet:
         if file["type"] != "people":
             print("Warning: People file " + file_name + " not of type 'people', may not be correct file.")
 
+        # Import valid dietary restrictions
+        self.valid_dietary_restrictions.extend(file["valid_dietary_restrictions"])
+
         for person in people:
             # Prevent TOML file type specifier from being loaded into array of people
             if person == "type":
@@ -68,7 +71,7 @@ class DataSet:
             # Check that dietary restrictions are valid
             restrictions_valid = True
             for item in person.dietary_restrictions:
-                if item not in this.valid_dietary_restrictions:
+                if item not in self.valid_dietary_restrictions:
                     restrictions_valid = False
 
             if not restrictions_valid:
@@ -90,7 +93,12 @@ class DataSet:
         print("Purchase Increments:")
         for item in self.ingredients[ingredient]["purchase_increments"]:
             print("\t" + str(item[0]) + " " + str(self.ingredients[ingredient]["unit"]) + " for $" + str(item[1]))
-            
+
+    def list_dietary_restrictions(self):
+        for item in self.dietary_restrictions:
+            print(item)
+
+
 # Converts a unit to its abbreviation
 def abbrev_unit(unit_string):
     match unit_string:
