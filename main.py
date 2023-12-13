@@ -89,9 +89,11 @@ def prompt():
                     match command_words[1]:
                         case "ingredient" | "i":
                             session.inspect_ingredient(command_words[2])
+                            return
 
                         case "recipe" | "r":
                             session.inspect_recipe(command_words[2])
+                            return
 
                         case other:
                             print("command parser error: 'inspect' reached end of control flow")
@@ -100,8 +102,6 @@ def prompt():
                 else:
                     print("No item with name " + command_words[2] + " and type " + command_words[1] + "exists.")
 
-
-            session.inspect_ingredient(command_words[1])
 
         # List which dataset is active (not yet implemented)
         case "active_dataset":
