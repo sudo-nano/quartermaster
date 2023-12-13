@@ -98,6 +98,26 @@ class DataSet:
         for item in self.dietary_restrictions:
             print(item)
 
+    # Check whether an item of the specified name and type exist in the current dataset
+    def type_check(self, item_type, item):
+        match item_type:
+            case "recipe":
+                if item in self.recipes:
+                    return True 
+
+                else:
+                    return False
+
+            case "ingredient":
+                if item in self.ingredients:
+                    return True
+
+                else: 
+                    return False
+
+            case other:
+                return False
+
 
 # Converts a unit to its abbreviation
 def abbrev_unit(unit_string):
