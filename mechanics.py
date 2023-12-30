@@ -158,41 +158,6 @@ def abbrev_unit(unit_string):
         case "liter":
             return "L"
 
-def print_help():
-    # List of valid commands
-    print("help, calc, exit, list_ingredients, load_ingredients, list_recipes, load_recipes")
-    print()
-
-    # Command descriptions
-    print("help")
-    print("\t List commands and their usage.")
-    print()
-
-    print("calc <recipe> <quantity>")
-    print("\t Given a recipe and quantity, calculate the required quantity of ")
-    print("\t ingredients for each.")
-    print()
-
-    print("list_ingredients")
-    print("\t List all the ingredients that are currently loaded from data sets.")
-    print()
-
-    print("load_ingredients <file>")
-    print("\t Load ingredients from a file into the session.")
-    print()
-
-    print("list_recipes")
-    print("\t List all the recipes that are currently loaded from data sets.")
-    print()
-
-    print("load_recipes <file>")
-    print("\t Load recipes from a file into the session")
-    print()
-
-    print("exit")
-    print("\t Exit quartermaster.")
-    print()
-
 
 # Pass recipe str and quantity int
 def calc_and_output(recipe_str, recipe_quantity):
