@@ -128,7 +128,7 @@ def prompt():
 
             match len(command_words):
                 case 1:
-                    help.print_help()
+                    help.print_help_db()
 
                 # If one argument is provided, attempt to match it with the help page for the
                 # corresponding command
