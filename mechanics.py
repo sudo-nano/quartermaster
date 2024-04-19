@@ -33,7 +33,11 @@ class DataSet:
 
     # Load ingredients from file into DataSet
     def load_ingredients(self, file_name):
-        ingredients = toml.load(file_name)
+        try:
+            ingredients = toml.load(file_name)
+
+        except FileNotFoundError:
+            print("Error: File " + file_name + " not found.")
 
         # Check if ingredients file is of type "ingredients"
         if ingredients["type"] != "ingredients":
@@ -79,6 +83,18 @@ class DataSet:
 
             self.people.update({person:file[person]})
 
+    def load_file(self, file_name, type):
+        try:
+            file = toml.load(file_name)
+
+        except FileNotFoundError:
+            print("Warning: File " + file_name + " not found.")
+
+        # Check that provided type is valid
+        # Check that file is of provided type
+        # If person, update valid dietary restrictions
+        # If person, check that dietary restrictions are valid
+
     # List properties of ingredient
     def inspect_ingredient(self, ingredient):
         print("Ingredient: " + ingredient)
@@ -118,8 +134,7 @@ class DataSet:
             print(item)
 
     # Check whether an item of the specified name and type exist in the current dataset
-    # TODO: Change this function's return type from boolean to int codes 
-    # -1 for multiple matches, 0 for no match, 1 for ingredient, etc 
+    # TODO: make an enum for this
     def type_check(self, item_type, item):
         match item_type:
             case "recipe":
@@ -194,5 +209,5 @@ def calc_and_output(recipe_str, recipe_quantity):
 session = DataSet()
 
 # Load test ingredients and recipes
-session.load_ingredients("test_ingredients.toml")
-session.load_recipes("test_recipes.toml")
+session.load_ingredients("Test Datasets/test_ingredients.toml")
+session.load_recipes("Test Datasets/test_recipes.toml")
