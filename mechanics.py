@@ -1,4 +1,18 @@
 import toml
+from enum import Enum
+
+class DataType(Enum):
+    multiple = "multiple"
+    none = "none"
+    ingredient = "ingredient"
+    recipe = "recipe"
+    person = "person"
+    group = "group"
+
+    def __str__(self):
+        return str(self.value)
+
+
 
 class Person:
     def __init__(self, name):
@@ -91,7 +105,16 @@ class DataSet:
             print("Warning: File " + file_name + " not found.")
 
         # Check that provided type is valid
+        try:
+            file_type = DataType[type]
+
+        except KeyError:
+            raise TypeError("Invalid data type provided to load_file.")
+
         # Check that file is of provided type
+        if file["type"] != file_type:
+            raise TypeError("Provided file not of specified type.")
+
         # If person, update valid dietary restrictions
         # If person, check that dietary restrictions are valid
 
