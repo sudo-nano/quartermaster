@@ -37,7 +37,7 @@ class DataSet:
 
         # Check if ingredients file is of type "ingredients"
         if ingredients["type"] != "ingredients":
-            print("Warning: Ingredients file" + file_name + " not of type 'ingredients', may not be correct file.")
+            raise TypeError("Ingredients file " + file_name + " not of type 'ingredients', may not be correct file.")
 
         for ingredient in ingredients:
             if ingredient != "type":
@@ -48,7 +48,7 @@ class DataSet:
         recipes = toml.load(file_name)
 
         if recipes["type"] != "recipes":
-            print("Warning: Recipes file " + file_name + " not of type 'recipes', may not be correct file.")
+            raise TypeError("Recipes file " + file_name + " not of type 'recipes', may not be correct file.")
 
         for recipe in recipes:
             if recipe != "type":
@@ -58,7 +58,7 @@ class DataSet:
         file = toml.load(file_name)
 
         if file["type"] != "people":
-            print("Warning: People file " + file_name + " not of type 'people', may not be correct file.")
+            raise TypeError("People file " + file_name + " not of type 'people', may not be correct file.")
 
         # Import valid dietary restrictions
         self.valid_dietary_restrictions.extend(file["valid_dietary_restrictions"])
