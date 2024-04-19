@@ -141,6 +141,7 @@ class DataSet:
 
 
 # Converts a unit to its abbreviation
+# TODO: Convert this to a dictionary
 def abbrev_unit(unit_string):
     match unit_string:
         case "discrete":
