@@ -4,6 +4,7 @@
 from math import *
 from mechanics import *
 import help
+import sys
 
 def prompt():
     command = input("quartermaster > ")
@@ -17,13 +18,14 @@ def prompt():
     # Command parser
     match command_words[0]:
         case "calc" | "c":
-            if len(command_words):
+            if len(command_words) < 3:
                 print("Please provide a recipe and quantity.")
 
-            if len(command_words) > 3:
+            elif len(command_words) > 3:
                 print("Too many parameters provided. Please provide only a file name.")
 
-            calc_and_output(command_words[1], float(command_words[2]))
+            else:
+                calc_and_output(command_words[1], float(command_words[2]))
 
         case "exit" | "quit" | "q":
             exit()
@@ -37,9 +39,6 @@ def prompt():
 
             load_ingredients(command_words_upper[1])
 
-        case "list_ingredients" | "listi":
-            session.list_ingredients()
-            
         case "load_recipes" | "loadr":
             if len(command_words) < 2:
                 print("Please provide a file name.")
@@ -49,9 +48,27 @@ def prompt():
 
             load_recipes(command_words_upper[1])
 
-        # List recipes loaded into the current session
-        case "list_recipes" | "listr":
-            session.list_recipes()
+        # List ingredients, recipes, or people
+        case "list" | "l":
+            if len(command_words) < 2:
+                print("Please provide a type: ingredient, recipe, or person.")
+
+            elif len(command_words) == 2:
+                match command_words[1]:
+                    # List ingredients loaded into the current session
+                    case "ingredient" | "ingredients" | "i":
+                        session.list_ingredients()
+
+                    # List recipes loaded into the current session
+                    case "recipe" | "recipes" | "r":
+                        session.list_recipes()
+
+                    # List people loaded into the current session (not implemented yet)
+                    case "person" | "people" | "persons" | "p":
+                        print("People are not yet implemented. Please check back later.")
+
+            elif len(command_words) > 2:
+                print("Too many parameters provided. Please provide a type: ingredient, recipe, or person.")
 
         # Inspect an ingredient, recipe, or person 
         case "inspect" | "i":
@@ -59,11 +76,11 @@ def prompt():
                 print("Please provide an ingredient, recipe, or person to inspect.")
                 return
 
-            if len(command_words) > 3:
+            elif len(command_words) > 3:
                 print("Too many parameters provided. Please provide an item to inspect, optionally preceded by a type specifier.")
                 return
 
-            if len(command_words) == 2:
+            elif len(command_words) == 2:
                 # Check types 
                 type_matches = 0
                 for possible_type in ["ingredient", "recipe"]:
@@ -85,7 +102,7 @@ def prompt():
                     print("Multiple type matches for item. Please specify a type, like 'inspect <type> <item>'. ")
 
 
-            if len(command_words) == 3:
+            elif len(command_words) == 3:
                 if session.type_check(command_words[1], command_words[2]):
                     match command_words[1]:
                         case "ingredient" | "i":
@@ -145,6 +162,14 @@ def prompt():
             print()
 
 # Main program loop
+match len(sys.argv):
+    case 1:
+        pass
+
+    case other:
+        print("Error: Runtime arguments are not supported at this time. They will be implemented in the future.")
+        exit()
+
 running = True
 while running:
         prompt()
