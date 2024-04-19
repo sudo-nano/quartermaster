@@ -1,18 +1,21 @@
 # quartermaster
 A program for calculating recipe ingredient quantities and costs, given parameters such as amount or time and consumption rate. 
 
-## Long description 
-Quartermaster is a command line program that aims to ease logistics calculations for recipes. While primarily designed for cooking, non-food ingredients can be used to plan other things. The program is given one TOML file each for ingredients and recipes. (These files are currently hardcoded, you'll be able to provide multiple files in future versions.) Given these files, you can calculate how much of each ingredient you'll need for a given amount of a recipe, and approximately how much it'll cost.
+## Description 
+Quartermaster is a command line program that does logistical calculations and scaling for recipes. While primarily designed for cooking, non-food ingredients can be used to plan other things. Ingredients, recipes, and cost-per-unit is specified in TOML files. The program uses these to calculate required ingredient amounts and costs for recipes.
 
-This program is in *very* early development. Input sanitization is iffy or nonexistent, most features are not implemented yet. 
+This program is in *very* early development. A stable, usable version is expected by August 2024. 
 
-## Currently Implemented Commands
+## Quick-Start 
+1. Install the `toml` Python library
+2. Clone the repository
+3. Run`python3 main.py`
 
-### calc 
-The `calc` command takes the name of the recipe and an int or float for the quantity of that recipe. 
+For more detailed instructions, see [Installation Instructions](https://github.com/sudo-nano/quartermaster/wiki/Installation). 
 
-Example:
-`calc default_breakfast 5` calculates the necessary ingredients to produce a `default_breakfast` 5 times.
+## Implemented Features 
+- Calculation of ingredients required for some quantity of a recipe
+- Calculation of ingredient cost for some quantity of a recipe
 
 ## Planned Features
 - Manual specification of ingredient and recipe TOML files
@@ -25,4 +28,6 @@ Example:
    - User specifies days and meals per day, person data provides amount consumed compared to one standard recipe/portion
 - Ability to provide defaults in TOML files
   - Program will assume defaults if values are left unspecified
+- Save and load sessions
+- New Data Type: `group` containing a collection of people
 
