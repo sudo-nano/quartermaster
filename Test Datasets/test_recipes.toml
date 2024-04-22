@@ -1,3 +1,7 @@
+# NOTE: the "fractional" field is deprecated and will be removed after the
+# calc_and_output function has been updated to check recipe divisibility.
+# For now, it remains so as not to break the existing function.
+
 # To ensure that the correct TOML file is being loaded, recipe files must always
 # have 'type = "recipes"'.
 type = "recipes"
@@ -11,7 +15,7 @@ ingredients.bacon = 2.0      	# 2 pcs bacon
 ingredients.soy_sauce = 10.0 	# 10 mL soy sauce
 
 # fractional should be false if you can't accurately subdivide portions of one
-# or more ingredients, such as eggs or bacon in this case. 
+# or more ingredients, such as eggs or bacon in this case.
 fractional = false
 
 
