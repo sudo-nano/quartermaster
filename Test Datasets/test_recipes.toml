@@ -3,8 +3,8 @@
 # For now, it remains so as not to break the existing function.
 
 # To ensure that the correct TOML file is being loaded, recipe files must always
-# have 'type = "recipes"'.
-type = "recipes"
+# have 'type = "recipe"'.
+type = "recipe"
 
 # Recipe for default_breakfast (units specified in ingredients file)
 [default_breakfast]

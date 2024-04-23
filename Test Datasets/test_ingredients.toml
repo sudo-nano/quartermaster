@@ -1,6 +1,6 @@
 # To ensure that the correct TOML file is being loaded, ingredient files must  always
-# have 'type = "ingredients"'
-type = "ingredients"
+# have 'type = "ingredient"'
+type = "ingredient"
 
 # Units should always be specified in metric. Price per unit is currently used for
 # cost estimates, use of purchase increments will be implemented soon.
