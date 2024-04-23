@@ -65,18 +65,19 @@ class DataSet:
     def load_recipes(self, file_name):
         recipes = toml.load(file_name)
 
-        if recipes["type"] != "recipes":
+        if recipes["type"] != "recipe":
             raise TypeError("Recipes file " + file_name + " not of type 'recipes', may not be correct file.")
 
         for recipe in recipes:
             if recipe != "type":
                 self.recipes.update({recipe:recipes[recipe]})
 
+
     def load_people(self, file_name):
         file = toml.load(file_name)
 
-        if file["type"] != "people":
-            raise TypeError("People file " + file_name + " not of type 'people', may not be correct file.")
+        if file["type"] != "person":
+            raise TypeError("Person file " + file_name + " not of type 'people', may not be correct file.")
 
         # Import valid dietary restrictions
         self.valid_dietary_restrictions.extend(file["valid_dietary_restrictions"])
@@ -97,6 +98,8 @@ class DataSet:
 
             self.people.update({person:file[person]})
 
+
+    # Load a file of the specified type into the DataSet
     def load_file(self, file_name, type):
         try:
             file = toml.load(file_name)
@@ -111,12 +114,44 @@ class DataSet:
         except KeyError:
             raise TypeError("Invalid data type provided to load_file.")
 
-        # Check that file is of provided type
+        # Check that loaded file is of provided type
         if file["type"] != file_type:
-            raise TypeError("Provided file not of specified type.")
+            raise TypeError("Provided file is a different type than specified.")
 
-        # If person, update valid dietary restrictions
-        # If person, check that dietary restrictions are valid
+        # Do different things on import depending on type
+        match file["type"]:
+            case "person":
+                # Import additional valid dietary restrictions from new person file
+                self.valid_dietary_restrictions.extend(file["valid_dietary_restrictions"])
+
+                # Check that all people in file have valid restrictions
+                for person in file:
+                    if person == "type":
+                        continue
+
+                    restrictions_valid = True
+                    for item in person.dietary_restrictions:
+                        if item not in self.valid_dietary_restrictions:
+                            restrictions_valid = False
+
+                    if restrictions_valid:
+                        self.people.update({person:file[person]})
+
+                    else:
+                        print("Warning: Person " + person + "not added due to invalid dietary restrictions.")
+
+            case "ingredient":
+                # TODO: Check whether ingredients have valid units
+                for ingredient in ingredients:
+                    if ingredient != "type":
+                        self.ingredients.update({ingredient:ingredients[ingredient]})
+
+            case "recipe":
+                # TODO: Check that all ingredients in recipes are loaded into session
+                for recipe in recipes:
+                    if recipe != "type":
+                        self.recipes.update({recipe:recipes[recipe]})
+
 
     # List properties of ingredient
     def inspect_ingredient(self, ingredient):
@@ -157,7 +192,6 @@ class DataSet:
             print(item)
 
     # Check whether an item of the specified name and type exist in the current dataset
-    # TODO: make an enum for this
     def type_check(self, item_type, item):
         match item_type:
             case "recipe":
@@ -173,6 +207,14 @@ class DataSet:
 
                 else: 
                     return False
+
+            case "person":
+                if item in self.people:
+                    return True
+
+            case "group":
+                if item in self.groups:
+                    return True
 
             case other:
                 return False
@@ -199,6 +241,9 @@ def abbrev_unit(unit_string):
 
 
 # Pass recipe str and quantity int
+# TODO: Rework this to remove the "fractional" field
+# and instead calculate at runtime whether a recipe can be
+# multiplied/divided in the specified way.
 def calc_and_output(recipe_str, recipe_quantity):
     recipe = session.recipes[recipe_str]
 
@@ -232,5 +277,7 @@ def calc_and_output(recipe_str, recipe_quantity):
 session = DataSet()
 
 # Load test ingredients and recipes
-session.load_ingredients("Test Datasets/test_ingredients.toml")
-session.load_recipes("Test Datasets/test_recipes.toml")
+#session.load_ingredients("Test Datasets/test_ingredients.toml")
+#session.load_recipes("Test Datasets/test_recipes.toml")
+session.load_file("ingredients", "Test Datasets/test_ingredients.toml")
+session.load_file("recipes", "Test Datasets/test_recipes.toml")
