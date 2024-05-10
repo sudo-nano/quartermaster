@@ -168,7 +168,7 @@ session = DataSet()
 #session.load_ingredients("Test Datasets/test_ingredients.toml")
 #session.load_recipes("Test Datasets/test_recipes.toml")
 session.load_file("Test Datasets/test_ingredients.toml", "ingredient")
-session.load_file("recipes", "Test Datasets/test_recipes.toml")
+session.load_file("Test Datasets/test_recipes.toml", "recipe")
 
 # Main program loop
 match len(sys.argv):
