@@ -112,7 +112,7 @@ class DataSet:
             file_type = str(DataType[type])
 
         except KeyError:
-            raise TypeError("Invalid data type provided to load_file.")
+            raise TypeError("Invalid data type " + type + " provided to load_file.")
 
         # TODO: Add code to handle the case where the provided file doesn't have
         # a type field
@@ -145,15 +145,15 @@ class DataSet:
 
             case "ingredient":
                 # TODO: Check whether ingredients have valid units
-                for ingredient in ingredients:
+                for ingredient in file:
                     if ingredient != "type":
-                        self.ingredients.update({ingredient:ingredients[ingredient]})
+                        self.ingredients.update({ingredient:file[ingredient]})
 
             case "recipe":
                 # TODO: Check that all ingredients in recipes are loaded into session
-                for recipe in recipes:
+                for recipe in file:
                     if recipe != "type":
-                        self.recipes.update({recipe:recipes[recipe]})
+                        self.recipes.update({recipe:file[recipe]})
 
 
     # List properties of ingredient
