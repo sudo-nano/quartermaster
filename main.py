@@ -161,6 +161,15 @@ def prompt():
             print("Invalid command. See 'help' for commands.")
             print()
 
+# Initialize session
+session = DataSet()
+
+# Load test ingredients and recipes
+#session.load_ingredients("Test Datasets/test_ingredients.toml")
+#session.load_recipes("Test Datasets/test_recipes.toml")
+session.load_file("Test Datasets/test_ingredients.toml", "ingredient")
+session.load_file("recipes", "Test Datasets/test_recipes.toml")
+
 # Main program loop
 match len(sys.argv):
     case 1:
