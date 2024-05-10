@@ -9,7 +9,7 @@ This program is in *very* early development. A stable, usable version is expecte
 ## Quick-Start 
 1. Install the `toml` Python library
 2. Clone the repository
-3. Run`python3 main.py`
+3. Run `python3 main.py`
 
 For more detailed instructions, see [Installation Instructions](https://github.com/sudo-nano/quartermaster/wiki/Installation). 
 
