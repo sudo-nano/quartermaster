@@ -10,9 +10,10 @@ unit = "gram"
 price_per_unit = 0.01
 purchase_increments = [ [500.0, 5.00], [1000.0, 10.00] ]
 
-# Diet incompatibilities will be implemented using a blacklist format. The tags 
-# specified in diet_incompat for an ingredient will be checked against the list 
-# of tags that a person cannot consume.
+# Diet incompatibilities will be implemented using a deny list format. If any of
+# the tags in an ingredient's diet_incompat are also listed on a person's diet_incompat,
+# the ingredient and any recipes containing it will be marked unsuitable for the
+# person.
 
 diet_incompat = ["beef", "meat", "animal_products"]
 
