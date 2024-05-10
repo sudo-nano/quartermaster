@@ -109,14 +109,17 @@ class DataSet:
 
         # Check that provided type is valid
         try:
-            file_type = DataType[type]
+            file_type = str(DataType[type])
 
         except KeyError:
             raise TypeError("Invalid data type provided to load_file.")
 
+        # TODO: Add code to handle the case where the provided file doesn't have
+        # a type field
+
         # Check that loaded file is of provided type
         if file["type"] != file_type:
-            raise TypeError("Provided file is a different type than specified.")
+            raise TypeError("Provided file " + file_name + " is type " + file["type"] + " instead of specified type " + type)
 
         # Do different things on import depending on type
         match file["type"]:
@@ -271,13 +274,3 @@ def calc_and_output(recipe_str, recipe_quantity):
         print()
 
     print()
-
-
-# Initialize session
-session = DataSet()
-
-# Load test ingredients and recipes
-#session.load_ingredients("Test Datasets/test_ingredients.toml")
-#session.load_recipes("Test Datasets/test_recipes.toml")
-session.load_file("ingredients", "Test Datasets/test_ingredients.toml")
-session.load_file("recipes", "Test Datasets/test_recipes.toml")
