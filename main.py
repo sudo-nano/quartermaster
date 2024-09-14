@@ -25,7 +25,7 @@ def prompt():
                 print("Too many parameters provided. Please provide only a file name.")
 
             else:
-                calc_and_output(command_words[1], float(command_words[2]))
+                calc_and_output(current_session, command_words[1], float(command_words[2]))
 
         case "exit" | "quit" | "q":
             exit()
@@ -70,7 +70,7 @@ def prompt():
             elif len(command_words) > 2:
                 print("Too many parameters provided. Please provide a type: ingredient, recipe, or person.")
 
-        # Inspect an ingredient, recipe, or person 
+        # Inspect an ingredient, recipe, or person
         case "inspect" | "i":
             if len(command_words) < 2:
                 print("Please provide an ingredient, recipe, or person to inspect.")
@@ -81,7 +81,7 @@ def prompt():
                 return
 
             elif len(command_words) == 2:
-                # Check types 
+                # Check types
                 type_matches = 0
                 for possible_type in ["ingredient", "recipe"]:
                     if (session.type_check(possible_type, command_words[1])):
@@ -89,9 +89,9 @@ def prompt():
 
                 if type_matches == 0:
                     print("No item of any type was found for that item. Check for typos.")
-    
+
                 elif type_matches == 1:
-                    # Check which type matched and execute correct command 
+                    # Check which type matched and execute correct command
                     if session.type_check("ingredient", command_words[1]):
                         session.inspect_ingredient(command_words[1])
 
@@ -125,7 +125,7 @@ def prompt():
         case "active_dataset":
             print("Not yet implemented.")
             print()
-            pass 
+            pass
 
         # Export all of specified type (ingredients, recipes, people, entire session) to file
         # TODO: Merge all save commands into this one, make it take type as argument
@@ -141,7 +141,7 @@ def prompt():
 
         case "help":
             # TODO: Add "help <command>" as a means of showing more in-depth help for
-            # a single command 
+            # a single command
 
             match len(command_words):
                 case 1:
@@ -152,7 +152,7 @@ def prompt():
                 case 2:
                     help.match_help(command_words[1])
 
-                case 3: 
+                case 3:
                     print("Too many arguments provided. See 'help' for commands.")
 
 
@@ -162,18 +162,24 @@ def prompt():
             print()
 
 # Initialize session
-session = DataSet()
+current_session = DataSet()
 
 # Load test ingredients and recipes
 #session.load_ingredients("Test Datasets/test_ingredients.toml")
 #session.load_recipes("Test Datasets/test_recipes.toml")
-session.load_file("Test Datasets/test_ingredients.toml", "ingredient")
-session.load_file("Test Datasets/test_recipes.toml", "recipe")
+current_session.load_file("Test Datasets/test_ingredients.toml", "ingredient")
+current_session.load_file("Test Datasets/test_recipes.toml", "recipe")
 
 # Main program loop
 match len(sys.argv):
     case 1:
         pass
+
+    case 2:
+        # Should debug status be part of the session class and/or specified
+        # per-session?
+        if "--debug" in sys.argv:
+            debug = True
 
     case other:
         print("Error: Runtime arguments are not supported at this time. They will be implemented in the future.")
