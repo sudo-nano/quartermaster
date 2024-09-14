@@ -1,5 +1,6 @@
 import toml
 from enum import Enum
+from math import ceil
 
 class DataType(Enum):
     multiple = "multiple"
@@ -252,7 +253,7 @@ def abbrev_unit(unit_string):
             return "L"
 
 
-# Pass recipe str and quantity int
+# Pass session, recipe str and quantity int
 # TODO: Rework this to remove the "fractional" field
 # and instead calculate at runtime whether a recipe can be
 # multiplied/divided in the specified way.
@@ -263,11 +264,13 @@ def calc_and_output(session, recipe_str, recipe_quantity):
     if session.debug == True:
         print("Debug: ingredients " + str(recipe["ingredients"]))
 
-    print("** " + str(recipe_quantity) + " quantity of " + recipe_str + " **")
+    print("[ " + str(recipe_quantity) + " quantity of " + recipe_str + " ]")
     print()
 
     if (recipe["fractional"] == False) and ((recipe_quantity % 1) != 0):
-        print("Warning: Recipe is not fractional, but specified quantity is not a whole number. Number will be rounded up.")
+        print(f"* Warning: Recipe is not fractional, but specified quantity {recipe_quantity} is not a whole number. It will be rounded up to {ceil(recipe_quantity)}.")
+        print()
+
         recipe_quantity = ceil(recipe_quantity)
 
     for ingredient, amount in recipe["ingredients"].items():
