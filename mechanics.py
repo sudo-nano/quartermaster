@@ -28,8 +28,9 @@ class DataSet:
     def __init__(self):
         self.ingredients = {}   # List of valid ingredients
         self.recipes = {}       # List of valid recipes
-        self.people = {}        # List of people 
+        self.people = {}        # List of people
         self.valid_dietary_restrictions = []    # List of valid dietary restrictions
+        self.debug = False
 
     def list_ingredients(self):
         for ingredient in self.ingredients:
@@ -52,6 +53,7 @@ class DataSet:
 
         except FileNotFoundError:
             print("Error: File " + file_name + " not found.")
+            return
 
         # Check if ingredients file is of type "ingredients"
         if ingredients["type"] != "ingredients":
@@ -74,13 +76,19 @@ class DataSet:
 
 
     def load_people(self, file_name):
-        file = toml.load(file_name)
+        try:
+            people = toml.load(file_name)
 
-        if file["type"] != "person":
+        except FileNotFoundError:
+            print(f"Error: file {file_name} not found.")
+            return
+
+        if people["type"] != "person":
             raise TypeError("Person file " + file_name + " not of type 'people', may not be correct file.")
+            return
 
         # Import valid dietary restrictions
-        self.valid_dietary_restrictions.extend(file["valid_dietary_restrictions"])
+        self.valid_dietary_restrictions.extend(people["valid_dietary_restrictions"])
 
         for person in people:
             # Prevent TOML file type specifier from being loaded into array of people
@@ -96,7 +104,7 @@ class DataSet:
             if not restrictions_valid:
                 continue
 
-            self.people.update({person:file[person]})
+            self.people.update({person:people[person]})
 
 
     # Load a file of the specified type into the DataSet
@@ -106,6 +114,7 @@ class DataSet:
 
         except FileNotFoundError:
             print("Warning: File " + file_name + " not found.")
+            return
 
         # Check that provided type is valid
         try:
@@ -160,20 +169,20 @@ class DataSet:
     def inspect_ingredient(self, ingredient):
         print("Ingredient: " + ingredient)
 
-        # Print diet incompatibilities 
+        # Print diet incompatibilities
         the_ingredient = self.ingredients[ingredient]
         print("Diet Incompatibilities: ", end="")
-        
+
         if the_ingredient["diet_incompat"] == []:
             print("None")
 
         else:
             print(the_ingredient["diet_incompat"])
 
-        # Print unit 
+        # Print unit
         print("Unit: " + str(self.ingredients[ingredient]["unit"]))
 
-        # Print price per unit 
+        # Print price per unit
         print("Price per unit: " + str(self.ingredients[ingredient]["price_per_unit"]))
 
         # Print purchase increments
@@ -199,7 +208,7 @@ class DataSet:
         match item_type:
             case "recipe":
                 if item in self.recipes:
-                    return True 
+                    return True
 
                 else:
                     return False
@@ -208,7 +217,7 @@ class DataSet:
                 if item in self.ingredients:
                     return True
 
-                else: 
+                else:
                     return False
 
             case "person":
@@ -232,13 +241,13 @@ def abbrev_unit(unit_string):
 
         case "gram":
             return "g"
-        
+
         case "kilogram":
             return "kg"
 
         case "milliliter":
             return "mL"
-        
+
         case "liter":
             return "L"
 
@@ -247,12 +256,12 @@ def abbrev_unit(unit_string):
 # TODO: Rework this to remove the "fractional" field
 # and instead calculate at runtime whether a recipe can be
 # multiplied/divided in the specified way.
-def calc_and_output(recipe_str, recipe_quantity):
+def calc_and_output(session, recipe_str, recipe_quantity):
     recipe = session.recipes[recipe_str]
 
-    # Debug stuff
-    print("Debug: ingredients " + str(recipe["ingredients"]))
-    # End debug stuff
+    # Debug option: print raw dict of ingredients
+    if session.debug == True:
+        print("Debug: ingredients " + str(recipe["ingredients"]))
 
     print("** " + str(recipe_quantity) + " quantity of " + recipe_str + " **")
     print()
