@@ -124,9 +124,6 @@ class DataSet:
         except KeyError:
             raise TypeError("Invalid data type " + type + " provided to load_file.")
 
-        # TODO: Add code to handle the case where the provided file doesn't have
-        # a type field
-
         # Check that loaded file is of provided type
         if file["type"] != file_type:
             raise TypeError("Provided file " + file_name + " is type " + file["type"] + " instead of specified type " + type)
