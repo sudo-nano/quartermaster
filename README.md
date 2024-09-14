@@ -1,19 +1,23 @@
 # quartermaster
-A program for calculating recipe ingredient quantities and costs, given parameters such as amount or time and consumption rate. 
+A program for calculating recipe ingredient quantities and costs, given parameters such as amount, time, and consumption rate.
 
-## Description 
-Quartermaster is a command line program that does logistical calculations and scaling for recipes. While primarily designed for cooking, non-food ingredients can be used to plan other things. Ingredients, recipes, and cost-per-unit is specified in TOML files. The program uses these to calculate required ingredient amounts and costs for recipes.
+## Description
+Quartermaster is a command line program that does logistical calculations and scaling for recipes.
+While primarily designed for cooking, non-food ingredients can be used to plan other things.
+Ingredients, recipes, and cost-per-unit is specified in TOML files. The program
+uses these to calculate required ingredient amounts and costs for recipes.
 
-This program is in *very* early development. A stable, usable version is expected by August 2024. 
+This program is in *very* early development. It's being developed alongside its sister project,
+the [Digitized Recipe Format](https://github.com/sudo-nano/digitized-recipe-format).
 
-## Quick-Start 
+## Quick-Start
 1. Install the `toml` Python library
 2. Clone the repository
 3. Run `python3 main.py`
 
-For more detailed instructions, see [Installation Instructions](https://github.com/sudo-nano/quartermaster/wiki/Installation). 
+For more detailed instructions, see [Installation Instructions](https://github.com/sudo-nano/quartermaster/wiki/Installation).
 
-## Implemented Features 
+## Implemented Features
 - Calculation of ingredients required for some quantity of a recipe
 - Calculation of ingredient cost for some quantity of a recipe
 
@@ -30,4 +34,3 @@ For more detailed instructions, see [Installation Instructions](https://github.c
   - Program will assume defaults if values are left unspecified
 - Save and load sessions
 - New Data Type: `group` containing a collection of people
-
