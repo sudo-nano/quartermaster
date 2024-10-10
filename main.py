@@ -9,6 +9,7 @@ import sys
 # Run the interactive prompt
 def prompt(session: DataSet):
     command = input("quartermaster > ")
+    # TODO: Improve the argument parsing, possibly using the argparse library
     command_words_upper = command.split()
     command_words = []
 
@@ -38,7 +39,11 @@ def prompt(session: DataSet):
             elif len(command_words) > 2:
                 print("Too many parameters provided. Please provide only a file name.")
             else:
-                session.load_ingredients(command_words_upper[1])
+                try:
+                    session.load_ingredients(command_words_upper[1])
+
+                except FileNotFoundError:
+                    print("File not found.")
 
         case "load_recipes" | "loadr":
             if len(command_words) < 2:
