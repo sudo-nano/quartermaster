@@ -6,7 +6,8 @@ from mechanics import *
 import help
 import sys
 
-def prompt():
+# Run the interactive prompt
+def prompt(session: DataSet):
     command = input("quartermaster > ")
     command_words_upper = command.split()
     command_words = []
@@ -34,19 +35,24 @@ def prompt():
             if len(command_words) < 2:
                 print("Please provide a file name.")
 
-            if len(command_words) > 2:
+            elif len(command_words) > 2:
                 print("Too many parameters provided. Please provide only a file name.")
-
-            load_ingredients(command_words_upper[1])
+            else:
+                session.load_ingredients(command_words_upper[1])
 
         case "load_recipes" | "loadr":
             if len(command_words) < 2:
                 print("Please provide a file name.")
 
-            if len(command_words) > 2:
+            elif len(command_words) > 2:
                 print("Too many parameters provided. Please provide only a file name.")
 
-            load_recipes(command_words_upper[1])
+            else:
+                try:
+                    session.load_recipes(command_words_upper[1])
+
+                except FileNotFoundError:
+                    print("File not found.")
 
         # List ingredients, recipes, or people
         case "list" | "l":
@@ -187,5 +193,5 @@ match len(sys.argv):
 
 running = True
 while running:
-        prompt()
+        prompt(current_session)
         print()
