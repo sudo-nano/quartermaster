@@ -5,29 +5,32 @@ from math import *
 from mechanics import *
 import help
 import sys
+import argparse
+import shlex
+
+# Initialize base argument parser
+parser_base = argparse.ArgumentParser(prog="Quartermaster")
+subparsers = parser_base.add_subparsers(dest="subcommand", help='subcommand help')
+
+# Scale subcommand takes parameters recipe and amount
+parser_scale = subparsers.add_parser("scale", help="scale help")
+parser_scale.add_argument("recipe")
+parser_scale.add_argument("amount")
 
 # Run the interactive prompt
 def prompt(session: DataSet):
     command = input("quartermaster > ")
-    # TODO: Improve the argument parsing, possibly using the argparse library
-    command_words_upper = command.split()
-    command_words = []
-
-    # Force commands to be lowercase before interpreting
-    for word in command_words_upper:
-        command_words.append(word.lower())
+    args = parser_base.parse_args(shlex.split(command))
 
     # Command parser
-    match command_words[0]:
-        case "calc" | "c":
-            if len(command_words) < 3:
-                print("Please provide a recipe and quantity.")
+    match args.subcommand:
+        case "scale" | "sc":
+            try:
+                amount = float(args.amount)
+                calc_and_output(current_session, args.recipe, amount)
 
-            elif len(command_words) > 3:
-                print("Too many parameters provided. Please provide only a file name.")
-
-            else:
-                calc_and_output(current_session, command_words[1], float(command_words[2]))
+            except ValueError:
+                print("Please provide an integer or decimal for amount.s")
 
         case "exit" | "quit" | "q":
             exit()
