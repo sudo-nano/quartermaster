@@ -9,19 +9,25 @@ import argparse
 import shlex
 
 # Initialize base argument parser
-parser_base = argparse.ArgumentParser(prog="Quartermaster")
+parser_base = argparse.ArgumentParser(prog="Quartermaster", exit_on_error=False)
+parser_base.set_defaults(exit_on_error=False)
 subparsers = parser_base.add_subparsers(dest="subcommand", help='subcommand help')
 
 # Scale subcommand takes parameters recipe and amount
-parser_scale = subparsers.add_parser("scale", help="scale help")
+parser_scale = subparsers.add_parser("scale", help="scale help", exit_on_error=False)
 parser_scale.add_argument("recipe")
 parser_scale.add_argument("amount")
 
 # Run the interactive prompt
 def prompt(session: DataSet):
     command = input("quartermaster > ")
-    args = parser_base.parse_args(shlex.split(command))
+    try:
+        args = parser_base.parse_args(shlex.split(command))
+        execute_command(session, args)
+    except argparse.ArgumentError as error:
+        print(error)
 
+def execute_command(session: DataSet, args: argparse.Namespace):
     # Command parser
     match args.subcommand:
         case "scale" | "sc":
