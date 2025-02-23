@@ -254,7 +254,7 @@ def abbrev_unit(unit_string):
 # TODO: Rework this to remove the "fractional" field
 # and instead calculate at runtime whether a recipe can be
 # multiplied/divided in the specified way.
-def calc_and_output(session, recipe_str, recipe_quantity):
+def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float):
     recipe = session.recipes[recipe_str]
 
     # Debug option: print raw dict of ingredients
