@@ -14,9 +14,16 @@ parser_base.set_defaults(exit_on_error=False)
 subparsers = parser_base.add_subparsers(dest="subcommand", help='subcommand help')
 
 # Scale subcommand takes parameters recipe and amount
-parser_scale = subparsers.add_parser("scale", help="scale help", exit_on_error=False)
+parser_scale = subparsers.add_parser("scale", aliases=["sc"], help="scale help", exit_on_error=False)
 parser_scale.add_argument("recipe")
 parser_scale.add_argument("amount")
+
+# Exit subcommand closes the program
+parser_exit = subparsers.add_parser("exit", aliases=["quit", "q"], exit_on_error=False)
+
+# Load subcommand loads a file
+parser_load = subparsers.add_parser("load", aliases=["l"], help="load help", exit_on_error=False)
+parser_load.add_argument("file")
 
 # Run the interactive prompt
 def prompt(session: DataSet):
@@ -28,7 +35,6 @@ def prompt(session: DataSet):
         print(error)
 
 def execute_command(session: DataSet, args: argparse.Namespace):
-    # Command parser
     match args.subcommand:
         case "scale" | "sc":
             try:
