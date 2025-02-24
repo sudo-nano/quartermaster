@@ -114,7 +114,7 @@ class DataSet:
             file = toml.load(file_name)
 
         except FileNotFoundError:
-            print("Warning: File " + file_name + " not found.")
+            print("Error: File " + file_name + " not found.")
             return
 
         # Check that provided type is valid
