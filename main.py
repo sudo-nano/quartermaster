@@ -22,7 +22,8 @@ parser_scale.add_argument("amount")
 parser_exit = subparsers.add_parser("exit", aliases=["quit", "q"], exit_on_error=False)
 
 # Load subcommand loads a file
-parser_load = subparsers.add_parser("load", aliases=["l"], help="load help", exit_on_error=False)
+parser_load = subparsers.add_parser("load", aliases=["lo"], help="load help", exit_on_error=False)
+parser_load.add_argument("type")
 parser_load.add_argument("file")
 
 # Run the interactive prompt
@@ -47,35 +48,14 @@ def execute_command(session: DataSet, args: argparse.Namespace):
         case "exit" | "quit" | "q":
             exit()
 
-        case "load_ingredients" | "loadi":
-            if len(command_words) < 2:
-                print("Please provide a file name.")
-
-            elif len(command_words) > 2:
-                print("Too many parameters provided. Please provide only a file name.")
-            else:
-                try:
-                    session.load_ingredients(command_words_upper[1])
-
-                except FileNotFoundError:
-                    print("File not found.")
-
-        case "load_recipes" | "loadr":
-            if len(command_words) < 2:
-                print("Please provide a file name.")
-
-            elif len(command_words) > 2:
-                print("Too many parameters provided. Please provide only a file name.")
-
-            else:
-                try:
-                    session.load_recipes(command_words_upper[1])
-
-                except FileNotFoundError:
-                    print("File not found.")
+        case "load" | "lo":
+            try:
+                session.load_file(args.file, args.type)
+            except TypeError:
+                print(f"Invalid file type. Please choose from {[e.value for e in DataType]}")
 
         # List ingredients, recipes, or people
-        case "list" | "l":
+        case "list" | "ls":
             if len(command_words) < 2:
                 print("Please provide a type: ingredient, recipe, or person.")
 
