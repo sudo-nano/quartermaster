@@ -48,6 +48,42 @@ class DataSet:
             print("\t" + person)
             print()
 
+    def list_valid_restrictions(self):
+        for item in self.valid_dietary_restrictions:
+            print("\t" + item)
+            print()
+
+    def list_groups(self):
+        for item in self.groups:
+            print("\t" + item)
+            print()
+
+    def list(self, type):
+        valid_types = ["ingredient", "recipe", "person", "group", "valid_restriction", "active_restriction"]
+
+        if type not in valid_types:
+            raise TypeError("Invalid data type " + type + " provided to list.")
+
+        match type:
+            case "ingredient"
+                self.list_ingredients()
+
+            case "recipe":
+                self.list_recipes()
+
+            case "person":
+                self.list_people()
+
+            case "group":
+                self.list_groups()
+
+            case "valid_restriction":
+                self.list_valid_restrictions()
+
+            case "active_restrictions":
+                print("Active restriction tracking is not yet implemented.")
+
+
 
     # Load a file of the specified type into the DataSet
     def load_file(self, file_name, type):
@@ -138,11 +174,6 @@ class DataSet:
 
         for item in self.recipes[recipe]["ingredients"]:
             print("\t" + item + ": " + str(self.recipes[recipe]["ingredients"][item]))
-
-
-    def list_dietary_restrictions(self):
-        for item in self.valid_dietary_restrictions:
-            print(item)
 
     # Check whether an item of the specified name and type exist in the current dataset
     def type_check(self, item_type, item):

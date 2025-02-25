@@ -1,6 +1,7 @@
 # Quartermaster
 # A supply planning program by sudo-nano
 
+from ast import alias
 from math import *
 from mechanics import *
 import help
@@ -25,6 +26,10 @@ parser_exit = subparsers.add_parser("exit", aliases=["quit", "q"], exit_on_error
 parser_load = subparsers.add_parser("load", aliases=["lo"], help="load help", exit_on_error=False)
 parser_load.add_argument("type")
 parser_load.add_argument("file")
+
+# List subcommand lists all items of the specified type
+parser_list = subparsers.add_parser("list", aliases=["ls"], help="list help")
+parser_list.add_argument("type")
 
 # Run the interactive prompt
 def prompt(session: DataSet):
@@ -56,25 +61,11 @@ def execute_command(session: DataSet, args: argparse.Namespace):
 
         # List ingredients, recipes, or people
         case "list" | "ls":
-            if len(command_words) < 2:
-                print("Please provide a type: ingredient, recipe, or person.")
+            try:
+                session.list(args.type)
 
-            elif len(command_words) == 2:
-                match command_words[1]:
-                    # List ingredients loaded into the current session
-                    case "ingredient" | "ingredients" | "i":
-                        session.list_ingredients()
-
-                    # List recipes loaded into the current session
-                    case "recipe" | "recipes" | "r":
-                        session.list_recipes()
-
-                    # List people loaded into the current session (not implemented yet)
-                    case "person" | "people" | "persons" | "p":
-                        print("People are not yet implemented. Please check back later.")
-
-            elif len(command_words) > 2:
-                print("Too many parameters provided. Please provide a type: ingredient, recipe, or person.")
+            except TypeError:
+                print(f"Invalid data type. Please choose from ingredient, recipe, person, group, valid_restriction, active_restriction")
 
         # Inspect an ingredient, recipe, or person
         case "inspect" | "i":
