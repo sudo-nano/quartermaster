@@ -130,12 +130,6 @@ def execute_command(session: DataSet, args: argparse.Namespace):
             print("Not yet implemented.")
             print()
 
-        # Load all of specified type (ingredients, recipes, people, session) from file
-        # TODO: Merge all load commands into this one, make it take type as an argument
-        case "load":
-            print("Not yet implemented.")
-            print()
-
         case "help":
             # TODO: Add "help <command>" as a means of showing more in-depth help for
             # a single command
@@ -153,7 +147,6 @@ def execute_command(session: DataSet, args: argparse.Namespace):
                     print("Too many arguments provided. See 'help' for commands.")
 
 
-
         case other:
             print("Invalid command. See 'help' for commands.")
             print()
@@ -162,8 +155,6 @@ def execute_command(session: DataSet, args: argparse.Namespace):
 current_session = DataSet()
 
 # Load test ingredients and recipes
-#session.load_ingredients("Test Datasets/test_ingredients.toml")
-#session.load_recipes("Test Datasets/test_recipes.toml")
 current_session.load_file("Test Datasets/test_ingredients.toml", "ingredient")
 current_session.load_file("Test Datasets/test_recipes.toml", "recipe")
 
@@ -173,10 +164,8 @@ match len(sys.argv):
         pass
 
     case 2:
-        # Should debug status be part of the session class and/or specified
-        # per-session?
         if "--debug" in sys.argv:
-            debug = True
+            current_session.debug = True
 
     case other:
         print("Error: Runtime arguments are not supported at this time. They will be implemented in the future.")
