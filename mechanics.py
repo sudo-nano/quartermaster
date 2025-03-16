@@ -225,9 +225,6 @@ def abbrev_unit(unit_string):
 
 
 # Pass session, recipe str and quantity int
-# TODO: Rework this to remove the "fractional" field
-# and instead calculate at runtime whether a recipe can be
-# multiplied/divided in the specified way.
 def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float):
     recipe = session.recipes[recipe_str]
 
@@ -238,6 +235,9 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float):
     print("[ " + str(recipe_quantity) + " quantity of " + recipe_str + " ]")
     print()
 
+    # Check whether user is attempting to scale a non-fractional recipe by
+    # a non-integer amount
+    # TODO: Prompt user for whether they want to round or not
     if (recipe["fractional"] == False) and ((recipe_quantity % 1) != 0):
         print(f"* Warning: Recipe is not fractional, but specified quantity {recipe_quantity} is not a whole number. It will be rounded up to {ceil(recipe_quantity)}.")
         print()

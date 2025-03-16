@@ -31,6 +31,11 @@ parser_load.add_argument("file")
 parser_list = subparsers.add_parser("list", aliases=["ls"], help="list help")
 parser_list.add_argument("type")
 
+# Inspect subcommand allows you to inspect any item in the current data set
+parser_inspect = subparsers.add_parser("inspect", aliases=["i"], help="inspect help")
+parser_inspect.add_argument("type")
+parser_inspect.add_argument("item")
+
 # Run the interactive prompt
 def prompt(session: DataSet):
     command = input("quartermaster > ")
@@ -69,53 +74,22 @@ def execute_command(session: DataSet, args: argparse.Namespace):
 
         # Inspect an ingredient, recipe, or person
         case "inspect" | "i":
-            if len(command_words) < 2:
-                print("Please provide an ingredient, recipe, or person to inspect.")
-                return
+            if session.type_check(args.type, args.item):
+                match args.type:
+                    case "ingredient" | "i":
+                        session.inspect_ingredient(args.item)
+                        return
 
-            elif len(command_words) > 3:
-                print("Too many parameters provided. Please provide an item to inspect, optionally preceded by a type specifier.")
-                return
+                    case "recipe" | "r":
+                        session.inspect_recipe(args.item)
+                        return
 
-            elif len(command_words) == 2:
-                # Check types
-                type_matches = 0
-                for possible_type in ["ingredient", "recipe"]:
-                    if (session.type_check(possible_type, command_words[1])):
-                        type_matches += 1
+                    case other:
+                        print("command parser error: 'inspect' reached end of control flow")
+                        return
 
-                if type_matches == 0:
-                    print("No item of any type was found for that item. Check for typos.")
-
-                elif type_matches == 1:
-                    # Check which type matched and execute correct command
-                    if session.type_check("ingredient", command_words[1]):
-                        session.inspect_ingredient(command_words[1])
-
-                    elif session.type_check("recipe", command_words[1]):
-                        session.inspect_recipe(command_words[1])
-
-                else:
-                    print("Multiple type matches for item. Please specify a type, like 'inspect <type> <item>'. ")
-
-
-            elif len(command_words) == 3:
-                if session.type_check(command_words[1], command_words[2]):
-                    match command_words[1]:
-                        case "ingredient" | "i":
-                            session.inspect_ingredient(command_words[2])
-                            return
-
-                        case "recipe" | "r":
-                            session.inspect_recipe(command_words[2])
-                            return
-
-                        case other:
-                            print("command parser error: 'inspect' reached end of control flow")
-                            return
-
-                else:
-                    print("No item with name " + command_words[2] + " and type " + command_words[1] + "exists.")
+            else:
+                print("No item with name " + args.item + " of type " + args.type + "exists.")
 
 
         # List which dataset is active (not yet implemented)
