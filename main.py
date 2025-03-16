@@ -104,22 +104,6 @@ def execute_command(session: DataSet, args: argparse.Namespace):
             print("Not yet implemented.")
             print()
 
-        case "help":
-            # TODO: Add "help <command>" as a means of showing more in-depth help for
-            # a single command
-
-            match len(command_words):
-                case 1:
-                    help.print_help_db()
-
-                # If one argument is provided, attempt to match it with the help page for the
-                # corresponding command
-                case 2:
-                    help.match_help(command_words[1])
-
-                case 3:
-                    print("Too many arguments provided. See 'help' for commands.")
-
 
         case other:
             print("Invalid command. See 'help' for commands.")

@@ -36,7 +36,7 @@ class Temperature:
                 self.intermediate_celsius = (temp * 1.8) - 273.15
 
             case other:
-                raise TypeError(f"Cannot convert from invalid temperature unit {unit_from}. See TempUnit enum for valid units.")
+                raise TypeError(f"Cannot convert from invalid temperature unit {unit}. See TempUnit enum for valid units.")
 
     def convert_to(self, unit_to):
         match unit_to:

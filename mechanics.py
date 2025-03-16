@@ -65,7 +65,7 @@ class DataSet:
             raise TypeError("Invalid data type " + type + " provided to list.")
 
         match type:
-            case "ingredient"
+            case "ingredient":
                 self.list_ingredients()
 
             case "recipe":
