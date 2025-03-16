@@ -27,9 +27,10 @@ class Person:
 
 class DataSet:
     def __init__(self):
-        self.ingredients = {}   # List of valid ingredients
-        self.recipes = {}       # List of valid recipes
-        self.people = {}        # List of people
+        self.ingredients = {}   # Dict of valid ingredients
+        self.recipes = {}       # Dict of valid recipes
+        self.people = {}        # Dict of people
+        self.groups = {}        # Dict of groups
         self.valid_dietary_restrictions = []    # List of valid dietary restrictions
         self.debug = False
 
@@ -47,82 +48,56 @@ class DataSet:
             print("\t" + person)
             print()
 
-    # Load ingredients from file into DataSet
-    def load_ingredients(self, file_name):
-        try:
-            ingredients = toml.load(file_name)
+    def list_valid_restrictions(self):
+        for item in self.valid_dietary_restrictions:
+            print("\t" + item)
+            print()
 
-        except FileNotFoundError:
-            print("Error: File " + file_name + " not found.")
-            return
+    def list_groups(self):
+        for item in self.groups:
+            print("\t" + item)
+            print()
 
-        # Check if ingredients file is of type "ingredients"
-        if ingredients["type"] != "ingredients":
-            raise TypeError("Ingredients file " + file_name + " not of type 'ingredients', may not be correct file.")
+    def list(self, type):
+        valid_types = ["ingredient", "recipe", "person", "group", "valid_restriction", "active_restriction"]
 
-        for ingredient in ingredients:
-            if ingredient != "type":
-                self.ingredients.update({ingredient:ingredients[ingredient]})
+        if type not in valid_types:
+            raise TypeError("Invalid data type " + type + " provided to list.")
 
-    # Load recipes from file into DataSet
-    def load_recipes(self, file_name):
-        recipes = toml.load(file_name)
+        match type:
+            case "ingredient":
+                self.list_ingredients()
 
-        if recipes["type"] != "recipe":
-            raise TypeError("Recipes file " + file_name + " not of type 'recipes', may not be correct file.")
+            case "recipe":
+                self.list_recipes()
 
-        for recipe in recipes:
-            if recipe != "type":
-                self.recipes.update({recipe:recipes[recipe]})
+            case "person":
+                self.list_people()
 
+            case "group":
+                self.list_groups()
 
-    def load_people(self, file_name):
-        try:
-            people = toml.load(file_name)
+            case "valid_restriction":
+                self.list_valid_restrictions()
 
-        except FileNotFoundError:
-            print(f"Error: file {file_name} not found.")
-            return
+            case "active_restrictions":
+                print("Active restriction tracking is not yet implemented.")
 
-        if people["type"] != "person":
-            raise TypeError("Person file " + file_name + " not of type 'people', may not be correct file.")
-            return
-
-        # Import valid dietary restrictions
-        self.valid_dietary_restrictions.extend(people["valid_dietary_restrictions"])
-
-        for person in people:
-            # Prevent TOML file type specifier from being loaded into array of people
-            if person == "type":
-                continue
-
-            # Check that dietary restrictions are valid
-            restrictions_valid = True
-            for item in person.dietary_restrictions:
-                if item not in self.valid_dietary_restrictions:
-                    restrictions_valid = False
-
-            if not restrictions_valid:
-                continue
-
-            self.people.update({person:people[person]})
 
 
     # Load a file of the specified type into the DataSet
     def load_file(self, file_name, type):
         try:
             file = toml.load(file_name)
+            file_type = str(DataType[type]) # Check that provided type is valid
 
         except FileNotFoundError:
-            print("Warning: File " + file_name + " not found.")
+            print("Error: File " + file_name + " not found.")
             return
-
-        # Check that provided type is valid
-        try:
-            file_type = str(DataType[type])
 
         except KeyError:
             raise TypeError("Invalid data type " + type + " provided to load_file.")
+
 
         # Check that loaded file is of provided type
         if file["type"] != file_type:
@@ -144,6 +119,8 @@ class DataSet:
                         if item not in self.valid_dietary_restrictions:
                             restrictions_valid = False
 
+                    # TODO: Add configurable option for behavior when importing a person
+                    # with a new type of dietary restriction
                     if restrictions_valid:
                         self.people.update({person:file[person]})
 
@@ -158,6 +135,8 @@ class DataSet:
 
             case "recipe":
                 # TODO: Check that all ingredients in recipes are loaded into session
+                # TODO: Compute whether each recipe can be fractionally scaled, and
+                # store it as a property
                 for recipe in file:
                     if recipe != "type":
                         self.recipes.update({recipe:file[recipe]})
@@ -195,11 +174,6 @@ class DataSet:
 
         for item in self.recipes[recipe]["ingredients"]:
             print("\t" + item + ": " + str(self.recipes[recipe]["ingredients"][item]))
-
-
-    def list_dietary_restrictions(self):
-        for item in self.dietary_restrictions:
-            print(item)
 
     # Check whether an item of the specified name and type exist in the current dataset
     def type_check(self, item_type, item):
@@ -251,10 +225,7 @@ def abbrev_unit(unit_string):
 
 
 # Pass session, recipe str and quantity int
-# TODO: Rework this to remove the "fractional" field
-# and instead calculate at runtime whether a recipe can be
-# multiplied/divided in the specified way.
-def calc_and_output(session, recipe_str, recipe_quantity):
+def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float):
     recipe = session.recipes[recipe_str]
 
     # Debug option: print raw dict of ingredients
@@ -264,6 +235,9 @@ def calc_and_output(session, recipe_str, recipe_quantity):
     print("[ " + str(recipe_quantity) + " quantity of " + recipe_str + " ]")
     print()
 
+    # Check whether user is attempting to scale a non-fractional recipe by
+    # a non-integer amount
+    # TODO: Prompt user for whether they want to round or not
     if (recipe["fractional"] == False) and ((recipe_quantity % 1) != 0):
         print(f"* Warning: Recipe is not fractional, but specified quantity {recipe_quantity} is not a whole number. It will be rounded up to {ceil(recipe_quantity)}.")
         print()

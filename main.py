@@ -1,135 +1,95 @@
 # Quartermaster
 # A supply planning program by sudo-nano
 
+from ast import alias
 from math import *
 from mechanics import *
 import help
 import sys
+import argparse
+import shlex
+
+# Initialize base argument parser
+parser_base = argparse.ArgumentParser(prog="Quartermaster", exit_on_error=False)
+parser_base.set_defaults(exit_on_error=False)
+subparsers = parser_base.add_subparsers(dest="subcommand", help='subcommand help')
+
+# Scale subcommand takes parameters recipe and amount
+parser_scale = subparsers.add_parser("scale", aliases=["sc"], help="scale help", exit_on_error=False)
+parser_scale.add_argument("recipe")
+parser_scale.add_argument("amount")
+
+# Exit subcommand closes the program
+parser_exit = subparsers.add_parser("exit", aliases=["quit", "q"], exit_on_error=False)
+
+# Load subcommand loads a file
+parser_load = subparsers.add_parser("load", aliases=["lo"], help="load help", exit_on_error=False)
+parser_load.add_argument("type")
+parser_load.add_argument("file")
+
+# List subcommand lists all items of the specified type
+parser_list = subparsers.add_parser("list", aliases=["ls"], help="list help", exit_on_error=False)
+parser_list.add_argument("type")
+
+# Inspect subcommand allows you to inspect any item in the current data set
+parser_inspect = subparsers.add_parser("inspect", aliases=["i"], help="inspect help", exit_on_error=False)
+parser_inspect.add_argument("type")
+parser_inspect.add_argument("item")
 
 # Run the interactive prompt
 def prompt(session: DataSet):
     command = input("quartermaster > ")
-    # TODO: Improve the argument parsing, possibly using the argparse library
-    command_words_upper = command.split()
-    command_words = []
+    try:
+        args = parser_base.parse_args(shlex.split(command))
+        execute_command(session, args)
+    except argparse.ArgumentError as error:
+        print(error)
 
-    # Force commands to be lowercase before interpreting
-    for word in command_words_upper:
-        command_words.append(word.lower())
+def execute_command(session: DataSet, args: argparse.Namespace):
+    match args.subcommand:
+        case "scale" | "sc":
+            try:
+                amount = float(args.amount)
+                calc_and_output(current_session, args.recipe, amount)
 
-    # Command parser
-    match command_words[0]:
-        case "calc" | "c":
-            if len(command_words) < 3:
-                print("Please provide a recipe and quantity.")
-
-            elif len(command_words) > 3:
-                print("Too many parameters provided. Please provide only a file name.")
-
-            else:
-                calc_and_output(current_session, command_words[1], float(command_words[2]))
+            except ValueError:
+                print("Please provide an integer or decimal for amount.s")
 
         case "exit" | "quit" | "q":
             exit()
 
-        case "load_ingredients" | "loadi":
-            if len(command_words) < 2:
-                print("Please provide a file name.")
-
-            elif len(command_words) > 2:
-                print("Too many parameters provided. Please provide only a file name.")
-            else:
-                try:
-                    session.load_ingredients(command_words_upper[1])
-
-                except FileNotFoundError:
-                    print("File not found.")
-
-        case "load_recipes" | "loadr":
-            if len(command_words) < 2:
-                print("Please provide a file name.")
-
-            elif len(command_words) > 2:
-                print("Too many parameters provided. Please provide only a file name.")
-
-            else:
-                try:
-                    session.load_recipes(command_words_upper[1])
-
-                except FileNotFoundError:
-                    print("File not found.")
+        case "load" | "lo":
+            try:
+                session.load_file(args.file, args.type)
+            except TypeError:
+                print(f"Invalid file type. Please choose from {[e.value for e in DataType]}")
 
         # List ingredients, recipes, or people
-        case "list" | "l":
-            if len(command_words) < 2:
-                print("Please provide a type: ingredient, recipe, or person.")
+        case "list" | "ls":
+            try:
+                session.list(args.type)
 
-            elif len(command_words) == 2:
-                match command_words[1]:
-                    # List ingredients loaded into the current session
-                    case "ingredient" | "ingredients" | "i":
-                        session.list_ingredients()
-
-                    # List recipes loaded into the current session
-                    case "recipe" | "recipes" | "r":
-                        session.list_recipes()
-
-                    # List people loaded into the current session (not implemented yet)
-                    case "person" | "people" | "persons" | "p":
-                        print("People are not yet implemented. Please check back later.")
-
-            elif len(command_words) > 2:
-                print("Too many parameters provided. Please provide a type: ingredient, recipe, or person.")
+            except TypeError:
+                print(f"Invalid data type. Please choose from ingredient, recipe, person, group, valid_restriction, active_restriction")
 
         # Inspect an ingredient, recipe, or person
         case "inspect" | "i":
-            if len(command_words) < 2:
-                print("Please provide an ingredient, recipe, or person to inspect.")
-                return
+            if session.type_check(args.type, args.item):
+                match args.type:
+                    case "ingredient" | "i":
+                        session.inspect_ingredient(args.item)
+                        return
 
-            elif len(command_words) > 3:
-                print("Too many parameters provided. Please provide an item to inspect, optionally preceded by a type specifier.")
-                return
+                    case "recipe" | "r":
+                        session.inspect_recipe(args.item)
+                        return
 
-            elif len(command_words) == 2:
-                # Check types
-                type_matches = 0
-                for possible_type in ["ingredient", "recipe"]:
-                    if (session.type_check(possible_type, command_words[1])):
-                        type_matches += 1
+                    case other:
+                        print("command parser error: 'inspect' reached end of control flow")
+                        return
 
-                if type_matches == 0:
-                    print("No item of any type was found for that item. Check for typos.")
-
-                elif type_matches == 1:
-                    # Check which type matched and execute correct command
-                    if session.type_check("ingredient", command_words[1]):
-                        session.inspect_ingredient(command_words[1])
-
-                    elif session.type_check("recipe", command_words[1]):
-                        session.inspect_recipe(command_words[1])
-
-                else:
-                    print("Multiple type matches for item. Please specify a type, like 'inspect <type> <item>'. ")
-
-
-            elif len(command_words) == 3:
-                if session.type_check(command_words[1], command_words[2]):
-                    match command_words[1]:
-                        case "ingredient" | "i":
-                            session.inspect_ingredient(command_words[2])
-                            return
-
-                        case "recipe" | "r":
-                            session.inspect_recipe(command_words[2])
-                            return
-
-                        case other:
-                            print("command parser error: 'inspect' reached end of control flow")
-                            return
-
-                else:
-                    print("No item with name " + command_words[2] + " and type " + command_words[1] + "exists.")
+            else:
+                print("No item with name " + args.item + " of type " + args.type + "exists.")
 
 
         # List which dataset is active (not yet implemented)
@@ -144,29 +104,6 @@ def prompt(session: DataSet):
             print("Not yet implemented.")
             print()
 
-        # Load all of specified type (ingredients, recipes, people, session) from file
-        # TODO: Merge all load commands into this one, make it take type as an argument
-        case "load":
-            print("Not yet implemented.")
-            print()
-
-        case "help":
-            # TODO: Add "help <command>" as a means of showing more in-depth help for
-            # a single command
-
-            match len(command_words):
-                case 1:
-                    help.print_help_db()
-
-                # If one argument is provided, attempt to match it with the help page for the
-                # corresponding command
-                case 2:
-                    help.match_help(command_words[1])
-
-                case 3:
-                    print("Too many arguments provided. See 'help' for commands.")
-
-
 
         case other:
             print("Invalid command. See 'help' for commands.")
@@ -176,8 +113,6 @@ def prompt(session: DataSet):
 current_session = DataSet()
 
 # Load test ingredients and recipes
-#session.load_ingredients("Test Datasets/test_ingredients.toml")
-#session.load_recipes("Test Datasets/test_recipes.toml")
 current_session.load_file("Test Datasets/test_ingredients.toml", "ingredient")
 current_session.load_file("Test Datasets/test_recipes.toml", "recipe")
 
@@ -187,10 +122,8 @@ match len(sys.argv):
         pass
 
     case 2:
-        # Should debug status be part of the session class and/or specified
-        # per-session?
         if "--debug" in sys.argv:
-            debug = True
+            current_session.debug = True
 
     case other:
         print("Error: Runtime arguments are not supported at this time. They will be implemented in the future.")

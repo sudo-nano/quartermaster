@@ -1,0 +1,13 @@
+type = "recipe"
+
+# Joshua Weissman Milk Bread
+# https://www.joshuaweissman.com/post/greatest-dinner-rolls
+[weissman_milk_bread]
+ingredients.flour_bread = 340.0 # 340g bread flour (320 for dough, 20 for tangzhong)
+ingredients.water = 27.0        # 27g water
+ingredients.milk_whole = 180.0  # 180g whole milk (120 for dough, 60 for tangzhong)
+ingredients.yeast = 9.0         # 9g yeast
+ingredients.salt = 3.0          # 3g salt
+ingredients.butter = 98.0       # 98g butter
+ingredients.egg = 1             # 1 egg
+ingredients.garlic_clove = 2    # 2 cloves garlic
