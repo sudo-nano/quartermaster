@@ -89,17 +89,15 @@ class DataSet:
     def load_file(self, file_name, type):
         try:
             file = toml.load(file_name)
+            file_type = str(DataType[type]) # Check that provided type is valid
 
         except FileNotFoundError:
             print("Error: File " + file_name + " not found.")
             return
 
-        # Check that provided type is valid
-        try:
-            file_type = str(DataType[type])
-
         except KeyError:
             raise TypeError("Invalid data type " + type + " provided to load_file.")
+
 
         # Check that loaded file is of provided type
         if file["type"] != file_type:
@@ -137,6 +135,8 @@ class DataSet:
 
             case "recipe":
                 # TODO: Check that all ingredients in recipes are loaded into session
+                # TODO: Compute whether each recipe can be fractionally scaled, and
+                # store it as a property
                 for recipe in file:
                     if recipe != "type":
                         self.recipes.update({recipe:file[recipe]})
