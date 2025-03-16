@@ -28,11 +28,11 @@ parser_load.add_argument("type")
 parser_load.add_argument("file")
 
 # List subcommand lists all items of the specified type
-parser_list = subparsers.add_parser("list", aliases=["ls"], help="list help")
+parser_list = subparsers.add_parser("list", aliases=["ls"], help="list help", exit_on_error=False)
 parser_list.add_argument("type")
 
 # Inspect subcommand allows you to inspect any item in the current data set
-parser_inspect = subparsers.add_parser("inspect", aliases=["i"], help="inspect help")
+parser_inspect = subparsers.add_parser("inspect", aliases=["i"], help="inspect help", exit_on_error=False)
 parser_inspect.add_argument("type")
 parser_inspect.add_argument("item")
 
