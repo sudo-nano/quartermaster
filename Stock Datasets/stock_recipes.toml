@@ -11,3 +11,18 @@ ingredients.salt = 3.0          # 3g salt
 ingredients.butter = 98.0       # 98g butter
 ingredients.egg = 1             # 1 egg
 ingredients.garlic_clove = 2    # 2 cloves garlic
+
+
+# French Toast Casserole by Sally's Baking Addiction
+# https://sallysbakingaddiction.com/baked-cream-cheese-french-toast-casserole/#tasty-recipes-70955
+[french_toast_casserole]
+ingredients.bread = 340.0 			# 340g bread (french bread, sourdough, or challah)
+ingredients.cream_cheese = 226.0 	# 226g brick cream cheese
+ingredients.sugar_confectioners = 15.0 	# 15g confectioner's sugar
+ingredients.vanilla_extract = 15.0 	# 15mL/3tsp vanilla extract
+ingredients.egg = 8 				# 8 eggs
+ingredients.milk_whole = 540		# 540mL whole milk
+ingredients.cinnamon = 1.25			# 1.25 teaspoon ground cinnamon
+ingredients.sugar_brown = 212.0 	# 133g brown sugar
+ingredients.flour_all_purpose = 41.0 	# 41.0g all purpose flour
+ingredients.butter_unsalted = 85.0 	# 85.0g unsalted butter 
