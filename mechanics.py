@@ -1,6 +1,6 @@
 import toml
 from enum import Enum
-from math import ceil
+from math import ceil, floor
 
 class DataType(Enum):
     multiple = "multiple"
@@ -235,25 +235,63 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float):
     print("[ " + str(recipe_quantity) + " quantity of " + recipe_str + " ]")
     print()
 
-    # Check whether user is attempting to scale a non-fractional recipe by
+    # Check whether user is attempting to scale a non-divisible recipe by
     # a non-integer amount
-    # TODO: Prompt user for whether they want to round or not
-    if (recipe["fractional"] == False) and ((recipe_quantity % 1) != 0):
-        print(f"* Warning: Recipe is not fractional, but specified quantity {recipe_quantity} is not a whole number. It will be rounded up to {ceil(recipe_quantity)}.")
-        print()
+    divisible = True
+    try:
+        if recipe["fractional"] == False and (recipe_quantity % 1) != 0:
+            print(f"* Warning: Recipe has ingredients that are not divisible, but quantity {recipe_quantity} is not a whole number. Should it be rounded?")
 
-        recipe_quantity = ceil(recipe_quantity)
+            selection = input("([C]losest/[u]p/[d]own/[n]o) ")
 
+            while True:
+                match selection.lower():
+                    case "c" | "closest" | "":
+                        recipe_quantity = round(recipe_quantity)
+                        break
+
+                    case "u" | "up":
+                        recipe_quantity = ceil(recipe_quantity)
+                        break
+
+                    case "d" | "down":
+                        recipe_quantity = floor(recipe_quantity)
+                        break
+
+                    case "n" | "no":
+                        break
+
+                    case other:
+                        print("Please select from closest/up/down/no.")
+
+                selection = input("([C]losest/[u]p/[d]own/[n]o) ")
+
+            print()
+
+    except KeyError:
+        divisible = is_divisible(session, recipe_str)
+
+    print(f"[ Scaled recipe by {recipe_quantity} ]")
     for ingredient, amount in recipe["ingredients"].items():
+
         # Fetch ingredient dict from ingredients file
-        ing_dict = session.ingredients[ingredient]
+        ingredient_dict = session.ingredients[ingredient]
 
         required_qty = amount * recipe_quantity
-        unit = abbrev_unit(ing_dict["unit"])
-        price_of_rq = required_qty * ing_dict["price_per_unit"]
+        unit = abbrev_unit(ingredient_dict["unit"])
+        price_of_rq = required_qty * ingredient_dict["price_per_unit"]
 
         print("Required quantity of " + ingredient + ": " + str(required_qty) + unit)
         print("Estimated price of required quantity: " + str(price_of_rq))
         print()
 
     print()
+
+def is_divisible(session: DataSet, recipe_str: str):
+    recipe = session.recipes[recipe_str]
+
+    for ingredient in recipe.ingredients:
+        if session.ingredients[ingredient]["unit"] == "discrete":
+            return False
+
+    return True
