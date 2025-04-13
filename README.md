@@ -20,17 +20,31 @@ For more detailed instructions, see [Installation Instructions](https://github.c
 ## Implemented Features
 - Calculation of ingredients required for some quantity of a recipe
 - Calculation of ingredient cost for some quantity of a recipe
+- Load more than one ingredient or recipe file
 
 ## Planned Features
-- Manual specification of ingredient and recipe TOML files
-- Load more than one ingredient or recipe file
+- Automatic conversion between imperial and units
+- Conversion between mass and volume units!
 - Load files with data for people
   - Dietary restrictions by type
   - Dietary restrictions by specific ingredients
   - Ability to specify non-default rate of consumption
-- Ability to specify duration of time when provided with rate of consumption
-   - User specifies days and meals per day, person data provides amount consumed compared to one standard recipe/portion
-- Ability to provide defaults in TOML files
-  - Program will assume defaults if values are left unspecified
+- Create meal plans and check them against people's dietary restrictions
+- Calculation of total consumption over a given period of time
 - Save and load sessions
 - New Data Type: `group` containing a collection of people
+
+## Help Needed
+These are the things we need help with. (No generative AI contributions please.)
+### Data Gathering
+- Ingredient data
+  - Common ingredients
+  - Ingredient prices
+  - Ingredient densities
+
+- Recipe gathering
+  - Diverse set of real recipes for default data set and thorough testing of the program
+
+### Implementing Planned Features
+If you want to help but aren't sure what to work on, check the issue tracker and pick up
+one of the issues marked "enhancement" or "feature request."
