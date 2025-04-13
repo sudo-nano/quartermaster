@@ -37,9 +37,7 @@ class DataSet:
 
 
     def list(self, type):
-        valid_types = ["ingredient", "recipe", "person", "group", "valid_restriction", "active_restriction"]
-
-        if type not in valid_types:
+        if type not in DataType:
             raise TypeError("Invalid data type " + type + " provided to list.")
 
         match type:
