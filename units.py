@@ -59,6 +59,8 @@ class Temperature:
 
 # This is so evil
 # https://en.wikipedia.org/wiki/Comparison_of_the_imperial_and_US_customary_measurement_systems
+# Volume units for imperial and US customary are different. Additionally, US
+# customary differentiates between liquid and dry measure, but only for some units.
 class VolumeUnit(Enum):
     milliliters = 0
     liters = 1
@@ -75,3 +77,63 @@ class VolumeUnit(Enum):
     # between liquid and dry measure, even though pint and quart do
     gallon_imperial = 10
     gallon_customary = 11
+
+class Volume:
+    def __init__(self, volume: float, unit: VolumeUnit):
+        self.set_volume(volume, unit)
+
+    def set_volume(self, volume: float, unit: VolumeUnit):
+        # Type check inputs
+        if type(volume) not in [int, float]:
+            raise TypeError(f"Volume provided is invalid type {type(volume)}. Please provide an int or float.")
+
+        if isnan(volume):
+            raise ValueError("Volume provided is NaN")
+
+        self.volume_mL = volume
+        self.unit = unit
+
+    def convert_to(self, unit: VolumeUnit):
+        match unit:
+            case VolumeUnit.milliliters:
+                return self.volume_mL
+
+            case VolumeUnit.liters:
+                return self.volume_mL / 1000
+
+            case VolumeUnit.fl_oz_imperial:
+                return self.volume_mL / 28.4130625
+
+            case VolumeUnit.fl_oz_customary:
+                return self.volume_mL / 29.5735295625
+
+            case VolumeUnit.pint_imperial:
+                return self.volume_mL / 568.26125
+
+            case VolumeUnit.pint_customary_liquid:
+                return self.volume_mL / 473.176473
+
+            case VolumeUnit.pint_customary_dry:
+                return self.volume_mL / 550.6104713575
+
+            case VolumeUnit.quart_imperial:
+                return self.volume_mL / 1136.5225
+
+            case VolumeUnit.quart_customary_liquid:
+                return self.volume_mL / 946.352946
+
+            case VolumeUnit.quart_customary_dry:
+                return self.volume_mL / 1101.220942715
+
+            case VolumeUnit.gallon_imperial:
+                return self.volume_mL / 4546.09
+
+            case VolumeUnit.gallon_customary:
+                return self.volume_mL / 3785.411784
+
+            case other:
+                raise TypeError(f"Could not convert to invalid volume unit {unit}")
+
+    # Return a tuple containing the value for this volume and its unit
+    def get(self):
+        return (self.convert_to(self.unit), self.unit)
