@@ -10,7 +10,7 @@ import argparse
 import shlex
 
 # Initialize base argument parser
-parser_base = argparse.ArgumentParser(prog="Quartermaster", exit_on_error=False)
+parser_base = argparse.ArgumentParser(prog="", exit_on_error=False)
 parser_base.set_defaults(exit_on_error=False)
 subparsers = parser_base.add_subparsers(dest="subcommand", help='subcommand help')
 
@@ -53,7 +53,7 @@ def execute_command(session: DataSet, args: argparse.Namespace):
                 calc_and_output(current_session, args.recipe, amount)
 
             except ValueError:
-                print("Please provide an integer or decimal for amount.s")
+                print("Please provide an integer or decimal for amount.")
 
         case "exit" | "quit" | "q":
             exit()
