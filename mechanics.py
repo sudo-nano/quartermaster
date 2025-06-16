@@ -225,8 +225,12 @@ def abbrev_unit(unit_string):
 
 
 # Pass session, recipe str and quantity int
-def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float):
-    recipe = session.recipes[recipe_str]
+def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, volume_unit = None):
+    try:
+        recipe = session.recipes[recipe_str]
+    except KeyError:
+        print(f"Recipe {recipe_str} not in dataset.")
+        return
 
     # Debug option: print raw dict of ingredients
     if session.debug == True:
