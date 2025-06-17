@@ -57,26 +57,72 @@ class Temperature:
             case other:
                 raise TypeError(f"Cannot convert to invalid temperature unit {unit_to}. See TempUnit enum for valid units.")
 
-# This is so evil
-# https://en.wikipedia.org/wiki/Comparison_of_the_imperial_and_US_customary_measurement_systems
-# Volume units for imperial and US customary are different. Additionally, US
-# customary differentiates between liquid and dry measure, but only for some units.
+'''
+This is so evil.
+https://en.wikipedia.org/wiki/Comparison_of_the_imperial_and_US_customary_measurement_systems
+Volume units for imperial and US customary are different. Additionally, US
+customary differentiates between liquid and dry measure, but only for some units.
+
+Each member's value is its conversion factor to the reference unit. In this case,
+the reference unit is mL. Yes, I know the SI reference unit is L.
+'''
+
 class VolumeUnit(Enum):
-    milliliters = 0
-    liters = 1
-    fl_oz_imperial = 2
-    fl_oz_customary = 3
-    pint_imperial = 4
-    pint_customary_liquid = 5
-    pint_customary_dry = 6
-    quart_imperial = 7
-    quart_customary_liquid = 8
-    quart_customary_dry = 9
+    milliliters = 1.0
+    liters = 1000.0
+    fl_oz_imperial = 28.4130625
+    fl_oz_customary = 29.5735295625
+    pint_imperial = 568.26125
+    pint_customary_liquid = 473.176473
+    pint_customary_dry = 550.6104713575
+    quart_imperial = 1136.5225
+    quart_customary_liquid = 946.352946
+    quart_customary_dry = 1101.220942715
 
     # For some reason gallons in US customary units do not differentiate
     # between liquid and dry measure, even though pint and quart do
-    gallon_imperial = 10
-    gallon_customary = 11
+    gallon_imperial = 4546.09
+    gallon_customary = 3785.411784
+
+'''
+Parse a string and attempt to convert it to a VolumeUnit.
+
+The defaults parameter will, in the future, take an object describing what
+imperial units to use in ambiguous cases. allow_interactive tells the function
+whether it's being used as part of an interactive session. If it is,
+then it's allowed to prompt the user to select a unit in ambiguous cases.
+
+TODO: Implement defaults object and its handling
+TODO: Implement interactive prompt for ambiguous units
+'''
+def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
+    if type(unit_str) != str:
+        raise TypeError("Provided input is not a string.")
+
+    # First attempt exact matches
+    match unit_str.lower():
+        case "ml" | "milliliter" | "milliliters":
+            return VolumeUnit.milliliters
+
+        case "l" | "liter" | "liters":
+            return VolumeUnit.liters
+
+        # For now, we default to customary liquid pints.
+        case "pt" | "pint" | "pints":
+            return VolumeUnit.pint_customary_liquid
+
+        case "qt" | "quart" | "quarts":
+            return VolumeUnit.quart_customary_liquid
+
+        case "gal" | "gallon" | "gallons":
+            return VolumeUnit.gallon_customary
+
+    # Now we attempt hellish fuzzy matching for the other units
+    # TODO: Write hellish fuzzy matching
+
+    # If matching fails, raise an error.
+    raise ValueError("Could not convert string to VolumeUnit")
+
 
 class Volume:
     def __init__(self, volume: float, unit: VolumeUnit):
