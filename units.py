@@ -140,45 +140,11 @@ class Volume:
         self.unit = unit
 
     def convert_to(self, unit: VolumeUnit):
-        match unit:
-            case VolumeUnit.milliliters:
-                return self.volume_mL
-
-            case VolumeUnit.liters:
-                return self.volume_mL / 1000
-
-            case VolumeUnit.fl_oz_imperial:
-                return self.volume_mL / 28.4130625
-
-            case VolumeUnit.fl_oz_customary:
-                return self.volume_mL / 29.5735295625
-
-            case VolumeUnit.pint_imperial:
-                return self.volume_mL / 568.26125
-
-            case VolumeUnit.pint_customary_liquid:
-                return self.volume_mL / 473.176473
-
-            case VolumeUnit.pint_customary_dry:
-                return self.volume_mL / 550.6104713575
-
-            case VolumeUnit.quart_imperial:
-                return self.volume_mL / 1136.5225
-
-            case VolumeUnit.quart_customary_liquid:
-                return self.volume_mL / 946.352946
-
-            case VolumeUnit.quart_customary_dry:
-                return self.volume_mL / 1101.220942715
-
-            case VolumeUnit.gallon_imperial:
-                return self.volume_mL / 4546.09
-
-            case VolumeUnit.gallon_customary:
-                return self.volume_mL / 3785.411784
-
-            case other:
-                raise TypeError(f"Could not convert to invalid volume unit {unit}")
+        try:
+            value = self.volume_mL / unit.value
+            return value
+        except:
+            raise TypeError(f"Could not convert to invalid volume unit {unit}")
 
     # Return a tuple containing the value for this volume and its unit
     def get(self):
