@@ -1,6 +1,7 @@
 import toml
 from enum import Enum
 from math import ceil, floor
+import units
 
 class DataType(Enum):
     multiple = "multiple"
@@ -226,10 +227,16 @@ def abbrev_unit(unit_string):
 
 # Pass session, recipe str and quantity int
 def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, volume_unit = None):
+    # Validate recipe string
     try:
         recipe = session.recipes[recipe_str]
     except KeyError:
         print(f"Recipe {recipe_str} not in dataset.")
+        return
+
+    # Validate volume_unit
+    if volume_unit != None or volume_unit not in units.VolumeUnit:
+        print(f"Volume unit {volume_unit} not valid.")
         return
 
     # Debug option: print raw dict of ingredients
@@ -240,7 +247,8 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
     print()
 
     # Check whether user is attempting to scale a non-divisible recipe by
-    # a non-integer amount
+    # a non-integer amount. If they are, ask them which rounding behavior they
+    # want.
     divisible = True
     try:
         if recipe["fractional"] == False and (recipe_quantity % 1) != 0:
