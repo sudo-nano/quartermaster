@@ -94,6 +94,7 @@ then it's allowed to prompt the user to select a unit in ambiguous cases.
 
 TODO: Implement defaults object and its handling
 TODO: Implement interactive prompt for ambiguous units
+TODO: Finish implementing matching for all volume units
 '''
 def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
     if type(unit_str) != str:
@@ -111,6 +112,7 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
         case "pt" | "pint" | "pints":
             return VolumeUnit.pint_customary_liquid
 
+        # Default to customary liquid quarts
         case "qt" | "quart" | "quarts":
             return VolumeUnit.quart_customary_liquid
 
@@ -118,10 +120,86 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
             return VolumeUnit.gallon_customary
 
     # Now we attempt hellish fuzzy matching for the other units
-    # TODO: Write hellish fuzzy matching
+    imperial = False
+    imperial_abbrevs = ["imp", "imperial", "im"]
+    for abbrev in imperial_abbrevs:
+        if abbrev in unit_str:
+            imperial = True
+            break
+
+    customary = False
+    customary_abbrevs = ["cus", "customary"]
+    for abbrev in customary_abbrevs:
+        if abbrev in unit_str:
+            customary = True
+            break
+
+    # If both imperial and customary are matched, raise an error.
+    if imperial and customary:
+        raise ValueError(f"Fuzzy search matched both customary and imperial for unit string {unit_str}")
+
+    # Check for liquid or dry measure
+    liquid = False
+    liquid_abbrevs = ["fl", "fluid", "liquid", "wet"]
+    for abbrev in liquid_abbrevs:
+        if abbrev in unit_str:
+            liquid = True
+            break
+
+    dry = False
+    dry_abbrevs = ["dry", "solid"]
+    for abbrev in dry_abbrevs:
+        if abbrev in unit_str:
+            dry = True
+            break
+
+    unit_matches = []
+    pint_abbrevs = ["pt", "pint", "pints"]
+    quart_abbrevs = ["qt", "quart", "quarts"]
+    gallon_abbrevs = ["gal", "gallon", "gallons"]
+    unit_abbrevs = [pint_abbrevs, quart_abbrevs, gallon_abbrevs]
+
+    pint = False
+    quart = False
+    gallon = False
+    for abbrev in pint_abbrevs:
+        if abbrev in unit_str:
+            pint = True
+            unit_matches.append(abbrev)
+            break
+
+    for abbrev in quart_abbrevs:
+        if abbrev in unit_str:
+            quart = True
+            unit_matches.append(abbrev)
+            break
+
+    for abbrev in gallon_abbrevs:
+        if abbrev in unit_str:
+            gallon = True
+            unit_matches.append(abbrev)
+            break
+
+    if len(unit_matches) > 1:
+        raise ValueError(f"Unit string {unit_str} matches multiple units: {unit_matches}")
+
+    elif len(unit_matches) == 1:
+        if pint:
+            if imperial:
+                return VolumeUnit.pint_imperial
+
+            elif customary:
+                if dry:
+                    return VolumeUnit.pint_customary_dry
+
+                # If neither liquid or dry is flagged, assume liquid.
+                else:
+                    return VolumeUnit.pint_customary_liquid
+
 
     # If matching fails, raise an error.
-    raise ValueError("Could not convert string to VolumeUnit")
+    raise ValueError(f"Could not convert string {unit_str} to VolumeUnit")
+
 
 
 class Volume:
