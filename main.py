@@ -44,6 +44,10 @@ def prompt(session: mechanics.DataSet):
         print(error)
 
 def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
+    # Create string of valid types for error messages
+    valid_types = str(mechanics.DataType._member_names_)
+    valid_types_cleaned = valid_types[1:len(valid_types) - 1].replace("'", "")
+
     match args.subcommand:
         case "scale" | "sc":
             try:
@@ -60,7 +64,7 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
             try:
                 session.load_file(args.file, args.type)
             except TypeError:
-                print(f"Invalid file type. Please choose from {[e.value for e in mechanics.DataType]}")
+                print(f"Invalid file type. Please choose from {valid_types_cleaned}")
 
         # List ingredients, recipes, or people
         case "list" | "ls":
@@ -68,8 +72,6 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
                 session.list(args.type)
 
             except TypeError:
-                valid_types = str(mechanics.DataType._member_names_)
-                valid_types_cleaned = valid_types[1:len(valid_types) - 1].replace("'", "")
                 print(f"Invalid data type. Please choose from {valid_types_cleaned}")
 
         # Inspect an ingredient, recipe, or person
