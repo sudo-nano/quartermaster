@@ -68,7 +68,9 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
                 session.list(args.type)
 
             except TypeError:
-                print(f"Invalid data type. Please choose from ingredient, recipe, person, group, valid_restriction, active_restriction")
+                valid_types = str(mechanics.DataType._member_names_)
+                valid_types_cleaned = valid_types[1:len(valid_types) - 1].replace("'", "")
+                print(f"Invalid data type. Please choose from {valid_types_cleaned}")
 
         # Inspect an ingredient, recipe, or person
         case "inspect" | "i":
@@ -81,6 +83,8 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
                     case "recipe" | "r":
                         session.inspect(args.item, mechanics.DataType.recipe)
                         return
+
+                    # TODO: Implement inspect handling of people and groups
 
                     case other:
                         print("command parser error: 'inspect' reached end of control flow")
