@@ -18,9 +18,34 @@ the [Digitized Recipe Format](https://github.com/sudo-nano/digitized-recipe-form
 For more detailed instructions, see [Installation Instructions](https://github.com/sudo-nano/quartermaster/wiki/Installation).
 
 ## Implemented Features
-- Calculation of ingredients required for some quantity of a recipe
-- Calculation of ingredient cost for some quantity of a recipe
-- Load more than one ingredient or recipe file
+### Scale a recipe up or down
+```
+quartermaster > inspect recipe default_breakfast
+
+Recipe: default_breakfast
+Fractional: False
+Ingredients:
+	rice: 195.0
+	egg: 1.0
+	bacon: 2.0
+	soy_sauce: 10.0
+
+quartermaster > scale default_breakfast 5
+
+[ 5.0 qty of default_breakfast ]
+
+	Required quantity of rice: 975.0g
+	Estimated price of required quantity: 4.875
+
+	Required quantity of egg: 5.0
+	Estimated price of required quantity: 2.08335
+
+	Required quantity of bacon: 10.0
+	Estimated price of required quantity: 5.0
+
+	Required quantity of soy_sauce: 50.0mL
+	Estimated price of required quantity: 0.25
+```
 
 ## Planned Features
 - Automatic conversion between imperial and units
