@@ -129,40 +129,41 @@ class DataSet:
                         self.recipes.update({recipe:file[recipe]})
 
 
-    # List properties of ingredient
-    def inspect_ingredient(self, ingredient):
-        print()
-        print("Ingredient: " + ingredient)
+    def inspect(self, item_type: DataType, item):
+        match item_type:
+            case DataType.recipe:
+                print()
+                print("Recipe: " + item)
+                print("Fractional: " + str(self.recipes[item]["fractional"]))
+                print("Ingredients: ")
 
-        # Print diet incompatibilities
-        the_ingredient = self.ingredients[ingredient]
-        print("Diet Incompatibilities: ", end="")
+                for ingredient in self.recipes[item]["ingredients"]:
+                    print("\t" + ingredient + ": " + str(self.recipes[item]["ingredients"][ingredient]))
 
-        if the_ingredient["diet_incompat"] == []:
-            print("None")
+            case DataType.ingredient:
+                print()
+                print("Ingredient: " + item)
 
-        else:
-            print(the_ingredient["diet_incompat"])
+                # Print diet incompatibilities
+                the_ingredient = self.ingredients[item]
+                print("Diet Incompatibilities: ", end="")
 
-        # Print unit
-        print("Unit: " + str(self.ingredients[ingredient]["unit"]))
+                if the_ingredient["diet_incompat"] == []:
+                    print("None")
 
-        # Print price per unit
-        print("Price per unit: " + str(self.ingredients[ingredient]["price_per_unit"]))
+                else:
+                    print(the_ingredient["diet_incompat"])
 
-        # Print purchase increments
-        print("Purchase Increments:")
-        for item in self.ingredients[ingredient]["purchase_increments"]:
-            print("\t" + str(item[0]) + " " + str(self.ingredients[ingredient]["unit"]) + " for $" + str(item[1]))
+                # Print unit
+                print("Unit: " + str(self.ingredients[item]["unit"]))
 
-    def inspect_recipe(self, recipe):
-        print()
-        print("Recipe: " + recipe)
-        print("Fractional: " + str(self.recipes[recipe]["fractional"]))
-        print("Ingredients: ")
+                # Print price per unit
+                print("Price per unit: " + str(self.ingredients[item]["price_per_unit"]))
 
-        for item in self.recipes[recipe]["ingredients"]:
-            print("\t" + item + ": " + str(self.recipes[recipe]["ingredients"][item]))
+                # Print purchase increments
+                print("Purchase Increments:")
+                for increment in self.ingredients[item]["purchase_increments"]:
+                    print("\t" + str(item[0]) + " " + str(self.ingredients[item]["unit"]) + " for $" + str(increment[1]))
 
     # Check whether an item of the specified name and type exist in the current dataset
     def type_check(self, item_type, item):

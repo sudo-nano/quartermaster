@@ -1,10 +1,8 @@
 # Quartermaster
 # A supply planning program by sudo-nano
 
-from ast import alias
 from math import *
-from mechanics import *
-import help
+import mechanics
 import sys
 import argparse
 import shlex
@@ -37,7 +35,7 @@ parser_inspect.add_argument("type")
 parser_inspect.add_argument("item")
 
 # Run the interactive prompt
-def prompt(session: DataSet):
+def prompt(session: mechanics.DataSet):
     command = input("quartermaster > ")
     try:
         args = parser_base.parse_args(shlex.split(command))
@@ -45,12 +43,12 @@ def prompt(session: DataSet):
     except argparse.ArgumentError as error:
         print(error)
 
-def execute_command(session: DataSet, args: argparse.Namespace):
+def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
     match args.subcommand:
         case "scale" | "sc":
             try:
                 amount = float(args.amount)
-                calc_and_output(current_session, args.recipe, amount)
+                mechanics.calc_and_output(current_session, args.recipe, amount)
 
             except ValueError:
                 print("Please provide an integer or decimal for amount.")
@@ -62,7 +60,7 @@ def execute_command(session: DataSet, args: argparse.Namespace):
             try:
                 session.load_file(args.file, args.type)
             except TypeError:
-                print(f"Invalid file type. Please choose from {[e.value for e in DataType]}")
+                print(f"Invalid file type. Please choose from {[e.value for e in mechanics.DataType]}")
 
         # List ingredients, recipes, or people
         case "list" | "ls":
@@ -77,11 +75,11 @@ def execute_command(session: DataSet, args: argparse.Namespace):
             if session.type_check(args.type, args.item):
                 match args.type:
                     case "ingredient" | "i":
-                        session.inspect_ingredient(args.item)
+                        session.inspect(args.item, mechanics.DataType.ingredient)
                         return
 
                     case "recipe" | "r":
-                        session.inspect_recipe(args.item)
+                        session.inspect(args.item, mechanics.DataType.recipe)
                         return
 
                     case other:
@@ -110,7 +108,7 @@ def execute_command(session: DataSet, args: argparse.Namespace):
             print()
 
 # Initialize session
-current_session = DataSet()
+current_session = mechanics.DataSet()
 
 # Load test ingredients and recipes
 current_session.load_file("Test Datasets/test_ingredients.toml", "ingredient")
