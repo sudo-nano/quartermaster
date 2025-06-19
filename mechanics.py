@@ -35,29 +35,6 @@ class DataSet:
         self.valid_dietary_restrictions = []    # List of valid dietary restrictions
         self.debug = False
 
-    def list_ingredients(self):
-        for ingredient in self.ingredients:
-            print("\t" + ingredient)
-
-    def list_recipes(self):
-        for recipe in self.recipes:
-            print("\t" + recipe)
-            print()
-
-    def list_people(self):
-        for person in self.people:
-            print("\t" + person)
-            print()
-
-    def list_valid_restrictions(self):
-        for item in self.valid_dietary_restrictions:
-            print("\t" + item)
-            print()
-
-    def list_groups(self):
-        for item in self.groups:
-            print("\t" + item)
-            print()
 
     def list(self, type):
         valid_types = ["ingredient", "recipe", "person", "group", "valid_restriction", "active_restriction"]
@@ -67,19 +44,28 @@ class DataSet:
 
         match type:
             case "ingredient":
-                self.list_ingredients()
+                for ingredient in self.ingredients:
+                    print("\t" + ingredient)
 
             case "recipe":
-                self.list_recipes()
+                for recipe in self.recipes:
+                    print("\t" + recipe)
+                    print()
 
             case "person":
-                self.list_people()
+                for person in self.people:
+                    print("\t" + person)
+                    print()
 
             case "group":
-                self.list_groups()
+                for item in self.groups:
+                    print("\t" + item)
+                    print()
 
             case "valid_restriction":
-                self.list_valid_restrictions()
+                for item in self.valid_dietary_restrictions:
+                    print("\t" + item)
+                    print()
 
             case "active_restrictions":
                 print("Active restriction tracking is not yet implemented.")
