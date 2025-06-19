@@ -238,39 +238,42 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
     # Check whether user is attempting to scale a non-divisible recipe by
     # a non-integer amount. If they are, ask them which rounding behavior they
     # want.
-    divisible = True
     try:
-        if recipe["fractional"] == False and (recipe_quantity % 1) != 0:
-            print(f"* Warning: Recipe has ingredients that are not divisible, but quantity {recipe_quantity} is not a whole number. Should it be rounded?")
-
-            selection = input("([C]losest/[u]p/[d]own/[n]o) ")
-
-            while True:
-                match selection.lower():
-                    case "c" | "closest" | "":
-                        recipe_quantity = round(recipe_quantity)
-                        break
-
-                    case "u" | "up":
-                        recipe_quantity = ceil(recipe_quantity)
-                        break
-
-                    case "d" | "down":
-                        recipe_quantity = floor(recipe_quantity)
-                        break
-
-                    case "n" | "no":
-                        break
-
-                    case other:
-                        print("Please select from closest/up/down/no.")
-
-                selection = input("([C]losest/[u]p/[d]own/[n]o) ")
-
-            print()
+        divisible = recipe["fractional"]
 
     except KeyError:
         divisible = is_divisible(session, recipe_str)
+
+    if not divisible and (recipe_quantity % 1) != 0:
+        print(f"* Warning: Recipe has ingredients that are not divisible, but quantity {recipe_quantity} is not a whole number. Should it be rounded?")
+
+        selection = input("([C]losest/[u]p/[d]own/[n]o) ")
+
+        while True:
+            match selection.lower():
+                case "c" | "closest" | "":
+                    recipe_quantity = round(recipe_quantity)
+                    break
+
+                case "u" | "up":
+                    recipe_quantity = ceil(recipe_quantity)
+                    break
+
+                case "d" | "down":
+                    recipe_quantity = floor(recipe_quantity)
+                    break
+
+                case "n" | "no":
+                    break
+
+                case other:
+                    print("Please select from closest/up/down/no.")
+
+            selection = input("([C]losest/[u]p/[d]own/[n]o) ")
+
+        print()
+
+
 
     for ingredient, amount in recipe["ingredients"].items():
 
