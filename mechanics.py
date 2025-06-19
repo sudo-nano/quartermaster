@@ -131,6 +131,7 @@ class DataSet:
 
     # List properties of ingredient
     def inspect_ingredient(self, ingredient):
+        print()
         print("Ingredient: " + ingredient)
 
         # Print diet incompatibilities
@@ -155,6 +156,7 @@ class DataSet:
             print("\t" + str(item[0]) + " " + str(self.ingredients[ingredient]["unit"]) + " for $" + str(item[1]))
 
     def inspect_recipe(self, recipe):
+        print()
         print("Recipe: " + recipe)
         print("Fractional: " + str(self.recipes[recipe]["fractional"]))
         print("Ingredients: ")
@@ -221,15 +223,16 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
         return
 
     # Validate volume_unit
-    if volume_unit != None or volume_unit not in units.VolumeUnit:
-        print(f"Volume unit {volume_unit} not valid.")
-        return
+    if volume_unit != None and volume_unit not in units.VolumeUnit:
+        raise TypeError("calc_and_output: Volume unit {volume_unit} not valid.")
+
 
     # Debug option: print raw dict of ingredients
     if session.debug == True:
         print("Debug: ingredients " + str(recipe["ingredients"]))
 
-    print("[ " + str(recipe_quantity) + " quantity of " + recipe_str + " ]")
+    print()
+    print("[ " + str(recipe_quantity) + " qty of " + recipe_str + " ]")
     print()
 
     # Check whether user is attempting to scale a non-divisible recipe by
@@ -269,7 +272,6 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
     except KeyError:
         divisible = is_divisible(session, recipe_str)
 
-    print(f"[ Scaled recipe by {recipe_quantity} ]")
     for ingredient, amount in recipe["ingredients"].items():
 
         # Fetch ingredient dict from ingredients file
@@ -279,11 +281,9 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
         unit = abbrev_unit(ingredient_dict["unit"])
         price_of_rq = required_qty * ingredient_dict["price_per_unit"]
 
-        print("Required quantity of " + ingredient + ": " + str(required_qty) + unit)
-        print("Estimated price of required quantity: " + str(price_of_rq))
+        print("\tRequired quantity of " + ingredient + ": " + str(required_qty) + unit)
+        print("\tEstimated price of required quantity: " + str(price_of_rq))
         print()
-
-    print()
 
 def is_divisible(session: DataSet, recipe_str: str):
     recipe = session.recipes[recipe_str]
