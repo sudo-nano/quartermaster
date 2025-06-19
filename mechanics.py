@@ -116,7 +116,7 @@ class DataSet:
                         continue
 
                     restrictions_valid = True
-                    for item in person.dietary_restrictions:
+                    for item in file[person].dietary_restrictions:
                         if item not in self.valid_dietary_restrictions:
                             restrictions_valid = False
 
