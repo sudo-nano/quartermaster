@@ -19,7 +19,7 @@ class DataType(Enum):
 class Person:
     def __init__(self, name):
         self.name = name
-        self.dietary_restrictions = []
+        self.dietary_restrictions = {}
 
     def list_dietary_restrictions(self):
         for item in self.dietary_restrictions:
@@ -32,7 +32,7 @@ class DataSet:
         self.recipes = {}       # Dict of valid recipes
         self.people = {}        # Dict of people
         self.groups = {}        # Dict of groups
-        self.valid_dietary_restrictions = []    # List of valid dietary restrictions
+        self.dietary_restrictions = []    # List of valid dietary restrictions
         self.debug = False
 
 
