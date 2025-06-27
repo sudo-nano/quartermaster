@@ -227,3 +227,8 @@ class Volume:
     # Return a tuple containing the value for this volume and its unit
     def get(self):
         return (self.convert_to(self.unit), self.unit)
+
+class MassUnit(Enum):
+    gram = 1.0
+    kilogram = 1000.0
+    pound = 453.59237
