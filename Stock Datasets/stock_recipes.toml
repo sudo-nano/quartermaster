@@ -26,3 +26,11 @@ ingredients.cinnamon = 1.25			# 1.25 teaspoon ground cinnamon
 ingredients.sugar_brown = 212.0 	# 133g brown sugar
 ingredients.flour_all_purpose = 41.0 	# 41.0g all purpose flour
 ingredients.butter_unsalted = 85.0 	# 85.0g unsalted butter 
+
+[pita]
+ingredients.water = 240.0 	# 240 mL water
+ingredients.yeast = 6.0 	# 6g yeast
+ingredients.sugar = 4.125	# 4.125g sugar (conversion from 1 tsp)
+ingredients.flour = 355		# 355g flour
+ingredients.oil = 12.375	# 12.375g oil (conversion from 1 Tbsp)
+ingredients.salt = 3 		# 3g salt
