@@ -65,6 +65,10 @@ customary differentiates between liquid and dry measure, but only for some units
 
 Each member's value is its conversion factor to the reference unit. In this case,
 the reference unit is mL. Yes, I know the SI reference unit is L.
+
+Wow! Cups are even more evil! Honestly I don't know if I can be bothered to implement all
+these different definitions.
+https://en.wikipedia.org/wiki/Cup_(unit)
 '''
 
 class VolumeUnit(Enum):
@@ -118,6 +122,10 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
 
         case "gal" | "gallon" | "gallons":
             return VolumeUnit.gallon_customary
+
+        # This case that does nothing is just to satisfy pyright
+        case _:
+            pass
 
     # Now we attempt hellish fuzzy matching for the other units
     imperial = False
