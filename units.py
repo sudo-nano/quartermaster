@@ -76,6 +76,11 @@ class VolumeUnit(Enum):
     liters = 1000.0
     fl_oz_imperial = 28.4130625
     fl_oz_customary = 29.5735295625
+    cup_customary_liquid = 236.5882365
+    cup_us_legal_liquid = 240
+    cup_metric = 250
+    # TODO: Add support for Canadian, British, Japanese, Russian cups.
+    # Dutch and Latin American cups are excluded due to ambiguity.
     pint_imperial = 568.26125
     pint_customary_liquid = 473.176473
     pint_customary_dry = 550.6104713575
