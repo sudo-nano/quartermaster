@@ -109,8 +109,9 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
     if type(unit_str) != str:
         raise TypeError("Provided input is not a string.")
 
+    unit_str_lower = unit_str.lower()
     # First attempt exact matches
-    match unit_str.lower():
+    match unit_str_lower:
         case "ml" | "milliliter" | "milliliters":
             return VolumeUnit.milliliters
 
@@ -136,14 +137,14 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
     imperial = False
     imperial_abbrevs = ["imp", "imperial", "im"]
     for abbrev in imperial_abbrevs:
-        if abbrev in unit_str:
+        if abbrev in unit_str_lower:
             imperial = True
             break
 
     customary = False
     customary_abbrevs = ["cus", "customary"]
     for abbrev in customary_abbrevs:
-        if abbrev in unit_str:
+        if abbrev in unit_str_lower:
             customary = True
             break
 
@@ -155,14 +156,14 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
     liquid = False
     liquid_abbrevs = ["fl", "fluid", "liquid", "wet"]
     for abbrev in liquid_abbrevs:
-        if abbrev in unit_str:
+        if abbrev in unit_str_lower:
             liquid = True
             break
 
     dry = False
     dry_abbrevs = ["dry", "solid"]
     for abbrev in dry_abbrevs:
-        if abbrev in unit_str:
+        if abbrev in unit_str_lower:
             dry = True
             break
 
@@ -176,19 +177,19 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
     quart = False
     gallon = False
     for abbrev in pint_abbrevs:
-        if abbrev in unit_str:
+        if abbrev in unit_str_lower:
             pint = True
             unit_matches.append(abbrev)
             break
 
     for abbrev in quart_abbrevs:
-        if abbrev in unit_str:
+        if abbrev in unit_str_lower:
             quart = True
             unit_matches.append(abbrev)
             break
 
     for abbrev in gallon_abbrevs:
-        if abbrev in unit_str:
+        if abbrev in unit_str_lower:
             gallon = True
             unit_matches.append(abbrev)
             break
