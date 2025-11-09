@@ -118,6 +118,12 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
         case "l" | "liter" | "liters":
             return VolumeUnit.liters
 
+        # Default to US legal liquid cups, 240mL
+        # TODO: add interactive prompt for selecting which cup definition
+        case "c" | "cup" | "cups":
+            print("* Warning: There are many definitions for a volumetric cup. We are assuming 240mL. Consider entering your unit in mL for greater precision. For more info, see https://en.wikipedia.org/wiki/Cup_(unit)")
+            return VolumeUnit.cup_us_legal_liquid
+
         # For now, we default to customary liquid pints.
         case "pt" | "pint" | "pints":
             return VolumeUnit.pint_customary_liquid
