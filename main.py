@@ -2,10 +2,12 @@
 # A supply planning program by sudo-nano
 
 from math import *
-import mechanics
 import sys
 import argparse
 import shlex
+
+import mechanics
+import help
 
 # Initialize base argument parser
 parser_base = argparse.ArgumentParser(prog="", exit_on_error=False)
@@ -34,6 +36,9 @@ parser_inspect = subparsers.add_parser("inspect", aliases=["i"], help="inspect h
 parser_inspect.add_argument("type")
 parser_inspect.add_argument("item")
 
+# Help subcommand shows help page
+parser_help = subparsers.add_parser("help", aliases=["h"], exit_on_error=False)
+
 # Run the interactive prompt
 def prompt(session: mechanics.DataSet):
     command = input("quartermaster > ")
@@ -44,7 +49,8 @@ def prompt(session: mechanics.DataSet):
         print(error)
 
 def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
-    # Create string of valid types for error messages
+    # Create string listing valid data types. This will be presented to the user if
+    # they send an invalid type.
     valid_types = str(mechanics.DataType._member_names_)
     valid_types_cleaned = valid_types[1:len(valid_types) - 1].replace("'", "")
 
@@ -108,6 +114,9 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
             print("Not yet implemented.")
             print()
 
+        case "help":
+            help.print_help_db()
+            print()
 
         case other:
             print("Invalid command. See 'help' for commands.")
