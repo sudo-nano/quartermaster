@@ -237,6 +237,9 @@ class Volume:
         self.volume_mL = volume
         self.unit = unit
 
+    # The function taking user input should pass it to str_to_VolumeUnit and then pass the
+    # resulting VolumeUnit to this method. Errors in parsing input will happen before this
+    # function, so there's no need to specifically catch ValueErrors from str_to_VolumeUnit.
     def convert_to(self, unit: VolumeUnit):
         try:
             value = self.volume_mL / unit.value
