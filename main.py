@@ -12,10 +12,12 @@ import help
 # Initialize base argument parser
 parser_base = argparse.ArgumentParser(prog="", exit_on_error=False)
 parser_base.set_defaults(exit_on_error=False)
-subparsers = parser_base.add_subparsers(dest="subcommand", help='subcommand help')
+subparsers = parser_base.add_subparsers(dest="subcommand", help="subcommand help")
 
 # Scale subcommand takes parameters recipe and amount
-parser_scale = subparsers.add_parser("scale", aliases=["sc"], help="scale help", exit_on_error=False)
+parser_scale = subparsers.add_parser(
+    "scale", aliases=["sc"], help="scale help", exit_on_error=False
+)
 parser_scale.add_argument("recipe")
 parser_scale.add_argument("amount")
 
@@ -23,21 +25,28 @@ parser_scale.add_argument("amount")
 parser_exit = subparsers.add_parser("exit", aliases=["quit", "q"], exit_on_error=False)
 
 # Load subcommand loads a file
-parser_load = subparsers.add_parser("load", aliases=["lo"], help="load help", exit_on_error=False)
+parser_load = subparsers.add_parser(
+    "load", aliases=["lo"], help="load help", exit_on_error=False
+)
 parser_load.add_argument("type")
 parser_load.add_argument("file")
 
 # List subcommand lists all items of the specified type
-parser_list = subparsers.add_parser("list", aliases=["ls"], help="list help", exit_on_error=False)
+parser_list = subparsers.add_parser(
+    "list", aliases=["ls"], help="list help", exit_on_error=False
+)
 parser_list.add_argument("type")
 
 # Inspect subcommand allows you to inspect any item in the current data set
-parser_inspect = subparsers.add_parser("inspect", aliases=["i"], help="inspect help", exit_on_error=False)
+parser_inspect = subparsers.add_parser(
+    "inspect", aliases=["i"], help="inspect help", exit_on_error=False
+)
 parser_inspect.add_argument("type")
 parser_inspect.add_argument("item")
 
 # Help subcommand shows help page
 parser_help = subparsers.add_parser("help", aliases=["h"], exit_on_error=False)
+
 
 # Run the interactive prompt
 def prompt(session: mechanics.DataSet):
@@ -48,11 +57,12 @@ def prompt(session: mechanics.DataSet):
     except argparse.ArgumentError as error:
         print(error)
 
+
 def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
     # Create string listing valid data types. This will be presented to the user if
     # they send an invalid type.
     valid_types = str(mechanics.DataType._member_names_)
-    valid_types_cleaned = valid_types[1:len(valid_types) - 1].replace("'", "")
+    valid_types_cleaned = valid_types[1 : len(valid_types) - 1].replace("'", "")
 
     match args.subcommand:
         case "scale" | "sc":
@@ -95,12 +105,19 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
                     # TODO: Implement inspect handling of people and groups
 
                     case other:
-                        print("command parser error: 'inspect' reached end of control flow")
+                        print(
+                            "command parser error: 'inspect' reached end of control flow"
+                        )
                         return
 
             else:
-                print("No item with name " + args.item + " of type " + args.type + "exists.")
-
+                print(
+                    "No item with name "
+                    + args.item
+                    + " of type "
+                    + args.type
+                    + "exists."
+                )
 
         # List which dataset is active (not yet implemented)
         case "active_dataset":
@@ -118,9 +135,10 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
             help.print_help_db()
             print()
 
-        case other:
+        case _:
             print("Invalid command. See 'help' for commands.")
             print()
+
 
 # Initialize session
 current_session = mechanics.DataSet()
@@ -139,10 +157,12 @@ match len(sys.argv):
             current_session.debug = True
 
     case other:
-        print("Error: Runtime arguments are not supported at this time. They will be implemented in the future.")
+        print(
+            "Error: Runtime arguments are not supported at this time. They will be implemented in the future."
+        )
         exit()
 
 running = True
 while running:
-        prompt(current_session)
-        print()
+    prompt(current_session)
+    print()
