@@ -271,6 +271,7 @@ class Volume:
         return (self.convert_to(self.unit), self.unit)
 
 
+# TODO: Add oz conversion factor
 class MassUnit(Enum):
     gram = 1.0
     kilogram = 1000.0
