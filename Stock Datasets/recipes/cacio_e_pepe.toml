@@ -1,0 +1,8 @@
+type = "recipe"
+
+# Cacio e pepe recipe from The Guardian
+# https://www.theguardian.com/lifeandstyle/wordofmouth/2016/nov/03/how-to-make-the-perfect-cacio-e-pepe
+[cacio_e_pepe]
+ingredients.spaghetti_dry = 200             # 200g spaghetti
+ingredients.cheese_pecorino_romano = 80     # 80g pecorino romano cheese
+ingredients.peppercorn_black_whole = 3.5    # 3.5g whole black peppercorns
