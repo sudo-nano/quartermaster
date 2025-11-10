@@ -2,11 +2,13 @@
 from enum import Enum
 from math import isnan
 
+
 class TempUnit(Enum):
     celsius = 0
     fahrenheit = 1
     kelvin = 2
     rankine = 3
+
 
 class Temperature:
     # Temperature is internally stored in Celsius.
@@ -16,7 +18,9 @@ class Temperature:
     def set_temp(self, temp, unit):
         # Type check temperature value
         if type(temp) not in [int, float]:
-            raise TypeError(f"Temperature value is invalid type {type(temp)}. Use int or float instead.")
+            raise TypeError(
+                f"Temperature value is invalid type {type(temp)}. Use int or float instead."
+            )
 
         if isnan(temp):
             raise ValueError("Provided temperature is NaN")
@@ -36,7 +40,9 @@ class Temperature:
                 self.temp_celsius = (temp * 1.8) - 273.15
 
             case other:
-                raise TypeError(f"Cannot convert from invalid temperature unit {unit}. See TempUnit enum for valid units.")
+                raise TypeError(
+                    f"Cannot convert from invalid temperature unit {unit}. See TempUnit enum for valid units."
+                )
 
     def convert_to(self, unit_to):
         match unit_to:
@@ -54,10 +60,13 @@ class Temperature:
                 output_value = (self.temp_celsius + 273.15) / 1.8
                 return output_value
 
-            case other:
-                raise TypeError(f"Cannot convert to invalid temperature unit {unit_to}. See TempUnit enum for valid units.")
+            case _:
+                raise TypeError(
+                    f"Cannot convert to invalid temperature unit {unit_to}. See TempUnit enum for valid units."
+                )
 
-'''
+
+"""
 This is so evil.
 https://en.wikipedia.org/wiki/Comparison_of_the_imperial_and_US_customary_measurement_systems
 Volume units for imperial and US customary are different. Additionally, US
@@ -69,7 +78,8 @@ the reference unit is mL. Yes, I know the SI reference unit is L.
 Wow! Cups are even more evil! Honestly I don't know if I can be bothered to implement all
 these different definitions.
 https://en.wikipedia.org/wiki/Cup_(unit)
-'''
+"""
+
 
 class VolumeUnit(Enum):
     milliliters = 1.0
@@ -93,7 +103,8 @@ class VolumeUnit(Enum):
     gallon_imperial = 4546.09
     gallon_customary = 3785.411784
 
-'''
+
+"""
 Parse a string and attempt to convert it to a VolumeUnit.
 
 The defaults parameter will, in the future, take an object describing what
@@ -104,7 +115,9 @@ then it's allowed to prompt the user to select a unit in ambiguous cases.
 TODO: Implement defaults object and its handling
 TODO: Implement interactive prompt for ambiguous units
 TODO: Finish implementing matching for all volume units
-'''
+"""
+
+
 def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
     if type(unit_str) != str:
         raise TypeError("Provided input is not a string.")
@@ -121,7 +134,9 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
         # Default to US legal liquid cups, 240mL
         # TODO: add interactive prompt for selecting which cup definition
         case "c" | "cup" | "cups":
-            print("* Warning: There are many definitions for a volumetric cup. We are assuming 240mL. Consider entering your unit in mL for greater precision. For more info, see https://en.wikipedia.org/wiki/Cup_(unit)")
+            print(
+                "* Warning: There are many definitions for a volumetric cup. We are assuming 240mL. Consider entering your unit in mL for greater precision. For more info, see https://en.wikipedia.org/wiki/Cup_(unit)"
+            )
             return VolumeUnit.cup_us_legal_liquid
 
         # For now, we default to customary liquid pints.
@@ -156,7 +171,9 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
 
     # If both imperial and customary are matched, raise an error.
     if imperial and customary:
-        raise ValueError(f"Fuzzy search matched both customary and imperial for unit string {unit_str}")
+        raise ValueError(
+            f"Fuzzy search matched both customary and imperial for unit string {unit_str}"
+        )
 
     # Check for liquid or dry measure
     liquid = False
@@ -201,7 +218,9 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
             break
 
     if len(unit_matches) > 1:
-        raise ValueError(f"Unit string {unit_str} matches multiple units: {unit_matches}")
+        raise ValueError(
+            f"Unit string {unit_str} matches multiple units: {unit_matches}"
+        )
 
     elif len(unit_matches) == 1:
         if pint:
@@ -216,10 +235,8 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
                 else:
                     return VolumeUnit.pint_customary_liquid
 
-
     # If matching fails, raise an error.
     raise ValueError(f"Could not convert string {unit_str} to VolumeUnit")
-
 
 
 class Volume:
@@ -229,7 +246,9 @@ class Volume:
     def set_volume(self, volume: float, unit: VolumeUnit):
         # Type check inputs
         if type(volume) not in [int, float]:
-            raise TypeError(f"Volume provided is invalid type {type(volume)}. Please provide an int or float.")
+            raise TypeError(
+                f"Volume provided is invalid type {type(volume)}. Please provide an int or float."
+            )
 
         if isnan(volume):
             raise ValueError("Volume provided is NaN")
@@ -250,6 +269,7 @@ class Volume:
     # Return a tuple containing the value for this volume and its unit
     def get(self):
         return (self.convert_to(self.unit), self.unit)
+
 
 class MassUnit(Enum):
     gram = 1.0
