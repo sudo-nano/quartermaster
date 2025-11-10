@@ -8,6 +8,7 @@ import shlex
 
 import mechanics
 import help
+import units
 
 # Initialize base argument parser
 parser_base = argparse.ArgumentParser(prog="", exit_on_error=False)
@@ -46,6 +47,15 @@ parser_inspect.add_argument("item")
 
 # Help subcommand shows help page
 parser_help = subparsers.add_parser("help", aliases=["h"], exit_on_error=False)
+
+# Convert command converts between units
+# When converting between mass and volume, user must either explicitly specify a density
+# or specify an ingredient whose density will be used.
+parser_convert = subparsers.add_parser("convert", aliases=["c"], exit_on_error=False)
+parser_convert.add_argument("initial")
+parser_convert.add_argument("target")
+parser_convert.add_argument("-d", "--density")
+parser_convert.add_argument("-i", "--ingredient")
 
 
 # Run the interactive prompt
@@ -118,6 +128,14 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
                     + args.type
                     + "exists."
                 )
+
+        # Convert between two unit values.
+        # When converting between mass and volume, the user must specify either density or
+        # an ingredient whose density value will be used.
+        # Not yet implemented. Needs str_to_MassUnit implemented first.
+        case "convert" | "c":
+            # Detect units of initial and target values
+            pass
 
         # List which dataset is active (not yet implemented)
         case "active_dataset":
