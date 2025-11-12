@@ -60,13 +60,10 @@ class DataSet:
                     print("\t" + item)
                     print()
 
-            case "valid_restriction":
-                for item in self.valid_dietary_restrictions:
+            case "dietary_restriction" | "restriction":
+                for item in self.dietary_restrictions:
                     print("\t" + item)
                     print()
-
-            case "active_restrictions":
-                print("Active restriction tracking is not yet implemented.")
 
 
 
@@ -92,7 +89,7 @@ class DataSet:
         match file["type"]:
             case "person":
                 # Import additional valid dietary restrictions from new person file
-                self.valid_dietary_restrictions.extend(file["valid_dietary_restrictions"])
+                self.dietary_restrictions.extend(file["valid_dietary_restrictions"])
 
                 # Check that all people in file have valid restrictions
                 for person in file:
@@ -101,7 +98,7 @@ class DataSet:
 
                     restrictions_valid = True
                     for item in file[person].dietary_restrictions:
-                        if item not in self.valid_dietary_restrictions:
+                        if item not in self.dietary_restrictions:
                             restrictions_valid = False
 
                     # TODO: Add configurable option for behavior when importing a person
