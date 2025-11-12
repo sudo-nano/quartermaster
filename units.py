@@ -227,13 +227,34 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
             if imperial:
                 return VolumeUnit.pint_imperial
 
-            elif customary:
+            # If not imperial, assume customary. Realistically we want to match for dry
+            # in both the case of a positive match for customary and an implicit assumption
+            # of customary.
+            else:
                 if dry:
                     return VolumeUnit.pint_customary_dry
 
                 # If neither liquid or dry is flagged, assume liquid.
                 else:
                     return VolumeUnit.pint_customary_liquid
+
+        if quart:
+            if imperial:
+                return VolumeUnit.quart_imperial
+
+            else:
+                if dry:
+                    return VolumeUnit.quart_customary_dry
+
+                else:
+                    return VolumeUnit.quart_customary_liquid
+
+        if gallon:
+            if imperial:
+                return VolumeUnit.gallon_imperial
+
+            else:
+                return VolumeUnit.gallon_customary
 
     # If matching fails, raise an error.
     raise ValueError(f"Could not convert string {unit_str} to VolumeUnit")
