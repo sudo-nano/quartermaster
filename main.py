@@ -1,7 +1,6 @@
 # Quartermaster
 # A supply planning program by sudo-nano
 
-from math import *
 import sys
 import argparse
 import shlex
