@@ -185,7 +185,7 @@ class DataSet:
                 if item in self.groups:
                     return True
 
-            case other:
+            case _:
                 return False
 
 
@@ -219,12 +219,12 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
         return
 
     # Validate volume_unit
-    if volume_unit != None and volume_unit not in units.VolumeUnit:
+    if volume_unit is not None and volume_unit not in units.VolumeUnit:
         raise TypeError("calc_and_output: Volume unit {volume_unit} not valid.")
 
 
     # Debug option: print raw dict of ingredients
-    if session.debug == True:
+    if session.debug:
         print("Debug: ingredients " + str(recipe["ingredients"]))
 
     print()
@@ -262,7 +262,7 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
                 case "n" | "no":
                     break
 
-                case other:
+                case _:
                     print("Please select from closest/up/down/no.")
 
             selection = input("([C]losest/[u]p/[d]own/[n]o) ")
