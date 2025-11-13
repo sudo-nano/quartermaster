@@ -39,7 +39,7 @@ class Temperature:
             case TempUnit.rankine:
                 self.temp_celsius = (temp * 1.8) - 273.15
 
-            case other:
+            case _:
                 raise TypeError(
                     f"Cannot convert from invalid temperature unit {unit}. See TempUnit enum for valid units."
                 )
@@ -119,7 +119,7 @@ TODO: Finish implementing matching for all volume units
 
 
 def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
-    if type(unit_str) != str:
+    if type(unit_str) is not str:
         raise TypeError("Provided input is not a string.")
 
     unit_str_lower = unit_str.lower()
@@ -222,6 +222,9 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
             f"Unit string {unit_str} matches multiple units: {unit_matches}"
         )
 
+    if dry and liquid:
+        raise ValueError(f"Unit string {unit_str} matches both dry and liquid")
+
     elif len(unit_matches) == 1:
         if pint:
             if imperial:
@@ -281,11 +284,11 @@ class Volume:
     # resulting VolumeUnit to this method. Errors in parsing input will happen before this
     # function, so there's no need to specifically catch ValueErrors from str_to_VolumeUnit.
     def convert_to(self, unit: VolumeUnit):
-        try:
-            value = self.volume_mL / unit.value
-            return value
-        except:
+        if not isinstance(unit, VolumeUnit):
             raise TypeError(f"Could not convert to invalid volume unit {unit}")
+
+        value = self.volume_mL / unit.value
+        return value
 
     # Return a tuple containing the value for this volume and its unit
     def get(self):
