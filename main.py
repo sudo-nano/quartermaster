@@ -113,7 +113,7 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
 
                     # TODO: Implement inspect handling of people and groups
 
-                    case other:
+                    case _:
                         print(
                             "command parser error: 'inspect' reached end of control flow"
                         )
