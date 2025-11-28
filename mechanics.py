@@ -74,11 +74,15 @@ class DataSet:
             file_type = str(DataType[type]) # Check that provided type is valid
 
         except FileNotFoundError:
-            print("Error: File " + file_name + " not found.")
+            print("[ERROR] File " + file_name + " not found.")
             return
 
         except KeyError:
-            raise TypeError("Invalid data type " + type + " provided to load_file.")
+            raise TypeError("[ERROR] Invalid data type " + type + " provided to load_file.")
+
+        except toml.decoder.TomlDecodeError as e:
+            print(f"[ERROR] TOML syntax error in file {file_name}: {e}")
+            return
 
 
         # Check that loaded file is of provided type
