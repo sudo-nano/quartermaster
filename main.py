@@ -8,6 +8,7 @@ import shlex
 import mechanics
 import help
 import units
+import os
 
 # Initialize base argument parser
 parser_base = argparse.ArgumentParser(prog="", exit_on_error=False)
@@ -160,9 +161,14 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
 # Initialize session
 current_session = mechanics.DataSet()
 
-# Load test ingredients and recipes
-current_session.load_file("Test Datasets/test_ingredients.toml", "ingredient")
-current_session.load_file("Test Datasets/test_recipes.toml", "recipe")
+# Load stock ingredients and recipes
+ingredient_path = r"./Stock Datasets/ingredients/"
+for name in os.listdir(ingredient_path):
+    current_session.load_file(ingredient_path + name, "ingredient")
+
+recipe_path = r"./Stock Datasets/recipes/"
+for name in os.listdir(recipe_path):
+    current_session.load_file(recipe_path + name, "recipe")
 
 # Main program loop
 match len(sys.argv):
