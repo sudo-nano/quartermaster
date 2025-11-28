@@ -162,6 +162,13 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
 current_session = mechanics.DataSet()
 
 # Load stock ingredients and recipes
+'''
+NOTE: Ingredient imports fail at the purchase increments array because of an upstream
+bug in python's TOML parsing library. We're awaiting merging of this pull request:
+    https://github.com/uiri/toml/pull/365
+and the digitized recipe format repo is tracking the issue in our context specifically:
+    https://github.com/sudo-nano/digitized-recipe-format/issues/1
+'''
 ingredient_path = r"./Stock Datasets/ingredients/"
 for name in os.listdir(ingredient_path):
     current_session.load_file(ingredient_path + name, "ingredient")
