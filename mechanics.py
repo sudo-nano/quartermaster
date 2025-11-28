@@ -188,6 +188,15 @@ class DataSet:
             case _:
                 return False
 
+class IngredientError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+class RecipeError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
 
 # Converts a unit to its abbreviation
 # TODO: Convert this to a dictionary
@@ -238,7 +247,13 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
         divisible = recipe["fractional"]
 
     except KeyError:
-        divisible = is_divisible(session, recipe_str)
+        try:
+            divisible = is_divisible(session, recipe_str)
+
+        except IngredientError as e:
+            print(f"[ERROR] {e.message}")
+            divisible = False
+
 
     if not divisible and (recipe_quantity % 1) != 0:
         print(f"* Warning: Recipe has ingredients that are not divisible, but quantity {recipe_quantity} is not a whole number. Should it be rounded?")
@@ -287,8 +302,13 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
 def is_divisible(session: DataSet, recipe_str: str):
     recipe = session.recipes[recipe_str]
 
-    for ingredient in recipe.ingredients:
-        if session.ingredients[ingredient]["unit"] == "discrete":
-            return False
+    for ingredient in recipe["ingredients"]:
+        try:
+            if session.ingredients[ingredient]["unit"] == "discrete":
+                return False
+
+        # Consider defining new IngredientError type for this?
+        except KeyError:
+            raise IngredientError(f"Ingredient {ingredient} is not imported into the current session.")
 
     return True
