@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 argparse = "*"
-toml = "*"
+toml = "0.10.2"
 pytest = "*"
 
 [dev-packages]
