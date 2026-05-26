@@ -135,12 +135,17 @@ class DataSet:
                         self.recipes.update({recipe:toml_dict[recipe]})
 
 
-    def inspect(self, item_type: DataType, string: item):
+    def inspect(self, item_type: DataType, item: str):
         match item_type:
             case DataType.recipe:
                 print()
-                print("Recipe: " + item)
-                print("Fractional: " + str(self.recipes[item]["fractional"]))
+                print("Recipe:     " + item)
+
+                try:
+                    print("Fractional: " + str(self.recipes[item]["fractional"]))
+                except KeyError:
+                    print("Fractional: not specified")
+
                 print("Ingredients: ")
 
                 for ingredient in self.recipes[item]["ingredients"]:
