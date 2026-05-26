@@ -107,11 +107,11 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
             if session.item_exists(args.type, args.item):
                 match args.type:
                     case "ingredient" | "i":
-                        session.inspect(args.item, mechanics.DataType.ingredient)
+                        session.inspect(mechanics.DataType.ingredient, args.item)
                         return
 
                     case "recipe" | "r":
-                        session.inspect(args.item, mechanics.DataType.recipe)
+                        session.inspect(mechanics.DataType.recipe, args.item)
                         return
 
                     # TODO: Implement inspect handling of people and groups
@@ -128,7 +128,7 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
                     + args.item
                     + " of type "
                     + args.type
-                    + "exists."
+                    + " exists."
                 )
 
         # Convert between two unit values.
