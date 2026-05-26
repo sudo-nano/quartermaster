@@ -174,11 +174,21 @@ print("[WARN] If the upstream fix doesn't come in a timely manner, we will switc
 
 ingredient_path = r"./Stock Datasets/ingredients/"
 for name in os.listdir(ingredient_path):
-    current_session.load_file(ingredient_path + name, "ingredient")
+    extension = name.split(".")[-1]
+    if extension in ["toml", "drf"]:
+        current_session.load_file(ingredient_path + name, "ingredient")
+
+    else:
+        print(f"[INFO] Skipping import of ingredient file {ingredient_path + name} because its extension is invalid")
 
 recipe_path = r"./Stock Datasets/recipes/"
 for name in os.listdir(recipe_path):
-    current_session.load_file(recipe_path + name, "recipe")
+    extension = name.split(".")[-1]
+    if extension in ["toml", "drf"]:
+        current_session.load_file(recipe_path + name, "recipe")
+
+    else:
+        print(f"[INFO] Skipping import of recipe file {recipe_path + name} because its extension is invalid")
 
 # Main program loop
 match len(sys.argv):
