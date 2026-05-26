@@ -70,6 +70,7 @@ class DataSet:
     # Load a file of the specified type into the DataSet
     def load_file(self, file_path, type):
         toml_dict = None
+        file_type = None
 
         try:
             with open(file_path, "rb") as file:
@@ -134,7 +135,7 @@ class DataSet:
                         self.recipes.update({recipe:toml_dict[recipe]})
 
 
-    def inspect(self, item_type: DataType, item):
+    def inspect(self, item_type: DataType, string: item):
         match item_type:
             case DataType.recipe:
                 print()
@@ -170,8 +171,12 @@ class DataSet:
                 for increment in self.ingredients[item]["purchase_increments"]:
                     print("\t" + str(item[0]) + " " + str(self.ingredients[item]["unit"]) + " for $" + str(increment[1]))
 
+            case _:
+                print(f"[ERROR] DataSet.inspect() could not match type {item_type}. Please report this as a bug.")
+                print_bug_report_info()
+
     # Check whether an item of the specified name and type exist in the current dataset
-    def type_check(self, item_type, item):
+    def item_exists(self, item_type, item):
         match item_type:
             case "recipe":
                 if item in self.recipes:
@@ -322,3 +327,7 @@ def is_divisible(session: DataSet, recipe_str: str):
             raise IngredientError(f"Ingredient {ingredient} is not imported into the current session.")
 
     return True
+
+def print_bug_report_info():
+    print("[INFO] Please file bug reports at https://github.com/sudo-nano/quartermaster/issues")
+    print("[INFO] Include the command that caused the error, as well as any files it was operating upon.")

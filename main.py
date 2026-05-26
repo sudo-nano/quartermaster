@@ -102,7 +102,9 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
 
         # Inspect an ingredient, recipe, or person
         case "inspect" | "i":
-            if session.type_check(args.type, args.item):
+            # session.item_exists() ensures that an item with the specified name and type exists
+            # in the current DataSet
+            if session.item_exists(args.type, args.item):
                 match args.type:
                     case "ingredient" | "i":
                         session.inspect(args.item, mechanics.DataType.ingredient)
