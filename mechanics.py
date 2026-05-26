@@ -69,6 +69,8 @@ class DataSet:
 
     # Load a file of the specified type into the DataSet
     def load_file(self, file_path, type):
+        toml_dict = None
+
         try:
             with open(file_path, "rb") as file:
                 toml_dict = tomli.load(file)
@@ -84,6 +86,9 @@ class DataSet:
         except tomli.TOMLDecodeError as e:
             print(f"[ERROR] TOML syntax error in file {file_path}: {e}")
             return
+
+        except UnicodeDecodeError as e:
+            print(f"[ERROR] Unicode decode error in file {file_path}: {e}. This is probably not a text file.")
 
 
         # Check that loaded file is of provided type
