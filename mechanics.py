@@ -1,4 +1,4 @@
-import toml
+import tomli
 from enum import Enum
 from math import ceil, floor
 import units
@@ -68,10 +68,11 @@ class DataSet:
 
 
     # Load a file of the specified type into the DataSet
-    def load_file(self, file_name, type):
+    def load_file(self, file_path, type):
         try:
-            file = toml.load(file_name)
-            file_type = str(DataType[type]) # Check that provided type is valid
+            with open(file_path, "rb") as file:
+                toml_dict = tomli.load(file)
+                file_type = str(DataType[type]) # Check that provided type is valid
 
         except FileNotFoundError:
             print("[ERROR] File " + file_name + " not found.")
@@ -80,52 +81,52 @@ class DataSet:
         except KeyError:
             raise TypeError("[ERROR] Invalid data type " + type + " provided to load_file.")
 
-        except toml.decoder.TomlDecodeError as e:
-            print(f"[ERROR] TOML syntax error in file {file_name}: {e}")
+        except tomli.TOMLDecodeError as e:
+            print(f"[ERROR] TOML syntax error in file {file_path}: {e}")
             return
 
 
         # Check that loaded file is of provided type
-        if file["type"] != file_type:
-            raise TypeError("Provided file " + file_name + " is type " + file["type"] + " instead of specified type " + type)
+        if toml_dict["type"] != file_type:
+            raise TypeError("Provided file " + file_name + " is type " + toml_dict["type"] + " instead of specified type " + type)
 
         # Do different things on import depending on type
-        match file["type"]:
+        match toml_dict["type"]:
             case "person":
                 # Import additional valid dietary restrictions from new person file
                 self.dietary_restrictions.extend(file["valid_dietary_restrictions"])
 
                 # Check that all people in file have valid restrictions
-                for person in file:
+                for person in toml_dict:
                     if person == "type":
                         continue
 
                     restrictions_valid = True
-                    for item in file[person].dietary_restrictions:
+                    for item in toml_dict[person].dietary_restrictions:
                         if item not in self.dietary_restrictions:
                             restrictions_valid = False
 
                     # TODO: Add configurable option for behavior when importing a person
                     # with a new type of dietary restriction
                     if restrictions_valid:
-                        self.people.update({person:file[person]})
+                        self.people.update({person:toml_dict[person]})
 
                     else:
                         print("Warning: Person " + person + "not added due to invalid dietary restrictions.")
 
             case "ingredient":
                 # TODO: Check whether ingredients have valid units
-                for ingredient in file:
+                for ingredient in toml_dict:
                     if ingredient != "type":
-                        self.ingredients.update({ingredient:file[ingredient]})
+                        self.ingredients.update({ingredient:toml_dict[ingredient]})
 
             case "recipe":
                 # TODO: Check that all ingredients in recipes are loaded into session
                 # TODO: Compute whether each recipe can be fractionally scaled, and
                 # store it as a property
-                for recipe in file:
+                for recipe in toml_dict:
                     if recipe != "type":
-                        self.recipes.update({recipe:file[recipe]})
+                        self.recipes.update({recipe:toml_dict[recipe]})
 
 
     def inspect(self, item_type: DataType, item):
