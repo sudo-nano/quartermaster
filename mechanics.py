@@ -41,26 +41,26 @@ class DataSet:
             raise TypeError("Invalid data type " + type + " provided to list.")
 
         match type:
-            case "ingredient":
+            case "ingredient" | "ingredients" | "i":
                 for ingredient in self.ingredients:
                     print("\t" + ingredient)
 
-            case "recipe":
+            case "recipe" | "recipes" | "r":
                 for recipe in self.recipes:
                     print("\t" + recipe)
                     print()
 
-            case "person":
+            case "person" | "people" | "p":
                 for person in self.people:
                     print("\t" + person)
                     print()
 
-            case "group":
+            case "group" | "groups" | "g":
                 for item in self.groups:
                     print("\t" + item)
                     print()
 
-            case "dietary_restriction" | "restriction":
+            case "dietary_restriction" | "restriction" | "dr":
                 for item in self.dietary_restrictions:
                     print("\t" + item)
                     print()
