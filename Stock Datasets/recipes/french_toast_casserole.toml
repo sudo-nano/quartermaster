@@ -1,0 +1,19 @@
+type = "recipe"
+name = "French Toast Casserole"
+author = "Sally's Baking Addiction"
+lastUpdated = "2026-06-02"
+
+# French Toast Casserole by Sally's Baking Addiction
+# https://sallysbakingaddiction.com/baked-cream-cheese-french-toast-casserole/#tasty-recipes-70955
+
+[ingredients]
+"bread" = "340g" 			# 340g bread (french bread, sourdough, or challah)
+"cream cheese" = "226g" 	# 226g brick cream cheese
+"confectioner's sugar" = "15g" 	# 15g confectioner's sugar
+"vanilla extract" = "15mL" 	# 15mL/3tsp vanilla extract
+"egg" = 8 				# 8 eggs
+"whole milk" = "540mL"		# 540mL whole milk
+"cinnamon" = "1.25 tsp"# 1.25 teaspoon ground cinnamon
+"brown sugar" = "133g" 	# 133g brown sugar (modified to 212?)
+"all purpose flour" = "41.0g" 	# 41.0g all purpose flour
+"unsalted butter" = "85.0g" 	# 85.0g unsalted butter

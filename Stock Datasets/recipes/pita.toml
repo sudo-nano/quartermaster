@@ -1,0 +1,12 @@
+type = "recipe"
+name = "pita"
+author = "some lady on instagram"
+lastUpdated = "2026-06-02"
+
+[ingredients]
+"water" = "240mL"
+"yeast" = "6g"
+"sugar" = "4.125g" # conversion from 1 tsp
+"flour" = "355g"
+"oil" = "12.375g" # conversion from 1 tsp
+"salt" = "3g"
