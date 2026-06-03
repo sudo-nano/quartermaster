@@ -124,6 +124,7 @@ class DataSet:
 
             case "ingredient":
                 # TODO: Check whether ingredients have valid units
+                # Ensure that mandatory restrictions fields are filled out
                 match toml_dict:
                     case {
                         "restrictions": {
@@ -136,11 +137,15 @@ class DataSet:
                                 "treeNuts": bool(),
                                 "sesame": bool(),
                                 "shellfish": bool()
+                            },
+                            "religious": {
+                                "halal": bool(),
+                                "kosher": bool(),
+                                "leavened": bool()
                             }
                         }
                     }:
                         self.ingredients.update({toml_dict["name"]:toml_dict})
-                        print(f"Importing ingredient {toml_dict['name']} from {file_path}")
 
                     case _:
                         print(f"[WARN] Ingredient file {file_path} doesn't match schema")
