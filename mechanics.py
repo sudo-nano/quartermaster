@@ -127,6 +127,7 @@ class DataSet:
                 # Ensure that mandatory restrictions fields are filled out
                 match toml_dict:
                     case {
+                        "name": str(),
                         "restrictions": {
                             "dietary": {
                                 "animalProduct": bool(),
@@ -148,15 +149,23 @@ class DataSet:
                         self.ingredients.update({toml_dict["name"]:toml_dict})
 
                     case _:
-                        print(f"[WARN] Ingredient file {file_path} doesn't match schema")
+                        # TODO: Add link to DRF specification for required fields
+                        print(f"[WARN] Ingredient file {file_path} doesn't match schema and will not be imported.")
 
             case "recipe":
                 # TODO: Check that all ingredients in recipes are loaded into session
                 # TODO: Compute whether each recipe can be fractionally scaled, and
                 # store it as a property
-                for recipe in toml_dict:
-                    if recipe != "type":
-                        self.recipes.update({recipe:toml_dict[recipe]})
+                match toml_dict:
+                    case {
+                        "name": str(),
+                        "ingredients": dict()
+                    }:
+                        self.recipes.update({toml_dict["name"]:toml_dict})
+
+                    case _:
+                        # TODO: Add link to DRF specification for required fields
+                        print(f"[WARN] Recipe file {file_path} doesn't match schema and will not be imported.")
 
 
     def inspect(self, item_type: DataType, item: str):
@@ -300,7 +309,7 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
 
 
     if not divisible and (recipe_quantity % 1) != 0:
-        print(f"* Warning: Recipe has ingredients that are not divisible, but quantity {recipe_quantity} is not a whole number. Should it be rounded?")
+        print(f"[WARN] Recipe has ingredients that are not divisible, but quantity {recipe_quantity} is not a whole number. Should it be rounded?")
 
         selection = input("([C]losest/[u]p/[d]own/[n]o) ")
 
