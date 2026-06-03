@@ -1,5 +1,6 @@
 type = "ingredient"
 name = "sesame oil"
+sortName = "oil, sesame" # TODO: Add this as an optional field to DRF
 author = "sudo-nano"
 lastUpdated = "2025-11-10"
 
