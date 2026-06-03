@@ -78,7 +78,7 @@ class DataSet:
                 file_type = str(DataType[type]) # Check that provided type is valid
 
         except FileNotFoundError:
-            print("[ERROR] File " + file_name + " not found.")
+            print("[ERROR] File " + file_path + " not found.")
             return
 
         except KeyError:
@@ -91,16 +91,18 @@ class DataSet:
         except UnicodeDecodeError as e:
             print(f"[ERROR] Unicode decode error in file {file_path}: {e}. This is probably not a text file.")
 
+        if toml_dict == None:
+            raise RuntimeError("test test")
 
         # Check that loaded file is of provided type
         if toml_dict["type"] != file_type:
-            raise TypeError("Provided file " + file_name + " is type " + toml_dict["type"] + " instead of specified type " + type)
+            raise TypeError("Provided file " + file_path + " is type " + toml_dict["type"] + " instead of specified type " + type)
 
         # Do different things on import depending on type
         match toml_dict["type"]:
             case "person":
                 # Import additional valid dietary restrictions from new person file
-                self.dietary_restrictions.extend(file["valid_dietary_restrictions"])
+                self.dietary_restrictions.extend(toml_dict["valid_dietary_restrictions"])
 
                 # Check that all people in file have valid restrictions
                 for person in toml_dict:
