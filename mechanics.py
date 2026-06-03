@@ -36,14 +36,14 @@ class DataSet:
         self.debug = False
 
 
-    def list(self, type):
+    def list(self, type: str):
         if type not in DataType:
-            raise TypeError("Invalid data type " + type + " provided to list.")
+            raise TypeError(f"Invalid data type " + type + " provided to list.")
 
         match type:
             case "ingredient" | "ingredients" | "i":
-                for ingredient in self.ingredients:
-                    print("\t" + ingredient)
+                for ingredient in list(self.ingredients.values()):
+                    print(f"\t{ingredient["name"]}")
 
             case "recipe" | "recipes" | "r":
                 for recipe in self.recipes:
@@ -124,9 +124,26 @@ class DataSet:
 
             case "ingredient":
                 # TODO: Check whether ingredients have valid units
-                for ingredient in toml_dict:
-                    if ingredient != "type":
-                        self.ingredients.update({ingredient:toml_dict[ingredient]})
+                match toml_dict:
+                    case {
+                        "restrictions": {
+                            "dietary": {
+                                "animalProduct": bool(),
+                                "meat": bool(),
+                                "egg": bool(),
+                                "dairy": bool(),
+                                "gluten": bool(),
+                                "treeNuts": bool(),
+                                "sesame": bool(),
+                                "shellfish": bool()
+                            }
+                        }
+                    }:
+                        self.ingredients.update({toml_dict["name"]:toml_dict})
+                        print(f"Importing ingredient {toml_dict['name']} from {file_path}")
+
+                    case _:
+                        print(f"[WARN] Ingredient file {file_path} doesn't match schema")
 
             case "recipe":
                 # TODO: Check that all ingredients in recipes are loaded into session
