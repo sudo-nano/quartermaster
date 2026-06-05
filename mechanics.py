@@ -37,9 +37,6 @@ class DataSet:
 
 
     def list(self, type: str):
-        if type not in DataType:
-            raise TypeError(f"Invalid data type " + type + " provided to list.")
-
         match type:
             case "ingredient" | "ingredients" | "i":
                 for ingredient in list(self.ingredients.values()):
@@ -64,6 +61,11 @@ class DataSet:
                 for item in self.dietary_restrictions:
                     print("\t" + item)
                     print()
+
+            case _:
+                raise TypeError(f"Invalid data type " + type + " provided to list.")
+
+
 
 
 
