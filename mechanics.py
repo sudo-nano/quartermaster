@@ -41,6 +41,7 @@ class DataSet:
             case "ingredient" | "ingredients" | "i":
                 for ingredient in list(self.ingredients.values()):
                     print(f"\t{ingredient["name"]}")
+                    print()
 
             case "recipe" | "recipes" | "r":
                 for recipe in self.recipes:
@@ -194,22 +195,16 @@ class DataSet:
                 the_ingredient = self.ingredients[item]
                 print("Diet Incompatibilities: ", end="")
 
-                if the_ingredient["diet_incompat"] == []:
+                if the_ingredient["restrictions"]["dietary"] == []:
                     print("None")
 
                 else:
-                    print(the_ingredient["diet_incompat"])
-
-                # Print unit
-                print("Unit: " + str(self.ingredients[item]["unit"]))
-
-                # Print price per unit
-                print("Price per unit: " + str(self.ingredients[item]["price_per_unit"]))
+                    print(the_ingredient["restrictions"]["dietary"])
 
                 # Print purchase increments
                 print("Purchase Increments:")
-                for increment in self.ingredients[item]["purchase_increments"]:
-                    print("\t" + str(item[0]) + " " + str(self.ingredients[item]["unit"]) + " for $" + str(increment[1]))
+                for increment in self.ingredients[item]["purchase_increments"]["increments"]:
+                    print("\t" + str(increment[0]) + " " + str(increment[1]) + " for $" + str(increment[2]))
 
             case _:
                 print(f"[ERROR] DataSet.inspect() could not match type {item_type}. Please report this as a bug.")
