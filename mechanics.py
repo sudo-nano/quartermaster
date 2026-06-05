@@ -302,7 +302,7 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
 
         except IngredientError as e:
             print(f"[ERROR] {e.message}")
-            divisible = False
+            return None
 
 
     if not divisible and (recipe_quantity % 1) != 0:
@@ -351,6 +351,8 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
 
 def is_divisible(session: DataSet, recipe_str: str):
     recipe = session.recipes[recipe_str]
+    error = False
+    not_in_session = []
 
     for ingredient in recipe["ingredients"]:
         try:
@@ -359,7 +361,11 @@ def is_divisible(session: DataSet, recipe_str: str):
 
         # Consider defining new IngredientError type for this?
         except KeyError:
-            raise IngredientError(f"Ingredient {ingredient} is not imported into the current session.")
+            error = True
+            not_in_session.append(ingredient)
+
+    if error:
+        raise IngredientError(f"One or more ingredients are missing from the current session. Missing: {not_in_session}")
 
     return True
 
