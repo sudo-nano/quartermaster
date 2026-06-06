@@ -5,6 +5,8 @@ import units
 import regex
 
 class DataType(Enum):
+    # best_match_substring was constructed assuming there are no substrings that match multiple
+    # of these enum values at the same start and end point
     multiple = "multiple"
     none = "none"
     ingredient = "ingredient"
@@ -33,10 +35,10 @@ class DataType(Enum):
                             return item
 
                 case _:
-                    match_result = match_substring([e.value for e in DataType], input)
+                    match_result = best_match_substring([e.value for e in DataType], input)
 
                     if type(match_result) == list:
-                        raise RuntimeError(f"Multiple DataType matches for string {input}")
+                        raise NameError(f"Multiple DataType matches for string {input}")
 
                     return DataType[match_result]
 
@@ -424,7 +426,7 @@ def print_bug_report_info():
 # On a single match, returns the matching string. On multiple matches, attempts to find
 # "best" match (first occurring, then longest) and return the best. In the event of a tie,
 # returns a list of tied options.
-def match_substring(candidates: list, input: str):
+def best_match_substring(candidates: list, input: str):
     matches = []
     for candidate in candidates:
         match = regex.search(input, candidate)
