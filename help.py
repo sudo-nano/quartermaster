@@ -28,7 +28,7 @@ def match_help(command):
 
 
 help_database = {
-    "calc": "calc <recipe> <quantity> \nGiven a recipe and quantity, calculate the required quantity of ingredients for each.",
+    "scale": "scale <recipe> <quantity> \nGiven a recipe and quantity, calculate the required quantity of ingredients for making that quantity of the recipe.",
     "help": "help <command> \nList commands and their usage.",
     "inspect": "inspect <type> <name> \nInspect item <name> of type <type>. \nCurrently inspectable types are ingredient, recipe",
     "list": "list <type> \nList all items of the specified type that are loaded into the current session.",
