@@ -2,6 +2,7 @@ import tomli
 from enum import Enum
 from math import ceil, floor
 import units
+import regex
 
 class DataType(Enum):
     multiple = "multiple"
@@ -13,6 +14,31 @@ class DataType(Enum):
 
     def __str__(self):
         return str(self.value)
+
+    def from_str(input: str):
+        # First, automatically match using keys
+        try:
+            result = DataType[input]
+            return result
+
+        # If there isn't an exact match, perform fuzzy matching
+        except:
+            match len(input):
+                case 0:
+                    raise RuntimeError("Cannot type match empty string")
+
+                case 1:
+                    for item in DataType:
+                        if str == item.value[0]:
+                            return item
+
+                case _:
+                    match_result = match_substring([e.value for e in DataType], input)
+
+                    if type(match_result) == list:
+                        raise RuntimeError(f"Multiple DataType matches for string {input}")
+
+                    return DataType[match_result]
 
 
 
@@ -381,7 +407,6 @@ def is_divisible(session: DataSet, recipe_str: str):
             if session.ingredients[ingredient]["unit"] == "discrete":
                 return False
 
-        # Consider defining new IngredientError type for this?
         except KeyError:
             error = True
             not_in_session.append(ingredient)
@@ -394,3 +419,62 @@ def is_divisible(session: DataSet, recipe_str: str):
 def print_bug_report_info():
     print("[INFO] Please file bug reports at https://github.com/sudo-nano/quartermaster/issues")
     print("[INFO] Include the command that caused the error, as well as any files it was operating upon.")
+
+# Takes a list of strings and a substring to attempt to match against the list of strings.
+# On a single match, returns the matching string. On multiple matches, attempts to find
+# "best" match (first occurring, then longest) and return the best. In the event of a tie,
+# returns a list of tied options.
+def match_substring(candidates: list, input: str):
+    matches = []
+    for candidate in candidates:
+        match = regex.search(input, candidate)
+        if match != None:
+            matches.append(match)
+
+    match len(matches):
+        case 0:
+            raise NameError("No candidates match the provided string")
+
+        case 1:
+            return matches[0]
+
+        case _:
+            # Attempt to select earliest match
+            best_start = matches[0].start()
+            sub_matches = [matches[0]]
+            for i in range(1, len(matches)):
+                if matches[i].start() < best_start:
+                    best_start = matches[i].start()
+                    sub_matches = [matches[i]]
+
+                if matches[i].start() == best_start:
+                    sub_matches.append(matches[i])
+
+                # if matches[i].start() > best_start, do nothing
+
+            if len(sub_matches) == 1:
+                return sub_matches[0]
+
+            if len(sub_matches) == 0:
+                print_bug_report_info()
+                raise RuntimeError("Zero sub-matches found during selection of earliest match. This shouldn't happen!")
+
+            # If multiple matches tie for earliest match, select from these the match with
+            # the latest end (and therefore longest match)
+            best_end = sub_matches[0].end()
+            sub_sub_matches = [sub_matches[0]]
+            for i in range(1, len(sub_matches)):
+                if sub_matches[i].end() > best_end:
+                    best_end = sub_matches[i].end()
+                    sub_sub_matches = [sub_matches[i]]
+
+                if sub_matches[i].end() == best_end:
+                    sub_sub_matches.append(sub_matches[i])
+
+                # If sub_matches[i].end() is less than best_end, do nothing.
+
+            if len(sub_sub_matches) == 1:
+                return sub_sub_matches[0]
+
+            else:
+                return sub_sub_matches
