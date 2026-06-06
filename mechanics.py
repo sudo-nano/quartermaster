@@ -24,15 +24,17 @@ class DataType(Enum):
             return result
 
         # If there isn't an exact match, perform fuzzy matching
-        except:
+        except KeyError:
             match len(input):
                 case 0:
                     raise RuntimeError("Cannot type match empty string")
 
                 case 1:
                     for item in DataType:
-                        if str == item.value[0]:
+                        if input == str(item)[0]:
                             return item
+
+                    raise RuntimeError(f"Single character {input} does not match the first letter of any command.")
 
                 case _:
                     match_result = best_match_substring([e.value for e in DataType], input)
@@ -261,27 +263,27 @@ class DataSet:
                 print_bug_report_info()
 
     # Check whether an item of the specified name and type exist in the current dataset
-    def item_exists(self, item_type, item):
+    def item_exists(self, item_type: DataType, item: str):
         match item_type:
-            case "recipe":
+            case DataType.recipe:
                 if item in self.recipes:
                     return True
 
                 else:
                     return False
 
-            case "ingredient":
+            case DataType.ingredient:
                 if item in self.ingredients:
                     return True
 
                 else:
                     return False
 
-            case "person":
+            case DataType.person:
                 if item in self.people:
                     return True
 
-            case "group":
+            case DataType.group:
                 if item in self.groups:
                     return True
 
