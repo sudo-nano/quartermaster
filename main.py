@@ -105,22 +105,8 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
             # session.item_exists() ensures that an item with the specified name and type exists
             # in the current DataSet
             if session.item_exists(args.type, args.item):
-                match args.type:
-                    case "ingredient" | "i":
-                        session.inspect(mechanics.DataType.ingredient, args.item)
-                        return
-
-                    case "recipe" | "r":
-                        session.inspect(mechanics.DataType.recipe, args.item)
-                        return
-
-                    # TODO: Implement inspect handling of people and groups
-
-                    case _:
-                        print(
-                            "command parser error: 'inspect' reached end of control flow"
-                        )
-                        return
+                item_type = mechanics.DataType.from_str(args.type)
+                session.inspect(item_type, args.item)
 
             else:
                 print(
