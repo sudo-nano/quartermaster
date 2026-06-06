@@ -189,7 +189,8 @@ class DataSet:
 
             case DataType.ingredient:
                 print()
-                print("Ingredient: " + item)
+                print("-- Ingredient: " + item + " --")
+                print()
 
                 # Print diet incompatibilities
                 the_ingredient = self.ingredients[item]
@@ -201,10 +202,16 @@ class DataSet:
                 else:
                     print(the_ingredient["restrictions"]["dietary"])
 
+                print()
+
                 # Print purchase increments
-                print("Purchase Increments:")
-                for increment in self.ingredients[item]["purchase_increments"]["increments"]:
-                    print("\t" + str(increment[0]) + " " + str(increment[1]) + " for $" + str(increment[2]))
+                try:
+                    print("Purchase Increments:")
+                    for increment in self.ingredients[item]["purchase_increments"]:
+                        print("\t" + str(increment[0]) + " " + str(increment[1]) + " for $" + str(increment[2]))
+
+                except KeyError:
+                    print("[WARN] There is no purchase_increments field in this ingredient. Price calculation will not be possible.")
 
             case _:
                 print(f"[ERROR] DataSet.inspect() could not match type {item_type}. Please report this as a bug.")

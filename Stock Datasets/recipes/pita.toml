@@ -1,7 +1,7 @@
 type = "recipe"
 name = "pita"
 author = "some lady on instagram"
-lastUpdated = "2026-06-02"
+lastUpdated = 2026-06-02
 
 [ingredients]
 "water" = "240mL"

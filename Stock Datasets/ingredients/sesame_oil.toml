@@ -2,10 +2,14 @@ type = "ingredient"
 name = "sesame oil"
 sortName = "oil, sesame" # TODO: Add this as an optional field to DRF
 author = "sudo-nano"
-lastUpdated = "2025-11-10"
+lastUpdated = 2025-11-10
 
 unitType = "volume"
 # TODO: Look up density 
+
+purchase_increments = [
+	[5.0, "L", 40.00]
+]
 
 [restrictions.dietary]
 animalProduct = false
@@ -22,7 +26,3 @@ halal = true
 kosher = true
 leavened = false
 
-[purchase_increments]
-increments = [
-	[5.0, "L", 40.00]
-]

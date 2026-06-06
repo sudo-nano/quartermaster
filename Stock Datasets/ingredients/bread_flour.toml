@@ -1,14 +1,15 @@
 type = "ingredient"
 name = "bread flour"
 author = "sudo-nano"
-lastUpdated = "2025-11-06"
-
-unitType = "mass"
+lastUpdated = 2025-11-06
 
 # Density: 120g / cup according to King Arthur flour, 0.5-0.6 g/mL according to Wikipedia
 # https://en.wikipedia.org/wiki/Cup_(unit)#Dry_measure
 density.amount = 0.55
 density.unit = "g/mL"
+
+# TODO: add purchase increments
+purchase_increments = []
 
 [restrictions.dietary]
 animalProduct = false
@@ -25,4 +26,4 @@ halal = true
 kosher = true
 leavened = false
 
-# TODO: add purchase increments
+
