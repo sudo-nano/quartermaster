@@ -194,14 +194,29 @@ class DataSet:
 
                 # Print diet incompatibilities
                 the_ingredient = self.ingredients[item]
+                dietary_restrictions = the_ingredient["restrictions"]["dietary"]
+                religious_restrictions = the_ingredient["restrictions"]["religious"]
+
                 print("Diet Incompatibilities: ", end="")
 
                 if the_ingredient["restrictions"]["dietary"] == []:
                     print("None")
 
                 else:
-                    print(the_ingredient["restrictions"]["dietary"])
+                    print()
+                    for restriction in dietary_restrictions:
+                        print(f"\t{restriction}: {dietary_restrictions[restriction]}")
+                print()
 
+                # Print religious restrictions
+                print("Religious Restrictions: ", end="")
+                if religious_restrictions == []:
+                    print("None")
+
+                else:
+                    print()
+                    for restriction in religious_restrictions:
+                        print(f"\t{restriction}: {religious_restrictions[restriction]}")
                 print()
 
                 # Print purchase increments
@@ -291,7 +306,7 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
 
     # Debug option: print raw dict of ingredients
     if session.debug:
-        print("Debug: ingredients " + str(recipe["ingredients"]))
+        print("[DEBUG] Ingredients: " + str(recipe["ingredients"]))
 
     print()
     print("[ " + str(recipe_quantity) + " qty of " + recipe_str + " ]")
