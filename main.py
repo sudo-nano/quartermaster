@@ -104,9 +104,13 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
         case "inspect" | "i":
             # session.item_exists() ensures that an item with the specified name and type exists
             # in the current DataSet
-            item_type = mechanics.DataType.from_str(args.type)
+
             if session.debug:
+                item_type = mechanics.DataType.from_str(args.type, True)
                 print(f"[DEBUG] inspect command: item_type is {item_type}")
+
+            else:
+                item_type = mechanics.DataType.from_str(args.type)
 
             if session.item_exists(item_type, args.item):
                 session.inspect(item_type, args.item)
