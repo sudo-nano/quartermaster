@@ -1,0 +1,13 @@
+type = "recipe"
+subtype = "sauce" # subtype field is experimental
+name = "pesto"
+author = "Joshua Weissman"
+
+# Recipe from An Unapologetic Cookbook by Joshua Weissman
+[ingredients]
+pine_nuts = "45g"
+basil = "40g"
+garlic = 5 # 5 cloves garlic
+parmagiano_reggiano = "248g"
+water = "50mL"
+olive_oil = "125mL"
