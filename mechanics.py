@@ -192,12 +192,22 @@ class DataSet:
                 # TODO: Check that all ingredients in recipes are loaded into session
                 # TODO: Compute whether each recipe can be fractionally scaled, and
                 # store it as a property
+                # TODO: Make sure the schema check allows custom fields
                 match toml_dict:
                     case {
                         "name": str(),
                         "ingredients": dict()
                     }:
-                        self.recipes.update({toml_dict["name"]:toml_dict})
+                        missing_ingredients = self.get_missing_ingredients(toml_dict)
+                        if missing_ingredients == []:
+                            self.recipes.update({toml_dict["name"]:toml_dict})
+
+                        else:
+                            print(f"[WARN] Recipe file {file_path} has ingredients missing from the data set and will not be imported.")
+                            for i in missing_ingredients:
+                                print(f"\t- {i}")
+
+                            print()
 
                     case _:
                         # TODO: Add link to DRF specification for required fields
@@ -292,6 +302,15 @@ class DataSet:
 
             case _:
                 return False
+
+    # Return a list of ingredients from the current recipe that are not in the dataset
+    def get_missing_ingredients(self, recipe: dict):
+        missing_ingredients = []
+        for ingredient in recipe["ingredients"]:
+            if not self.item_exists(DataType.ingredient, ingredient):
+                missing_ingredients.append(ingredient)
+
+        return missing_ingredients
 
 class IngredientError(Exception):
     def __init__(self, message):
