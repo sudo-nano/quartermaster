@@ -2,6 +2,7 @@ type = "recipe"
 subtype = "sauce" # subtype field is experimental
 name = "pesto"
 author = "Joshua Weissman"
+last_updated = 2026-09-04
 
 # Recipe from An Unapologetic Cookbook by Joshua Weissman
 [ingredients]
