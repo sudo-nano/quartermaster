@@ -128,7 +128,7 @@ class DataSet:
             print(f"[ERROR] Unicode decode error in file {file_path}: {e}. This is probably not a text file.")
 
         if toml_dict == None:
-            raise RuntimeError("test test")
+            raise RuntimeError("toml_dict is None after attempting to load file")
 
         # Check that loaded file is of provided type
         if toml_dict["type"] != file_type:
