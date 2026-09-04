@@ -6,9 +6,9 @@ last_updated = 2026-09-04
 
 # Recipe from An Unapologetic Cookbook by Joshua Weissman
 [ingredients]
-pine_nuts = "45g"
+"pine nuts" = "45g"
 basil = "40g"
 garlic = 5 # 5 cloves garlic
-parmagiano_reggiano = "248g"
+"parmagiano reggiano" = "248g"
 water = "50mL"
-olive_oil = "125mL"
+"olive oil" = "125mL"
