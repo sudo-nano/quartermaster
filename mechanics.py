@@ -189,7 +189,6 @@ class DataSet:
                         print(f"[WARN] Ingredient file {file_path} doesn't match schema and will not be imported.")
 
             case "recipe":
-                # TODO: Check that all ingredients in recipes are loaded into session
                 # TODO: Compute whether each recipe can be fractionally scaled, and
                 # store it as a property
                 # TODO: Make sure the schema check allows custom fields
