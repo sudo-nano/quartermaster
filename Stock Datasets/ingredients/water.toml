@@ -1,0 +1,22 @@
+type = "ingredient"
+name = "water"
+lastUpdated = "2026-09-26"
+
+density.amount = "1"
+density.unit = "g/mL"
+purchase_increments = []
+
+[restrictions.dietary]
+animalProduct = false
+meat = false
+egg = false
+dairy = false
+gluten = false
+treeNuts = false
+sesame = false
+shellfish = false
+
+[restrictions.religious]
+halal = true
+kosher = true
+leavened = false
