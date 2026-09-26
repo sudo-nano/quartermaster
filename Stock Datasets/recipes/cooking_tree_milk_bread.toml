@@ -1,7 +1,8 @@
 # Milk bread recipe from Cooking Tree YouTube channel
 # https://www.youtube.com/watch?v=z7xaYAnacQo
 type = "recipe"
-name = "Milk Bread - Cooking Tree"
+name = "Cooking Tree Milk Bread"
+sortName = "Bread, Milk, Cooking Tree" # Experimental field
 author = "Cooking Tree"
 lastUpdated = "2026-09-18"
 
@@ -10,7 +11,7 @@ milk = "150g"
 egg = "35g" # Slightly less than one egg. Save the rest for egg wash.
 sugar = "30g"
 salt = "5g"
-instant dry yeast = "4.5g"
+"instant dry yeast" = "4.5g"
 honey = "10g"
 "bread flour" = "260g"
 "unsalted butter" = "35g"
