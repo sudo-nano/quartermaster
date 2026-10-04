@@ -20,5 +20,5 @@ shellfish = false
 
 [restrictions.religious]
 halal = true
-kosher = true
+kosher = false # Sea salt is not strictly kosher. Override this with local dataset if desired.
 leavened = false
