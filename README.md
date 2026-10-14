@@ -1,20 +1,35 @@
 # quartermaster
 A program for calculating recipe ingredient quantities and costs, given parameters such as amount, time, and consumption rate.
 
+> [!TIP] Quartermaster will never be made using generative AI. All of our spaghetti
+> is lovingly handmade. 
+
 ## Description
-Quartermaster is a command line program that does logistical calculations and scaling for recipes.
+Quartermaster is a command line program that does logistical calculations and scaling for recipes,
+as well as checking dietary restrictions to ensure a recipe can be served to all people present.
 While primarily designed for cooking, non-food ingredients can be used to plan other things.
 Ingredients, recipes, and cost-per-unit is specified in TOML files. The program
 uses these to calculate required ingredient amounts and costs for recipes.
 
-This program is in *very* early development. It's being developed alongside its sister project,
-the [Digitized Recipe Format](https://github.com/sudo-nano/digitized-recipe-format).
+The design philosophy of Quartermaster is to meet you where you are, and be useful to
+a wide range of users. The most advanced features, such as validating recipes against
+people's dietary restrictions, require fully fleshed out data on the people, recipes, 
+and the ingredients in the recipes. However, simpler features such as recipe scaling 
+should not require the more advanced data. Functionality should degrade gracefully,
+so that everything with the necessary data to operate can still do so, while giving
+the user informative error messages about exactly what data an operation is missing 
+in cases where it can't execute. 
+
+This program is in *very* early development. Its data is stored in the TOML-based
+[Digitized Recipe Format](https://github.com/sudo-nano/digitized-recipe-format), 
+which is being developed alongside it. 
 
 ## Quick-Start
-1. Install the `toml` Python library
+1. Install `uv`
 2. Clone the repository
-3. Run `python3 main.py`
+3. Run `uv run main.py`
 
+<!--  Consider removing this link and maybe also the wiki to reduce dependency on GitHub specific features-->
 For more detailed instructions, see [Installation Instructions](https://github.com/sudo-nano/quartermaster/wiki/Installation).
 
 ## Implemented Features
