@@ -1,8 +1,12 @@
 # Quartermaster Unit Conversions
 from enum import Enum
 from math import isnan
-from mechanics import UnitError
 
+# Error class for use in unit conversion operations
+class UnitError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
 
 class TempUnit(Enum):
     celsius = 0

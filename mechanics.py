@@ -321,12 +321,6 @@ class RecipeError(Exception):
         self.message = message
         super().__init__(self.message)
 
-# Error class for use in unit conversion operations
-class UnitError(Exception):
-    def __init__(self, message):
-        self.message = message
-        super().__init__(self.message)
-
 # Converts a unit to its abbreviation
 unit_abbrevs = {
     "discrete": "",
