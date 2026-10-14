@@ -127,10 +127,26 @@ def execute_command(session: mechanics.DataSet, args: argparse.Namespace):
         # Convert between two unit values.
         # When converting between mass and volume, the user must specify either density or
         # an ingredient whose density value will be used.
-        # Not yet implemented. Needs str_to_MassUnit implemented first.
+        # TODO: Implement units.str_to_MassUnit()
         case "convert" | "c":
             # Detect units of initial and target values
-            pass
+            print(f"args.initial: {args.initial}")
+            print(f"args.target: {args.target}")
+
+            try:
+                initial_unit = units.str_to_VolumeUnit(args.initial)
+            except units.UnitError:
+                if session.debug:
+                    print("[DEBUG] Initial unit did not match any volume units")
+
+            # str_to_MassUnit() not implemented yet
+            try:
+                units.str_to_MassUnit(args.initial)
+
+            except units.UnitError:
+                if session.debug:
+                    print("[DEBUG] Initial unit did not match any mass units")
+
 
         # List which dataset is active (not yet implemented)
         case "active_dataset":
