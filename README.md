@@ -1,7 +1,8 @@
 # quartermaster
 A program for calculating recipe ingredient quantities and costs, given parameters such as amount, time, and consumption rate.
 
-> [!TIP] Quartermaster will never be made using generative AI. All of our spaghetti
+> [!TIP] 
+> Quartermaster does not accept generative AI contributions. All of our spaghetti
 > is lovingly handmade. 
 
 ## Description
