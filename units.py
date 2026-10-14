@@ -1,6 +1,7 @@
 # Quartermaster Unit Conversions
 from enum import Enum
 from math import isnan
+from mechanics import UnitError
 
 
 class TempUnit(Enum):
@@ -260,13 +261,15 @@ def str_to_VolumeUnit(unit_str: str, defaults=None, allow_interactive=False):
                 return VolumeUnit.gallon_customary
 
     # If matching fails, raise an error.
-    raise ValueError(f"Could not convert string {unit_str} to VolumeUnit")
+    raise UnitError(f"Could not convert string {unit_str} to VolumeUnit")
 
 
 class Volume:
+    # Initialize a Volume object with a specific number and unit
     def __init__(self, volume: float, unit: VolumeUnit):
         self.set_volume(volume, unit)
 
+    # Set the number and unit of the Volume
     def set_volume(self, volume: float, unit: VolumeUnit):
         # Type check inputs
         if type(volume) not in [int, float]:
@@ -277,6 +280,9 @@ class Volume:
         if isnan(volume):
             raise ValueError("Volume provided is NaN")
 
+        if not isinstance(unit, VolumeUnit):
+            raise TypeError(f"Supplied unit {unit} is not a VolumeUnit")
+
         self.volume_mL = volume
         self.unit = unit
 
@@ -285,7 +291,7 @@ class Volume:
     # function, so there's no need to specifically catch ValueErrors from str_to_VolumeUnit.
     def convert_to(self, unit: VolumeUnit):
         if not isinstance(unit, VolumeUnit):
-            raise TypeError(f"Could not convert to invalid volume unit {unit}")
+            raise TypeError(f"Supplied unit {unit} is not a VolumeUnit")
 
         value = self.volume_mL / unit.value
         return value
