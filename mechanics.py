@@ -321,25 +321,20 @@ class RecipeError(Exception):
         self.message = message
         super().__init__(self.message)
 
+# Error class for use in unit conversion operations
+class UnitError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
 # Converts a unit to its abbreviation
-# TODO: Convert this to a dictionary
-def abbrev_unit(unit_string):
-    match unit_string:
-        case "discrete":
-            return ""
-
-        case "gram":
-            return "g"
-
-        case "kilogram":
-            return "kg"
-
-        case "milliliter":
-            return "mL"
-
-        case "liter":
-            return "L"
-
+unit_abbrevs = {
+    "discrete": "",
+    "gram": "g",
+    "kilogram": "kg",
+    "milliliter": "mL",
+    "liter": "L"
+}
 
 # Pass session, recipe str and quantity int
 def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, volume_unit = None):
@@ -415,7 +410,12 @@ def calc_and_output(session: DataSet, recipe_str: str, recipe_quantity: float, v
         ingredient_dict = session.ingredients[ingredient]
 
         required_qty = amount * recipe_quantity
-        unit = abbrev_unit(ingredient_dict["unit"])
+        try:
+            unit = unit_abbrevs[ingredient_dict["unit"]]
+
+        except KeyError:
+            raise UnitError(f"Unable to match unit {ingredient_dict['unit']} to abbreviation")
+
         price_of_rq = required_qty * ingredient_dict["price_per_unit"]
 
         print("\tRequired quantity of " + ingredient + ": " + str(required_qty) + unit)
