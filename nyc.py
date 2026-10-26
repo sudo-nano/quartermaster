@@ -69,7 +69,13 @@ def parse_ingredients(recipe: deque[str]):
     pass_blank_lines(recipe)
     ingredients = []
     while recipe[0]:
-        ingredients.append(parse_ingredient(recipe.popleft()))
+        if recipe[0].startswith("-----"):
+            # FIXME: Digitized recipe format currenly doesn't have support for
+            # multi-section ingredient lists, so we ignore section headers for
+            # now.
+            recipe.popleft()
+        else:
+            ingredients.append(parse_ingredient(recipe.popleft()))
     return ingredients
 
 
