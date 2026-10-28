@@ -30,8 +30,6 @@ which is being developed alongside it.
 2. Clone the repository
 3. Run `uv run main.py`
 
-<!--  Consider removing this link and maybe also the wiki to reduce dependency on GitHub specific features-->
-For more detailed instructions, see [Installation Instructions](https://github.com/sudo-nano/quartermaster/wiki/Installation).
 
 ## Implemented Features
 ### Scale a recipe up or down
@@ -74,6 +72,7 @@ quartermaster > scale default_breakfast 5
 - Calculation of total consumption over a given period of time
 - Save and load sessions
 - New Data Type: `group` containing a collection of people
+- Support for [recipe formats from other programs](https://github.com/sudo-nano/quartermaster/blob/main/README.md)
 
 ## Help Needed
 These are the things we need help with. (No generative AI contributions please.)
