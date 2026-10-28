@@ -25,3 +25,5 @@ files, needs more reverse engineering work to be supported.
 MealMaster uses `.mmf` files, which are a custom plaintext format.
 MealMaster formatted recipes are available from the 
 [Now You're Cooking! recipes directory.](https://www.ffts.com/recipes.htm)
+These are not yet supported, but their format is simple and shouldn't be too hard to
+implement.
