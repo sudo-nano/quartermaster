@@ -60,6 +60,14 @@ quartermaster > scale default_breakfast 5
 	Required quantity of soy_sauce: 50.0mL
 	Estimated price of required quantity: 0.25
 ```
+### Convert from Now You're Cooking! recipe format 
+`nyc.py` is a standalone tool that converts Now You're Cooking! format recipes to the 
+digitized recipe format.
+Run it with `uv run nyc.py <file>`.
+For each recipe in the file, it will output one DRF TOML file and an accompanying markdown
+file with the instructions.
+
+NYC recipe book format is distinct from its recipe format, and is not yet supported.
 
 ## Planned Features
 - Automatic conversion between imperial and units
